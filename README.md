@@ -103,3 +103,13 @@ The first milestone focuses on establishing the foundation of the application, i
 - Database schema design
 
 The application's complete functionality will be implemented in future milestones.
+
+
+## Project Design
+
+The interface and navigation of Momento are documented in the following files:
+
+- [UI Wireframes](docs/wireframes.pdf) — Designs for the login, registration, shared-space setup, dashboard, albums, and scrapbook editor across three themes.
+- [Navigation Flow](docs/navigation-flow.png) — Diagram showing how users navigate through the application, including authentication, shared spaces, and the main features.
+
+These documents serve as references for the development of the React frontend.
