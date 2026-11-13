@@ -8,6 +8,7 @@ import {
 import Login from "./components/Login";
 import Register from "./components/Register";
 import ProtectedPage from "./components/ProtectedPage";
+import SpaceSetup from "./components/SpaceSetup";
 
 function App() {
   return (
@@ -22,6 +23,9 @@ function App() {
         {/* Public pages */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+
+        {/* Create or join a shared scrapbook after logging in */}
+        <Route path="/spaces" element={<SpaceSetup />} />
 
         {/* Protected page */}
         <Route

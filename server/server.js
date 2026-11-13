@@ -6,6 +6,7 @@ import MongoStore from "connect-mongo";
 
 import authRoutes from "./routes/authRoutes.js";
 import protectedRoutes from "./routes/protectedRoutes.js";
+import spaceRoutes from "./routes/spaceRoutes.js";
 import connectDB from "./config/db.js";
 
 dotenv.config();
@@ -52,6 +53,9 @@ app.use("/api/auth", authRoutes);
 
 // Protected routes
 app.use("/api/protected", protectedRoutes);
+
+// Private shared-space creation, invitations, and membership
+app.use("/api/spaces", spaceRoutes);
 
 // Health check
 app.get("/api/health", (req, res) => {
