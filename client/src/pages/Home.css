@@ -1,0 +1,1052 @@
+/* ==========================================
+   MOMENTO HOME DASHBOARD
+========================================== */
+
+.momento-home {
+  width: 100%;
+  max-width: 1500px;
+
+  margin: 0 auto;
+}
+
+
+/* ==========================================
+   GROUP HEADER
+========================================== */
+
+.momento-home__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 20px;
+
+  margin-bottom: 30px;
+}
+
+.momento-home__title {
+  flex: 1;
+
+  max-width: 550px;
+
+  padding: 20px 30px;
+
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.momento-home__title h1 {
+  margin: 0;
+
+  font-family: "Segoe Print", cursive;
+
+  font-size: clamp(25px, 3vw, 42px);
+  font-weight: bold;
+}
+
+
+/* Original header */
+
+.momento-app[data-theme="original"]
+.momento-home__title {
+  background-image:
+    url("../assets/momento/black-cream/header-paper.png");
+
+  color: #211d18;
+}
+
+
+/* Blue header */
+
+.momento-app[data-theme="blue"]
+.momento-home__title {
+  background-image:
+    url("../assets/momento/blue-notebook/header-paper.png");
+
+  color: #203773;
+}
+
+
+/* Green header */
+
+.momento-app[data-theme="green"]
+.momento-home__title {
+  color: #255a44;
+}
+
+
+/* ==========================================
+   MEMBER AVATARS
+========================================== */
+
+.momento-home__avatars {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+}
+
+.momento-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 55px;
+  height: 55px;
+
+  border-radius: 50%;
+
+  border: 4px solid #fff8e9;
+
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.25);
+
+  font-family: "Segoe Print", cursive;
+
+  font-size: 25px;
+  font-weight: bold;
+
+  color: #203773;
+}
+
+.momento-avatar--pink {
+  background: #f4b4c7;
+}
+
+.momento-avatar--blue {
+  background: #bcd7fa;
+}
+
+.momento-avatar--orange {
+  background: #f7bd69;
+}
+
+
+/* ==========================================
+   THE BOARD
+========================================== */
+
+.momento-board {
+  padding: 22px;
+
+  background: var(--m-surface);
+
+  border: 2px solid var(--m-border);
+
+  box-shadow: 4px 6px 12px var(--m-shadow);
+}
+
+
+/* Original dark board */
+
+.momento-app[data-theme="original"]
+.momento-board {
+  background: #25211e;
+
+  border: 3px solid #e9dec7;
+}
+
+
+/* Blue notebook board */
+
+.momento-app[data-theme="blue"]
+.momento-board {
+  background: transparent;
+
+  border: 2px solid #203773;
+
+  border-radius: 12px;
+}
+
+
+/* Green scrapbook board */
+
+.momento-app[data-theme="green"]
+.momento-board {
+  background: #fffbee;
+
+  border: 2px dashed #a5c5aa;
+}
+
+
+/* ==========================================
+   BOARD HEADER
+========================================== */
+
+.momento-board__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 20px;
+
+  margin-bottom: 25px;
+}
+
+.momento-board__header h2 {
+  margin: 0;
+
+  font-family: "Segoe Print", cursive;
+
+  font-size: 32px;
+
+  color: var(--m-text);
+}
+
+.momento-app[data-theme="original"]
+.momento-board__header h2 {
+  color: #f7eed9;
+}
+
+.momento-app[data-theme="green"]
+.momento-board__header h2 {
+  color: #255a44;
+
+  background: #23664d;
+  color: #fffbee;
+
+  padding: 5px 15px;
+}
+
+
+/* Add note button */
+
+.momento-board__add-button {
+  padding: 12px 20px;
+
+  border: none;
+
+  background: var(--m-button);
+
+  color: var(--m-button-text);
+
+  font-family: "Segoe Print", cursive;
+
+  font-size: 15px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  box-shadow: 2px 3px 6px var(--m-shadow);
+}
+
+.momento-board__add-button:disabled {
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+
+/* ==========================================
+   BOARD CONTENT
+========================================== */
+
+.momento-board__content {
+  display: grid;
+
+  grid-template-columns: 1.2fr 1fr;
+
+  gap: 25px;
+
+  align-items: start;
+}
+
+
+/* ==========================================
+   STICKY NOTES
+========================================== */
+
+.momento-board__notes {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 15px;
+
+  align-items: start;
+}
+
+.momento-sticky-note {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  min-height: 180px;
+
+  padding: 20px;
+
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+
+  box-shadow: 3px 6px 10px rgba(0, 0, 0, 0.2);
+
+  color: var(--m-card-text);
+
+  box-sizing: border-box;
+}
+
+.momento-sticky-note p {
+  margin: 0;
+
+  font-family: "Segoe Print", cursive;
+
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+.momento-sticky-note span {
+  align-self: flex-end;
+
+  font-family: "Segoe Print", cursive;
+
+  font-size: 15px;
+}
+
+
+/* First note */
+
+.momento-sticky-note--0 {
+  background-image:
+    url("../assets/momento/shared/sticky-note-yellow.png");
+
+  transform: rotate(-4deg);
+}
+
+
+/* Second note */
+
+.momento-sticky-note--1 {
+  background-image:
+    url("../assets/momento/shared/sticky-note-blue.png");
+
+  transform: rotate(4deg);
+}
+
+
+/* Third note */
+
+.momento-sticky-note--2 {
+  background-image:
+    url("../assets/momento/shared/sticky-note-yellow.png");
+
+  transform: rotate(-3deg);
+
+  grid-column: 1 / -1;
+
+  width: 65%;
+
+  margin: -5px auto 0;
+}
+
+
+/* Green theme sticky notes */
+
+.momento-app[data-theme="green"]
+.momento-sticky-note--1 {
+  background-image:
+    url("../assets/momento/green-gingham/sticky-note-mint.png");
+}
+
+.momento-app[data-theme="green"]
+.momento-sticky-note--2 {
+  background-image:
+    url("../assets/momento/green-gingham/sticky-note-pink.png");
+}
+
+
+/* ==========================================
+   BUCKET LIST
+========================================== */
+
+.momento-bucket-list {
+  min-height: 320px;
+
+  padding: 25px 25px 25px 40px;
+
+  background-image:
+    url("../assets/momento/shared/bucket-list-paper.png");
+
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+
+  color: #292521;
+
+  box-sizing: border-box;
+}
+
+.momento-bucket-list h3 {
+  margin: 0 0 20px;
+
+  font-family: "Segoe Print", cursive;
+
+  font-size: 26px;
+
+  text-decoration: underline;
+}
+
+.momento-bucket-list__items {
+  display: flex;
+  flex-direction: column;
+
+  gap: 18px;
+}
+
+.momento-bucket-list__item {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  font-family: "Segoe Print", cursive;
+
+  font-size: 16px;
+
+  cursor: pointer;
+}
+
+.momento-bucket-list__item input {
+  width: 19px;
+  height: 19px;
+
+  accent-color: #255a44;
+}
+
+.momento-bucket-list__item .completed {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.momento-bucket-list__add {
+  margin-top: 22px;
+
+  padding: 7px 15px;
+
+  background: #f4b4c7;
+
+  border: none;
+
+  font-family: "Segoe Print", cursive;
+  font-size: 15px;
+
+  cursor: pointer;
+}
+
+.momento-bucket-list__add:disabled {
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+
+/* ==========================================
+   RESPONSIVE DESIGN
+========================================== */
+
+@media (max-width: 1000px) {
+
+  .momento-board__content {
+    grid-template-columns: 1fr;
+  }
+
+  .momento-bucket-list {
+    max-width: 600px;
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .momento-home__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .momento-home__avatars {
+    align-self: flex-end;
+  }
+
+  .momento-board {
+    padding: 15px;
+  }
+
+  .momento-board__header h2 {
+    font-size: 24px;
+  }
+
+  .momento-sticky-note {
+    min-height: 150px;
+    padding: 12px;
+  }
+
+  .momento-sticky-note p {
+    font-size: 15px;
+  }
+
+  .momento-bucket-list {
+    padding: 25px 20px 25px 35px;
+  }
+}
+
+  /* ==========================================
+   HOME DASHBOARD BOTTOM LAYOUT
+========================================== */
+
+.momento-home__bottom {
+  display: grid;
+
+  grid-template-columns: minmax(0, 1.8fr) minmax(240px, 0.9fr);
+
+  gap: 20px;
+
+  margin-top: 22px;
+}
+
+
+/* ==========================================
+   CALENDAR
+========================================== */
+
+.momento-calendar {
+  min-width: 0;
+
+  padding: 18px;
+
+  background: var(--m-surface);
+
+  border: 2px solid var(--m-border);
+
+  box-shadow: 3px 5px 10px var(--m-shadow);
+}
+
+.momento-calendar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+}
+
+.momento-calendar__header h2 {
+  margin: 0;
+
+  font-family: "Segoe Print", cursive;
+
+  font-size: 27px;
+
+  color: var(--m-card-text);
+}
+
+.momento-calendar__add {
+  padding: 8px 13px;
+
+  background: var(--m-button);
+  color: var(--m-button-text);
+
+  border: none;
+
+  font-family: "Segoe Print", cursive;
+
+  cursor: not-allowed;
+}
+
+.momento-calendar__add:disabled {
+  opacity: 1;
+}
+
+
+/* Month navigation */
+
+.momento-calendar__navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 20px;
+
+  margin: 15px 0;
+}
+
+.momento-calendar__navigation span {
+  padding: 7px 18px;
+
+  background: #e9b6c6;
+
+  color: #263047;
+
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+}
+
+.momento-calendar__navigation button {
+  background: transparent;
+
+  border: none;
+
+  color: var(--m-card-text);
+
+  font-size: 30px;
+
+  cursor: pointer;
+}
+
+
+/* Calendar grid */
+
+.momento-calendar__grid {
+  display: grid;
+
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+
+  border-top: 1px solid #d8cbb5;
+  border-left: 1px solid #d8cbb5;
+
+  background: #fffaf0;
+}
+
+.momento-calendar__weekday {
+  padding: 8px 2px;
+
+  background: var(--m-sidebar);
+
+  color: #fffaf0;
+
+  font-size: 10px;
+  font-weight: bold;
+
+  text-align: center;
+
+  border-right: 1px solid #d8cbb5;
+  border-bottom: 1px solid #d8cbb5;
+}
+
+.momento-calendar__day {
+  min-height: 58px;
+
+  padding: 5px;
+
+  color: #292521;
+
+  font-family: "Segoe Print", cursive;
+  font-size: 12px;
+
+  border-right: 1px solid #d8cbb5;
+  border-bottom: 1px solid #d8cbb5;
+
+  box-sizing: border-box;
+
+  overflow-wrap: anywhere;
+}
+
+.momento-calendar__day--empty {
+  background: #f5eddf;
+}
+
+.momento-calendar__today {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 23px;
+  height: 23px;
+
+  border: 2px solid #ef6538;
+  border-radius: 50%;
+}
+
+.momento-calendar__event {
+  display: block;
+
+  margin-top: 4px;
+  padding: 3px;
+
+  background: #f1b8ca;
+
+  color: #292521;
+
+  font-size: 9px;
+  line-height: 1.2;
+}
+
+
+/* ==========================================
+   SHARED ALBUM PREVIEWS
+========================================== */
+
+.momento-albums-preview {
+  min-width: 0;
+
+  padding: 18px;
+
+  background: var(--m-surface);
+
+  border: 2px solid var(--m-border);
+
+  box-shadow: 3px 5px 10px var(--m-shadow);
+
+  display: flex;
+  flex-direction: column;
+}
+
+.momento-albums-preview h2 {
+  margin: 0 0 20px;
+
+  font-family: "Segoe Print", cursive;
+
+  font-size: 25px;
+
+  color: var(--m-card-text);
+}
+
+.momento-albums-preview__photos {
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  flex: 1;
+
+  min-height: 190px;
+}
+
+.momento-preview-polaroid {
+  width: 47%;
+
+  padding: 8px 8px 25px;
+
+  background: #fffaf0;
+
+  border: 1px solid #d5c9b8;
+
+  box-shadow: 3px 5px 8px rgba(0, 0, 0, 0.25);
+
+  box-sizing: border-box;
+}
+
+.momento-preview-polaroid img {
+  display: block;
+
+  width: 100%;
+
+  aspect-ratio: 1;
+
+  object-fit: cover;
+}
+
+.momento-preview-polaroid--first {
+  transform: rotate(-8deg);
+
+  margin-right: -15px;
+
+  z-index: 2;
+}
+
+.momento-preview-polaroid--second {
+  transform: rotate(8deg);
+}
+
+.momento-albums-preview__button {
+  width: 100%;
+
+  margin-top: 20px;
+  padding: 12px;
+
+  background: var(--m-button);
+  color: var(--m-button-text);
+
+  border: none;
+
+  font-family: "Segoe Print", cursive;
+
+  font-size: 15px;
+
+  cursor: not-allowed;
+}
+
+.momento-albums-preview__button:disabled {
+  opacity: 1;
+}
+
+
+/* ==========================================
+   ORIGINAL SCRAPBOOK OVERRIDES
+========================================== */
+
+.momento-app[data-theme="original"]
+.momento-calendar,
+
+.momento-app[data-theme="original"]
+.momento-albums-preview {
+  background: #25211e;
+
+  border: 3px solid #e9dec7;
+}
+
+.momento-app[data-theme="original"]
+.momento-calendar__header h2,
+
+.momento-app[data-theme="original"]
+.momento-albums-preview h2 {
+  color: #f7eed9;
+}
+
+
+/* ==========================================
+   BLUE NOTEBOOK OVERRIDES
+========================================== */
+
+.momento-app[data-theme="blue"]
+.momento-calendar,
+
+.momento-app[data-theme="blue"]
+.momento-albums-preview {
+  background: #fffaf0;
+
+  border: 2px solid #203773;
+
+  border-radius: 10px;
+}
+
+
+/* ==========================================
+   GREEN GINGHAM OVERRIDES
+========================================== */
+
+.momento-app[data-theme="green"]
+.momento-calendar,
+
+.momento-app[data-theme="green"]
+.momento-albums-preview {
+  background: #fffbee;
+
+  border: 2px dashed #a5c5aa;
+}
+
+.momento-app[data-theme="green"]
+.momento-calendar__weekday {
+  background: #23664d;
+}
+
+
+/* ==========================================
+   RESPONSIVE DESIGN
+========================================== */
+
+@media (max-width: 1100px) {
+
+  .momento-home__bottom {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .momento-calendar {
+    padding: 10px;
+  }
+
+  .momento-calendar__day {
+    min-height: 45px;
+    padding: 3px;
+
+    font-size: 10px;
+  }
+
+  .momento-calendar__event {
+    font-size: 8px;
+  }
+
+  .momento-calendar__header h2 {
+    font-size: 22px;
+  }
+
+  .momento-albums-preview__photos {
+    max-width: 350px;
+    margin: auto;
+  }
+
+}
+
+/* ==========================================
+   BLUE NOTEBOOK VISUAL REFINEMENTS
+========================================== */
+
+/* Make group title navy instead of black */
+
+.momento-app[data-theme="blue"]
+.momento-home__title h1 {
+  color: #203773;
+}
+
+
+/* Allow decorations to sit on sticky notes */
+
+.momento-app[data-theme="blue"]
+.momento-sticky-note {
+  position: relative;
+}
+
+
+/* Add silver star pins to sticky notes */
+
+.momento-app[data-theme="blue"]
+.momento-sticky-note::before {
+  content: "";
+
+  position: absolute;
+
+  width: 45px;
+  height: 45px;
+
+  top: -23px;
+  left: 45%;
+
+  background-image:
+    url("../assets/momento/blue-notebook/decorative-star-silver.png");
+
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  z-index: 2;
+}
+
+
+/* Scrapbook-style Add Note button */
+
+.momento-app[data-theme="blue"]
+.momento-board__add-button {
+  background: #c9d9f4;
+  color: #203773;
+
+  clip-path: polygon(
+    8% 0,
+    100% 0,
+    100% 100%,
+    8% 100%,
+    0 50%
+  );
+}
+
+/* ==========================================
+   BLUE THEME - CALENDAR REFINEMENTS
+========================================== */
+
+/* Light blue weekday headings */
+
+.momento-app[data-theme="blue"]
+.momento-calendar__weekday {
+  background: #d5e3f6;
+  color: #203773;
+
+  font-weight: 800;
+}
+
+
+/* ==========================================
+   BLUE THEME - SCRAPBOOK BUTTONS
+========================================== */
+
+/* Paper-tag buttons */
+
+.momento-app[data-theme="blue"]
+.momento-calendar__add,
+
+.momento-app[data-theme="blue"]
+.momento-albums-preview__button {
+  background: #c9d9f4;
+  color: #203773;
+
+  border: none;
+
+  clip-path: polygon(
+    8% 0,
+    100% 0,
+    100% 100%,
+    8% 100%,
+    0 50%
+  );
+}
+
+
+/* ==========================================
+   BLUE THEME - POLAROID DECORATIONS
+========================================== */
+
+/* Allow tape to overlap Polaroids */
+
+.momento-app[data-theme="blue"]
+.momento-preview-polaroid {
+  position: relative;
+}
+
+
+/* Pink tape on first Polaroid */
+
+.momento-app[data-theme="blue"]
+.momento-preview-polaroid--first::before {
+  content: "";
+
+  position: absolute;
+
+  width: 90px;
+  height: 30px;
+
+  top: -15px;
+  left: 25%;
+
+  background-image:
+    url("../assets/momento/shared/washi-tape-pink.png");
+
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+
+  transform: rotate(-5deg);
+
+  z-index: 3;
+}
+
+
+/* Blue tape on second Polaroid */
+
+.momento-app[data-theme="blue"]
+.momento-preview-polaroid--second::before {
+  content: "";
+
+  position: absolute;
+
+  width: 90px;
+  height: 30px;
+
+  top: -15px;
+  left: 25%;
+
+  background-image:
+    url("../assets/momento/shared/washi-tape-blue.png");
+
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+
+  transform: rotate(5deg);
+
+  z-index: 3;
+}
+
+/* ==========================================
+   ORIGINAL THEME - CALENDAR ARROWS
+========================================== */
+
+/* Make calendar arrows visible on dark background */
+
+.momento-app[data-theme="original"]
+.momento-calendar__navigation button {
+  color: #f7eed9;
+}
+
+/* Hover effect */
+
+.momento-app[data-theme="original"]
+.momento-calendar__navigation button:hover {
+  color: #f5c77e;
+}

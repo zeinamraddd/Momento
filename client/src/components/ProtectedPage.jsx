@@ -1,10 +1,12 @@
-
+import Sidebar from "./layout/Sidebar";
+import Home from "../pages/Home";
+import { useTheme } from "../themes/ThemeContext";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 function ProtectedPage() {
   const navigate = useNavigate();
-
+  const { theme } = useTheme();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -86,18 +88,22 @@ function ProtectedPage() {
   }
 
   return (
-    <div className="register-container">
-      <h1>Welcome to Momento!</h1>
-      <p>You are successfully logged in.</p>
+  <div className="momento-app" data-theme={theme}>
 
-      <h2>Hello, {user.username}!</h2>
-      <p>Email: {user.email}</p>
+    <div className="momento-shell">
 
-      <button type="button" onClick={handleLogout}>
-        Log Out
-      </button>
+      {/* Sidebar */}
+      <Sidebar onLogout={handleLogout} />
+
+      {/* Main content */}
+      <main className="momento-main">
+       <Home user={user} />
+      </main>
+
     </div>
-  );
+
+  </div>
+);
 }
 
 export default ProtectedPage;

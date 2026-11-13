@@ -1,0 +1,382 @@
+/* ==========================================
+   MOMENTO SIDEBAR
+========================================== */
+
+.momento-sidebar {
+  position: sticky;
+  top: 0;
+
+  width: 215px;
+  height: 100vh;
+  flex-shrink: 0;
+
+  background-color: var(--m-sidebar);
+  background-size: cover;
+  background-position: center;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 12px 13px;
+  box-sizing: border-box;
+
+  z-index: 10;
+}
+
+
+/* ==========================================
+   LOGO
+========================================== */
+
+.momento-sidebar__logo {
+  width: 100%;
+  margin-bottom: 22px;
+}
+
+.momento-sidebar__logo img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+
+/* ==========================================
+   NAVIGATION
+========================================== */
+
+.momento-sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.momento-sidebar__item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  gap: 10px;
+
+  width: 100%;
+  min-height: 47px;
+
+  padding: 10px 15px;
+
+  box-sizing: border-box;
+
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+
+  text-decoration: none;
+  text-align: left;
+
+  color: #222;
+
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-color: transparent;
+
+  border: none;
+
+  cursor: pointer;
+
+  transition: transform 0.2s ease;
+}
+
+.momento-sidebar__item:hover:not(:disabled) {
+  transform: translateX(3px);
+}
+
+.momento-sidebar__item:disabled {
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+.momento-sidebar__item svg {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+}
+
+
+/* ==========================================
+   ORIGINAL THEME NAVIGATION
+========================================== */
+
+.momento-sidebar--original
+.momento-sidebar__item--home {
+  background-image:
+    url("../../assets/momento/shared/nav-paper-ivory.png");
+
+  color: #211d18;
+}
+
+.momento-sidebar--original
+.momento-sidebar__item--albums,
+
+.momento-sidebar--original
+.momento-sidebar__item--lore {
+  background: #151311;
+
+  color: #f7eed9;
+
+  border: 2px solid #f7eed9;
+  border-radius: 3px;
+
+  box-shadow:
+    inset 0 0 0 2px #151311,
+    inset 0 0 0 3px #f7eed9;
+}
+
+
+/* ==========================================
+   BLUE THEME NAVIGATION
+========================================== */
+
+.momento-sidebar--blue
+.momento-sidebar__item--home {
+  background-image:
+    url("../../assets/momento/shared/nav-paper-ivory.png");
+
+  color: #203773;
+}
+
+.momento-sidebar--blue
+.momento-sidebar__item--albums {
+  background-image:
+    url("../../assets/momento/blue-notebook/nav-paper-blue.png");
+
+  color: #203773;
+}
+
+.momento-sidebar--blue
+.momento-sidebar__item--lore {
+  background-image:
+    url("../../assets/momento/shared/nav-paper-yellow.png");
+
+  color: #203773;
+}
+
+
+/* ==========================================
+   GREEN THEME NAVIGATION
+========================================== */
+
+.momento-sidebar--green
+.momento-sidebar__item--home {
+  background-image:
+    url("../../assets/momento/shared/nav-paper-ivory.png");
+
+  color: #255a44;
+}
+
+.momento-sidebar--green
+.momento-sidebar__item--albums {
+  background-image:
+    url("../../assets/momento/green-gingham/nav-paper-pink.png");
+
+  color: #255a44;
+}
+
+.momento-sidebar--green
+.momento-sidebar__item--lore {
+  background-image:
+    url("../../assets/momento/shared/nav-paper-yellow.png");
+
+  color: #255a44;
+}
+
+
+/* ==========================================
+   DECORATIONS
+========================================== */
+
+.momento-sidebar__decorations {
+  position: relative;
+  flex: 1;
+  min-height: 80px;
+
+  pointer-events: none;
+}
+
+.momento-decoration {
+  position: absolute;
+  height: auto;
+}
+
+.momento-decoration--gold {
+  width: 38px;
+
+  top: 12%;
+  right: 5%;
+}
+
+.momento-decoration--silver-one {
+  width: 65px;
+
+  top: 13%;
+  right: 4%;
+
+  transform: rotate(12deg);
+}
+
+.momento-decoration--silver-two {
+  width: 45px;
+
+  top: 55%;
+  left: 3%;
+
+  transform: rotate(-15deg);
+}
+
+.momento-decoration--orange {
+  width: 80px;
+
+  top: 10%;
+  right: 8%;
+}
+
+.momento-decoration--leaf {
+  width: 55px;
+
+  top: 48%;
+  left: 4%;
+
+  transform: rotate(-20deg);
+}
+
+
+/* ==========================================
+   THEME SELECTOR AND LOGOUT
+========================================== */
+
+.momento-sidebar__bottom {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+
+  padding: 12px 7px;
+  margin-top: auto;
+
+  background: rgba(255, 250, 237, 0.92);
+
+  border-radius: 8px;
+}
+
+.momento-sidebar__bottom label {
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 1px;
+
+  color: #292521;
+}
+
+.momento-sidebar__bottom select {
+  width: 100%;
+  padding: 8px;
+
+  border: 1px solid #c8bda9;
+  border-radius: 5px;
+
+  background: #fffaf0;
+  color: #292521;
+
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.momento-sidebar__logout {
+  padding: 9px;
+
+  background: var(--m-button);
+  color: var(--m-button-text);
+
+  border: none;
+  border-radius: 5px;
+
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.momento-sidebar__logout:hover {
+  filter: brightness(0.92);
+}
+
+
+/* ==========================================
+   APPLICATION LAYOUT
+========================================== */
+
+.momento-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.momento-main {
+  flex: 1;
+  min-width: 0;
+
+  padding: 30px 35px;
+  box-sizing: border-box;
+}
+
+
+/* ==========================================
+   RESPONSIVE LAYOUT
+========================================== */
+
+@media (max-width: 700px) {
+
+  .momento-shell {
+    flex-direction: column;
+  }
+
+  .momento-sidebar {
+    position: relative;
+
+    width: 100%;
+    height: auto;
+    min-height: 0;
+
+    background-size: cover;
+  }
+
+  .momento-sidebar__logo {
+    max-width: 180px;
+    margin-bottom: 10px;
+  }
+
+  .momento-sidebar__nav {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .momento-sidebar__item {
+    justify-content: center;
+    padding: 8px 5px;
+
+    font-size: 10px;
+    letter-spacing: 0;
+  }
+
+  .momento-sidebar__item svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .momento-sidebar__decorations {
+    display: none;
+  }
+
+  .momento-sidebar__bottom {
+    margin-top: 12px;
+  }
+
+  .momento-main {
+    padding: 20px 15px;
+  }
+}
