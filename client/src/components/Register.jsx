@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import AuthLayout from "./AuthLayout";
 import "./Register.css";
 
 function Register() {
@@ -79,108 +80,114 @@ function Register() {
   };
 
   return (
-    <div className="register-container">
-      <h1>Create an account</h1>
-      <p>Let's start collecting memories.</p>
+    <AuthLayout>
+      <div className="register-container">
+        <h1>Create an account</h1>
+        <p>Let's start collecting memories.</p>
 
-      <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
 
-        {/* Username */}
-        <label htmlFor="username">Username</label>
-        <input
-          id="username"
-          type="text"
-          placeholder="Your name"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
-
-        {/* Email */}
-        <label htmlFor="email">Email address</label>
-        <input
-          id="email"
-          type="email"
-          placeholder="you@example.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-
-        {/* Password */}
-        <label htmlFor="password">Password</label>
-
-        <div className="password-wrapper">
+          {/* Username */}
+          <label htmlFor="username">Username</label>
           <input
-            id="password"
-            type={showPassword ? "text" : "password"}
-            placeholder="Create a password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            minLength={8}
+            id="username"
+            type="text"
+            placeholder="Your name"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
 
-          <button
-            type="button"
-            className="password-toggle"
-            onClick={() => setShowPassword(!showPassword)}
-            aria-label={showPassword ? "Hide password" : "Show password"}
-            aria-pressed={showPassword}
-          >
-            {showPassword ? "Hide" : "Show"}
-          </button>
-        </div>
-
-        {/* Confirm Password */}
-        <label htmlFor="confirmPassword">
-          Confirm password
-        </label>
-
-        <div className="password-wrapper">
+          {/* Email */}
+          <label htmlFor="email">Email address</label>
           <input
-            id="confirmPassword"
-            type={showConfirmPassword ? "text" : "password"}
-            placeholder="Repeat password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            minLength={8}
+            id="email"
+            type="email"
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
 
-          <button
-            type="button"
-            className="password-toggle"
-            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            aria-label={
-              showConfirmPassword
-                ? "Hide confirm password"
-                : "Show confirm password"
-            }
-            aria-pressed={showConfirmPassword}
-          >
-            {showConfirmPassword ? "Hide" : "Show"}
+          {/* Password */}
+          <label htmlFor="password">Password</label>
+
+          <div className="password-wrapper">
+            <input
+              id="password"
+              type={showPassword ? "text" : "password"}
+              placeholder="Create a password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              minLength={8}
+              required
+            />
+
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => setShowPassword(!showPassword)}
+              aria-label={
+                showPassword ? "Hide password" : "Show password"
+              }
+              aria-pressed={showPassword}
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
+          </div>
+
+          {/* Confirm Password */}
+          <label htmlFor="confirmPassword">
+            Confirm password
+          </label>
+
+          <div className="password-wrapper">
+            <input
+              id="confirmPassword"
+              type={showConfirmPassword ? "text" : "password"}
+              placeholder="Repeat password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              minLength={8}
+              required
+            />
+
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() =>
+                setShowConfirmPassword(!showConfirmPassword)
+              }
+              aria-label={
+                showConfirmPassword
+                  ? "Hide confirm password"
+                  : "Show confirm password"
+              }
+              aria-pressed={showConfirmPassword}
+            >
+              {showConfirmPassword ? "Hide" : "Show"}
+            </button>
+          </div>
+
+          {/* Error message */}
+          {error && (
+            <p role="alert" style={{ color: "#c0392b" }}>
+              {error}
+            </p>
+          )}
+
+          {/* Submit button */}
+          <button type="submit" disabled={loading}>
+            {loading ? "Creating account..." : "Create Account"}
           </button>
-        </div>
+        </form>
 
-        {/* Error message */}
-        {error && (
-          <p role="alert" style={{ color: "#c0392b" }}>
-            {error}
-          </p>
-        )}
-
-        {/* Submit button */}
-        <button type="submit" disabled={loading}>
-          {loading ? "Creating account..." : "Create Account"}
-        </button>
-      </form>
-
-      <p>
-        Already have an account?{" "}
-        <Link to="/login">Log In</Link>
-      </p>
-    </div>
+        <p>
+          Already have an account?{" "}
+          <Link to="/login">Log In</Link>
+        </p>
+      </div>
+    </AuthLayout>
   );
 }
 

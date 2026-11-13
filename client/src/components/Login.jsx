@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import AuthLayout from "./AuthLayout";
 import "./Register.css";
 
 function Login() {
@@ -58,66 +59,68 @@ function Login() {
   };
 
   return (
-    <div className="register-container">
-      <h1>Welcome back!</h1>
-      <p>Log in to continue making memories.</p>
+    <AuthLayout>
+      <div className="register-container">
+        <h1>Welcome back!</h1>
+        <p>Log in to continue making memories.</p>
 
-      <form onSubmit={handleSubmit}>
-        {/* Email */}
-        <label htmlFor="login-email">Email address</label>
-        <input
-          id="login-email"
-          type="email"
-          placeholder="you@example.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-
-        {/* Password */}
-        <label htmlFor="login-password">Password</label>
-
-        <div className="password-wrapper">
+        <form onSubmit={handleSubmit}>
+          {/* Email */}
+          <label htmlFor="login-email">Email address</label>
           <input
-            id="login-password"
-            type={showPassword ? "text" : "password"}
-            placeholder="Enter your password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            id="login-email"
+            type="email"
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
 
-          <button
-            type="button"
-            className="password-toggle"
-            onClick={() => setShowPassword(!showPassword)}
-            aria-label={
-              showPassword ? "Hide password" : "Show password"
-            }
-            aria-pressed={showPassword}
-          >
-            {showPassword ? "Hide" : "Show"}
+          {/* Password */}
+          <label htmlFor="login-password">Password</label>
+
+          <div className="password-wrapper">
+            <input
+              id="login-password"
+              type={showPassword ? "text" : "password"}
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => setShowPassword(!showPassword)}
+              aria-label={
+                showPassword ? "Hide password" : "Show password"
+              }
+              aria-pressed={showPassword}
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
+          </div>
+
+          {/* Error message */}
+          {error && (
+            <p role="alert" style={{ color: "#c0392b" }}>
+              {error}
+            </p>
+          )}
+
+          {/* Submit button */}
+          <button type="submit" disabled={loading}>
+            {loading ? "Logging in..." : "Log In"}
           </button>
-        </div>
+        </form>
 
-        {/* Error message */}
-        {error && (
-          <p role="alert" style={{ color: "#c0392b" }}>
-            {error}
-          </p>
-        )}
-
-        {/* Submit button */}
-        <button type="submit" disabled={loading}>
-          {loading ? "Logging in..." : "Log In"}
-        </button>
-      </form>
-
-      <p>
-        Don't have an account?{" "}
-        <Link to="/register">Sign Up</Link>
-      </p>
-    </div>
+        <p>
+          Don't have an account?{" "}
+          <Link to="/register">Sign Up</Link>
+        </p>
+      </div>
+    </AuthLayout>
   );
 }
 
