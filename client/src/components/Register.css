@@ -73,6 +73,37 @@
   text-decoration: underline;
 }
 
+/* Password visibility toggle */
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-wrapper input {
+  width: 100%;
+  box-sizing: border-box;
+  padding-right: 75px;
+}
+
+.register-container .password-toggle {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0;
+  padding: 6px 8px;
+  background: transparent;
+  color: #c4773f;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.register-container .password-toggle:hover {
+  background: transparent;
+  color: #4b352b;
+}
+
 @media (max-width: 480px) {
   .register-container {
     width: calc(100% - 32px);

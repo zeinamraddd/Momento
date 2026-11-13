@@ -8,6 +8,7 @@ function Login() {
   // Form fields
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   // Error and loading states
   const [error, setError] = useState("");
@@ -75,14 +76,29 @@ function Login() {
 
         {/* Password */}
         <label htmlFor="login-password">Password</label>
-        <input
-          id="login-password"
-          type="password"
-          placeholder="Enter your password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+
+        <div className="password-wrapper">
+          <input
+            id="login-password"
+            type={showPassword ? "text" : "password"}
+            placeholder="Enter your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+
+          <button
+            type="button"
+            className="password-toggle"
+            onClick={() => setShowPassword(!showPassword)}
+            aria-label={
+              showPassword ? "Hide password" : "Show password"
+            }
+            aria-pressed={showPassword}
+          >
+            {showPassword ? "Hide" : "Show"}
+          </button>
+        </div>
 
         {/* Error message */}
         {error && (
