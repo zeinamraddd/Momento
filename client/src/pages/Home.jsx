@@ -9,27 +9,6 @@ import "./Home.css";
 const API_URL =
   import.meta.env.VITE_API_URL || "http://localhost:3000";
 
-// ==========================================
-// TEMPORARY BUCKET LIST
-// ==========================================
-
-const sampleWishes = [
-  {
-    id: 1,
-    text: "Watch the sunrise",
-    completed: false,
-  },
-  {
-    id: 2,
-    text: "Go camping",
-    completed: false,
-  },
-  {
-    id: 3,
-    text: "Take a road trip",
-    completed: false,
-  },
-];
 
 // ==========================================
 // HOME COMPONENT
@@ -40,8 +19,28 @@ function Home({space}) {
   // Get the currently selected theme
   const { theme } = useTheme();
 
-  // Store bucket-list items
-  const [wishes, setWishes] = useState(sampleWishes);
+  // ==========================================
+// BUCKET LIST STATE
+// ==========================================
+
+    // Wishes retrieved from MongoDB
+    const [wishes, setWishes] = useState([]);
+
+    // Loading state
+    const [wishesLoading, setWishesLoading] = useState(true);
+
+    // Track which wish is being checked or unchecked
+    const [wishTogglingId, setWishTogglingId] = useState(null);
+
+      // Track which wish is being deleted
+    const [wishDeletingId, setWishDeletingId] = useState(null);
+
+
+    // Error messages
+    const [wishesError, setWishesError] = useState("");
+
+  // Prevent multiple submissions while saving
+  const [wishSaving, setWishSaving] = useState(false);
 
   // State for creating and editing bucket-list wishes
   const [showWishForm, setShowWishForm] = useState(false);
@@ -132,17 +131,167 @@ useEffect(() => {
 
     }, [space?.id]);
 
+    // ==========================================
+// LOAD BUCKET LIST FROM MONGODB
+// ==========================================
+
+useEffect(() => {
+
+  // If no space is selected, display no wishes
+  if (!space?.id) {
+    setWishes([]);
+    setWishesLoading(false);
+    return;
+  }
+
+  const controller = new AbortController();
+
+  const loadWishes = async () => {
+
+    // Start loading
+    setWishesLoading(true);
+    setWishesError("");
+    setWishes([]);
+
+    try {
+
+      // Request bucket-list items for this space
+      const response = await fetch(
+        `${API_URL}/api/spaces/${encodeURIComponent(space.id)}/bucket-items`,
+        {
+          credentials: "include",
+          signal: controller.signal,
+        }
+      );
+
+      const data = await response.json();
+
+      // Handle server errors
+      if (!response.ok) {
+        throw new Error(
+          data.message || "Could not load bucket list"
+        );
+      }
+
+      // Display MongoDB wishes
+      if (!controller.signal.aborted) {
+        setWishes(data.items || []);
+      }
+
+    } catch (error) {
+
+      if (
+        error.name !== "AbortError" &&
+        !controller.signal.aborted
+      ) {
+        console.error("Load bucket list error:", error);
+
+        setWishesError(
+                error.message || "Could not load bucket list"
+              );
+            }
+
+          } finally {
+
+            if (!controller.signal.aborted) {
+              setWishesLoading(false);
+            }
+
+          }
+        };
+
+        loadWishes();
+
+        // Cancel outdated requests when switching spaces
+        return () => controller.abort();
+
+      }, [space?.id]);
 
 
-  const toggleWish = (id) => {
-    setWishes((previousWishes) =>
-      previousWishes.map((wish) =>
-        wish.id === id
-          ? { ...wish, completed: !wish.completed }
-          : wish
-      )
+      // ==========================================
+// CHECK OR UNCHECK A WISH IN MONGODB
+// ==========================================
+
+const toggleWish = async (id) => {
+
+  // Find the wish being updated
+  const wish = wishes.find((item) => item.id === id);
+
+  // Validate the wish and selected space
+  if (
+    !wish ||
+    !space?.id ||
+    wishesLoading ||
+    wishTogglingId !== null
+  ) {
+    return;
+  }
+
+  // New completion status
+  const newCompleted = !wish.completed;
+
+  setWishTogglingId(id);
+  setWishesError("");
+
+  try {
+
+    // Send PATCH request to Express
+    const response = await fetch(
+      `${API_URL}/api/spaces/${encodeURIComponent(space.id)}/bucket-items/${encodeURIComponent(id)}`,
+      {
+        method: "PATCH",
+
+        credentials: "include",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          completed: newCompleted,
+        }),
+      }
     );
-  };
+
+    const data = await response.json().catch(() => ({}));
+
+    // Handle backend errors
+    if (!response.ok) {
+      throw new Error(
+        data.message || "Could not update wish"
+      );
+    }
+
+    if (!data.item) {
+      throw new Error(
+        "Server did not return the updated wish"
+      );
+    }
+
+    // Update React after MongoDB confirms the change
+        setWishes((previousWishes) =>
+          previousWishes.map((item) =>
+            item.id === id
+              ? data.item
+              : item
+          )
+        );
+
+      } catch (error) {
+
+        console.error("Toggle wish error:", error);
+
+        setWishesError(
+          error.message || "Could not update wish"
+        );
+
+      } finally {
+
+        setWishTogglingId(null);
+
+      }
+      };
+        
 
   // Reset the wish form after saving or cancelling
   const closeWishForm = () => {
@@ -163,35 +312,176 @@ useEffect(() => {
     setShowWishForm(true);
   };
 
-  const saveWish = (event) => {
+    // ==========================================
+// ADD OR EDIT A BUCKET LIST ITEM IN MONGODB
+// ==========================================
+
+  const saveWish = async (event) => {
     event.preventDefault();
 
+    // Remove unnecessary spaces
     const text = wishText.trim();
-    if (!text) return;
 
-    if (editingWishId !== null) {
-      setWishes((previousWishes) =>
-        previousWishes.map((wish) =>
-          wish.id === editingWishId ? { ...wish, text } : wish
-        )
-      );
-    } else {
-      setWishes((previousWishes) => [
-        ...previousWishes,
-        { id: crypto.randomUUID(), text, completed: false },
-      ]);
+    // Validate input and selected space
+    if (!text || !space?.id || wishSaving || wishesLoading) {
+      return;
     }
 
-    closeWishForm();
+    // Start saving
+    setWishSaving(true);
+    setWishesError("");
+
+    // Check if we're creating or editing a wish
+    const isEditing = editingWishId !== null;
+
+    // Base API endpoint
+    const baseURL =
+      `${API_URL}/api/spaces/${encodeURIComponent(space.id)}/bucket-items`;
+
+    // Editing requires the wish ID
+    const url = isEditing
+      ? `${baseURL}/${encodeURIComponent(editingWishId)}`
+      : baseURL;
+
+    try {
+
+      // Send request to Express
+      const response = await fetch(url, {
+        method: isEditing ? "PATCH" : "POST",
+
+        credentials: "include",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          text,
+        }),
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      // Handle backend errors
+      if (!response.ok) {
+        throw new Error(
+          data.message || "Could not save wish"
+        );
+      }
+
+      if (!data.item) {
+        throw new Error(
+          "Server did not return the saved wish"
+        );
+      }
+
+      // ======================================
+      // UPDATE REACT STATE
+      // ======================================
+
+      if (isEditing) {
+
+        // Replace the edited wish
+        setWishes((previousWishes) =>
+          previousWishes.map((wish) =>
+            wish.id === editingWishId
+              ? data.item
+              : wish
+          )
+        );
+
+      } else {
+
+        // Add the newly created wish
+        setWishes((previousWishes) => [
+          ...previousWishes,
+          data.item,
+        ]);
+
+      }
+
+      // Close the form after successful saving
+      closeWishForm();
+
+    } catch (error) {
+
+      console.error("Save wish error:", error);
+
+      setWishesError(
+        error.message || "Could not save wish"
+      );
+
+    } finally {
+
+      setWishSaving(false);
+
+    }
   };
 
-  const deleteWish = (id) => {
+  // ==========================================
+// DELETE A BUCKET LIST ITEM FROM MONGODB
+// ==========================================
+
+const deleteWish = async (id) => {
+
+  // Validate the selected wish and space
+  if (
+    !space?.id ||
+    !id ||
+    wishDeletingId !== null ||
+    wishTogglingId === id
+  ) {
+    return;
+  }
+
+  // Start deleting
+  setWishDeletingId(id);
+  setWishesError("");
+
+  try {
+
+    // Send DELETE request to Express
+    const response = await fetch(
+      `${API_URL}/api/spaces/${encodeURIComponent(space.id)}/bucket-items/${encodeURIComponent(id)}`,
+      {
+        method: "DELETE",
+        credentials: "include",
+      }
+    );
+
+    const data = await response.json().catch(() => ({}));
+
+    // Handle backend errors
+    if (!response.ok) {
+      throw new Error(
+        data.message || "Could not delete wish"
+      );
+    }
+
+    // Remove the wish from React after MongoDB confirms deletion
     setWishes((previousWishes) =>
       previousWishes.filter((wish) => wish.id !== id)
     );
 
-    if (editingWishId === id) closeWishForm();
-  };
+    // Close the editing form if this wish was being edited
+    if (editingWishId === id) {
+      closeWishForm();
+    }
+
+  } catch (error) {
+
+    console.error("Delete wish error:", error);
+
+    setWishesError(
+      error.message || "Could not delete wish"
+    );
+
+  } finally {
+
+    setWishDeletingId(null);
+
+  }
+};
 
   // ==========================================
 // ADD OR EDIT A STICKY NOTE IN MONGODB
@@ -555,17 +845,37 @@ const editNote = (note) => {
 
             <h3>Our bucket list</h3>
 
+            {/* Loading indicator */}
+              {wishesLoading && (
+                <p role="status">Loading bucket list...</p>
+              )}
+
+              {/* Error message */}
+              {wishesError && (
+                <p role="alert" style={{ color: "#c0392b" }}>
+                  {wishesError}
+                </p>
+              )}
+
+              {/* Empty list message */}
+              {!wishesLoading && !wishesError && wishes.length === 0 && (
+                <p>No wishes yet. Let's make some memories! ♡</p>
+              )}
+
             {/* Bucket list items */}
             <div className="momento-bucket-list__items">
 
               {wishes.map((wish) => (
                 <div className="momento-bucket-list__row" key={wish.id}>
                   <label className="momento-bucket-list__item">
+                   
                     <input
                       type="checkbox"
                       checked={wish.completed}
                       onChange={() => toggleWish(wish.id)}
+                      disabled={wishesLoading || wishTogglingId !== null}
                     />
+
                     <span className={wish.completed ? "completed" : ""}>
                       {wish.text}
                     </span>
@@ -580,9 +890,13 @@ const editNote = (note) => {
                     >
                       ✎
                     </button>
-                    <button
+                   <button
                       type="button"
                       onClick={() => deleteWish(wish.id)}
+                      disabled={
+                        wishDeletingId !== null ||
+                        wishTogglingId === wish.id
+                      }
                       aria-label={`Delete ${wish.text}`}
                       title="Delete wish"
                     >
@@ -611,9 +925,16 @@ const editNote = (note) => {
                   autoFocus
                 />
                 <div className="momento-bucket-list__form-actions">
-                  <button type="submit">
-                    {editingWishId === null ? "Add wish" : "Save changes"}
-                  </button>
+                 <button
+                        type="submit"
+                        disabled={wishSaving || wishesLoading}
+                      >
+                        {wishSaving
+                          ? "Saving..."
+                          : editingWishId === null
+                            ? "Add wish"
+                            : "Save changes"}
+              </button>
                   <button type="button" onClick={closeWishForm}>
                     Cancel
                   </button>
