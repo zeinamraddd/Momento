@@ -1,0 +1,192 @@
+/* ==========================================
+   MOMENTO - GLOBAL THEME SYSTEM
+========================================== */
+
+/* Shared styling for all themes */
+
+.momento-app {
+  min-height: 100vh;
+  width: 100%;
+
+  /* Theme background */
+  background-color: var(--m-bg);
+
+  background-image: var(--m-background);
+
+  background-size: var(--m-background-size);
+
+  background-repeat: repeat;
+
+  /* Theme text */
+  color: var(--m-text);
+
+  /* Smooth theme transitions */
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+
+/* ==========================================
+   THEME 1 - ORIGINAL SCRAPBOOK
+========================================== */
+
+.momento-app[data-theme="original"] {
+
+  /* Background */
+
+  --m-bg: #151311;
+
+  --m-background:
+    url("../assets/momento/black-cream/theme-background.png");
+
+  --m-background-size: 700px 700px;
+
+
+  /* Text */
+
+  --m-text: #f7eed9;
+
+  --m-card-text: #29231e;
+
+  --m-muted: #8c8174;
+
+
+  /* Colors */
+
+  --m-surface: #f7eed9;
+
+  --m-accent: #ef6538;
+
+  --m-border: #e3d8c5;
+
+
+  /* Sidebar */
+
+  --m-sidebar: #12110f;
+
+  --m-sidebar-text: #f7eed9;
+
+
+  /* Scrapbook elements */
+
+  --m-note: #f8e7aa;
+
+  --m-button: #ef6538;
+
+  --m-button-text: #ffffff;
+
+  --m-nav-active: #f7eed9;
+
+  --m-shadow: rgba(0, 0, 0, 0.35);
+}
+
+
+/* ==========================================
+   THEME 2 - BLUE NOTEBOOK
+========================================== */
+
+.momento-app[data-theme="blue"] {
+
+  /* Background */
+
+  --m-bg: #faf5e8;
+
+  --m-background:
+    url("../assets/momento/blue-notebook/theme-background.png");
+
+  --m-background-size: 480px 480px;
+
+
+  /* Text */
+
+  --m-text: #203773;
+
+  --m-card-text: #203773;
+
+  --m-muted: #7185a7;
+
+
+  /* Colors */
+
+  --m-surface: #fffaf0;
+
+  --m-accent: #355fa9;
+
+  --m-border: #a5bce0;
+
+
+  /* Sidebar */
+
+  --m-sidebar: #152765;
+
+  --m-sidebar-text: #fff9e9;
+
+
+  /* Scrapbook elements */
+
+  --m-note: #fff0b5;
+
+  --m-button: #355fa9;
+
+  --m-button-text: #ffffff;
+
+  --m-nav-active: #fff8e8;
+
+  --m-shadow: rgba(32, 55, 115, 0.2);
+}
+
+
+/* ==========================================
+   THEME 3 - GREEN GINGHAM
+========================================== */
+
+.momento-app[data-theme="green"] {
+
+  /* Background */
+
+  --m-bg: #e5efdf;
+
+  --m-background:
+    url("../assets/momento/green-gingham/theme-background.png");
+
+  --m-background-size: 480px 480px;
+
+
+  /* Text */
+
+  --m-text: #255a44;
+
+  --m-card-text: #255a44;
+
+  --m-muted: #778b76;
+
+
+  /* Colors */
+
+  --m-surface: #fffbee;
+
+  --m-accent: #f5bd35;
+
+  --m-border: #a5c5aa;
+
+
+  /* Sidebar */
+
+  --m-sidebar: #23664d;
+
+  --m-sidebar-text: #fff8e8;
+
+
+  /* Scrapbook elements */
+
+  --m-note: #f8e5a4;
+
+  --m-button: #23664d;
+
+  --m-button-text: #ffffff;
+
+  --m-nav-active: #fff8e8;
+
+  --m-shadow: rgba(35, 102, 77, 0.2);
+}
