@@ -1,31 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTheme } from "../themes/ThemeContext";
 import CalendarPreview from "../components/home/CalendarPreview";
 import AlbumPreview from "../components/home/AlbumPreview";
 
 import "./Home.css";
 
-// ==========================================
-// TEMPORARY SAMPLE NOTES
-// ==========================================
-
-const sampleNotes = [
-  {
-    id: 1,
-    text: "Good luck on your exam! ♡",
-    author: "Maya",
-  },
-  {
-    id: 2,
-    text: "Beach Saturday?",
-    author: "Alex",
-  },
-  {
-    id: 3,
-    text: "Who has my charger?",
-    author: "Jordan",
-  },
-];
+// Backend API
+const API_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 // ==========================================
 // TEMPORARY BUCKET LIST
@@ -53,7 +35,7 @@ const sampleWishes = [
 // HOME COMPONENT
 // ==========================================
 
-function Home() {
+function Home({space}) {
 
   // Get the currently selected theme
   const { theme } = useTheme();
@@ -68,20 +50,90 @@ function Home() {
 // ==========================================
 // STICKY NOTES STATE
 // ==========================================
+    // Notes retrieved from MongoDB
+    const [notes, setNotes] = useState([]);
 
-// Stores all notes displayed on the board
-const [notes, setNotes] = useState(sampleNotes);
+    // Loading state
+    const [notesLoading, setNotesLoading] = useState(true);
 
-// Controls whether the note form is visible
-const [showNoteForm, setShowNoteForm] = useState(false);
+    // Error messages
+    const [notesError, setNotesError] = useState("");
 
-// Stores the message being written
-const [noteText, setNoteText] = useState("");
+    // Prevent multiple submissions
+    const [noteSaving, setNoteSaving] = useState(false);
 
-// Stores the ID of the note being edited
-// null means we are creating a new note
-const [editingNoteId, setEditingNoteId] = useState(null);
-  // Check or uncheck a bucket-list item
+      // Controls whether the note form is visible
+      const [showNoteForm, setShowNoteForm] = useState(false);
+
+      // Stores the message being written
+      const [noteText, setNoteText] = useState("");
+
+      // Stores the ID of the note being edited
+      // null means we are creating a new note
+      const [editingNoteId, setEditingNoteId] = useState(null);
+        // Check or uncheck a bucket-list item
+
+  // ==========================================
+// LOAD STICKY NOTES FROM MONGODB
+// ==========================================
+
+useEffect(() => {
+  // If no space is selected, display no notes.
+  if (!space?.id) {
+    setNotes([]);
+    setNotesLoading(false);
+    return;
+  }
+
+  const controller = new AbortController();
+
+  const loadNotes = async () => {
+    setNotesLoading(true);
+    setNotesError("");
+    setNotes([]);
+
+    try {
+      // Request notes belonging to the selected space
+      const response = await fetch(
+        `${API_URL}/api/spaces/${encodeURIComponent(space.id)}/notes`,
+        {
+          credentials: "include",
+          signal: controller.signal,
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Could not load notes");
+      }
+
+      // Display notes retrieved from MongoDB
+      if (!controller.signal.aborted) {
+        setNotes(data.notes || []);
+      }
+
+    } catch (error) {
+      if (error.name !== "AbortError" && !controller.signal.aborted) {
+        setNotesError(error.message || "Could not load notes");
+      }
+
+    } finally {
+      if (!controller.signal.aborted) {
+            setNotesLoading(false);
+          }
+        }
+      };
+
+      loadNotes();
+
+      // Cancel outdated requests when switching spaces
+      return () => controller.abort();
+
+    }, [space?.id]);
+
+
+
   const toggleWish = (id) => {
     setWishes((previousWishes) =>
       previousWishes.map((wish) =>
@@ -141,54 +193,106 @@ const [editingNoteId, setEditingNoteId] = useState(null);
     if (editingWishId === id) closeWishForm();
   };
 
-    // ==========================================
-// ADD OR EDIT A STICKY NOTE
+  // ==========================================
+// ADD OR EDIT A STICKY NOTE IN MONGODB
 // ==========================================
 
-const saveNote = (event) => {
-
-  // Prevent the page from refreshing
+const saveNote = async (event) => {
   event.preventDefault();
 
   // Remove unnecessary spaces
   const text = noteText.trim();
 
-  // Do not allow empty notes
-  if (!text) return;
-
-  // If editing an existing note
-  if (editingNoteId !== null) {
-
-    setNotes((previousNotes) =>
-      previousNotes.map((note) =>
-        note.id === editingNoteId
-          ? { ...note, text }
-          : note
-      )
-    );
-
-  } else {
-
-    // Create a new note
-    const newNote = {
-      id: crypto.randomUUID(),
-      text: text,
-      author: "You",
-    };
-
-    // Add the new note to the board
-    setNotes((previousNotes) => [
-      ...previousNotes,
-      newNote
-    ]);
+  // Validate input and selected space
+  if (!text || !space?.id || noteSaving || notesLoading) {
+    return;
   }
 
-  // Reset everything
-  setNoteText("");
-  setEditingNoteId(null);
-  setShowNoteForm(false);
-};
+  setNoteSaving(true);
+  setNotesError("");
 
+  // Determine whether we're creating or editing
+  const isEditing = editingNoteId !== null;
+
+  // Base endpoint for this space's notes
+  const baseURL =
+    `${API_URL}/api/spaces/${encodeURIComponent(space.id)}/notes`;
+
+  // Editing requires the note ID
+  const url = isEditing
+    ? `${baseURL}/${encodeURIComponent(editingNoteId)}`
+    : baseURL;
+
+  try {
+    // Send the request to Express
+    const response = await fetch(url, {
+      method: isEditing ? "PATCH" : "POST",
+
+      credentials: "include",
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        text,
+      }),
+    });
+
+    const data = await response.json().catch(() => ({}));
+
+    // Handle backend errors
+    if (!response.ok) {
+      throw new Error(
+        data.message || "Could not save note"
+      );
+    }
+
+    if (!data.note) {
+      throw new Error("Server did not return the saved note");
+    }
+
+    // ======================================
+    // UPDATE REACT STATE
+    // ======================================
+
+    if (isEditing) {
+      // Replace the edited note
+      setNotes((previousNotes) =>
+        previousNotes.map((note) =>
+          note.id === editingNoteId
+            ? data.note
+            : note
+        )
+      );
+
+    } else {
+      // Add the newly saved note to the board
+      setNotes((previousNotes) => [
+        data.note,
+        ...previousNotes,
+      ]);
+    }
+
+    // ======================================
+    // RESET FORM AFTER SUCCESS
+    // ======================================
+
+    setNoteText("");
+    setEditingNoteId(null);
+    setShowNoteForm(false);
+
+    } catch (error) {
+      console.error("Save note error:", error);
+
+      setNotesError(
+        error.message || "Could not save note"
+      );
+
+    } finally {
+      setNoteSaving(false);
+    }
+  };
 
 // ==========================================
 // START EDITING A NOTE
@@ -211,13 +315,58 @@ const editNote = (note) => {
 // DELETE A NOTE
 // ==========================================
 
-const deleteNote = (id) => {
+// ==========================================
+// DELETE A STICKY NOTE FROM MONGODB
+// ==========================================
 
-  setNotes((previousNotes) =>
-    previousNotes.filter((note) => note.id !== id)
-  );
+    const deleteNote = async (id) => {
 
-};
+      // Make sure a space and note are selected
+      if (!space?.id || !id) return;
+
+      // Clear previous errors
+      setNotesError("");
+
+      try {
+
+        // Send DELETE request to Express
+        const response = await fetch(
+          `${API_URL}/api/spaces/${encodeURIComponent(space.id)}/notes/${encodeURIComponent(id)}`,
+          {
+            method: "DELETE",
+            credentials: "include",
+          }
+        );
+
+        const data = await response.json().catch(() => ({}));
+
+        // Handle backend errors
+        if (!response.ok) {
+          throw new Error(data.message || "Could not delete note");
+        }
+
+        // Remove the note from React only after MongoDB deletion succeeds
+        setNotes((previousNotes) =>
+          previousNotes.filter((note) => note.id !== id)
+        );
+
+        // Close the editing form if this note was being edited
+        if (editingNoteId === id) {
+          setEditingNoteId(null);
+          setNoteText("");
+          setShowNoteForm(false);
+        }
+
+      } catch (error) {
+
+        console.error("Delete note error:", error);
+
+        setNotesError(
+          error.message || "Could not delete note"
+        );
+
+      }
+    };
 
   return (
     <div className={`momento-home momento-home--${theme}`}>
@@ -230,7 +379,7 @@ const deleteNote = (id) => {
 
         {/* Group name */}
         <div className="momento-home__title">
-          <h1>The usual suspects</h1>
+          <h1>{space?.name || "Our scrapbook"}</h1>
         </div>
 
         {/* Group member avatars */}
@@ -312,10 +461,15 @@ const deleteNote = (id) => {
 
           <div className="momento-note-form__actions">
 
-            <button type="submit">
-              {editingNoteId !== null
-                ? "Save changes"
-                : "Post note"}
+            <button
+              type="submit"
+              disabled={noteSaving || notesLoading}
+            >
+              {noteSaving
+                ? "Saving..."
+                : editingNoteId !== null
+                  ? "Save changes"
+                  : "Post note"}
             </button>
 
             <button
@@ -339,6 +493,17 @@ const deleteNote = (id) => {
           {/* ==================================
               STICKY NOTES
           ================================== */}
+                      {/* Loading indicator */}
+            {notesLoading && (
+              <p role="status">Loading notes...</p>
+            )}
+
+            {/* Error message */}
+            {notesError && (
+              <p role="alert" style={{ color: "#c0392b" }}>
+                {notesError}
+              </p>
+            )}
 
           <div className="momento-board__notes">
 

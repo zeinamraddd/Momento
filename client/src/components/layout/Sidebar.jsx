@@ -73,7 +73,7 @@ function NavIcon({ type }) {
   );
 }
 
-function Sidebar({ onLogout }) {
+function Sidebar({ onLogout , spaceId }) {
   // Access the selected theme
   const { theme, changeTheme } = useTheme();
 
@@ -96,9 +96,12 @@ function Sidebar({ onLogout }) {
       <nav className="momento-sidebar__nav" aria-label="Main navigation">
 
         <NavLink
-          to="/dashboard"
-          className="momento-sidebar__item momento-sidebar__item--home"
-        >
+            to={spaceId
+              ? `/dashboard?space=${encodeURIComponent(spaceId)}`
+              : "/spaces"
+            }
+            className="momento-sidebar__item momento-sidebar__item--home"
+          >
           <NavIcon type="home" />
           <span>HOME</span>
         </NavLink>
