@@ -9,6 +9,7 @@ import authRoutes from "./routes/authRoutes.js";
 import protectedRoutes from "./routes/protectedRoutes.js";
 import spaceRoutes from "./routes/spaceRoutes.js";
 import noteRoutes from "./routes/noteRoutes.js";
+import bucketRoutes from "./routes/bucketRoutes.js";
 // Import database connection
 import connectDB from "./config/db.js";
 
@@ -85,6 +86,9 @@ app.use("/api/spaces", noteRoutes);
 
 // Shared Spaces routes
 app.use("/api/spaces", spaceRoutes);
+
+//bucket list routes
+app.use("/api/spaces", bucketRoutes);
 
 // ==========================================
 // HEALTH CHECK
