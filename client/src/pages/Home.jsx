@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import { useTheme } from "../themes/ThemeContext";
 import CalendarPreview from "../components/home/CalendarPreview";
 import AlbumPreview from "../components/home/AlbumPreview";
@@ -61,7 +60,22 @@ function Home() {
 
   // Store bucket-list items
   const [wishes, setWishes] = useState(sampleWishes);
+// ==========================================
+// STICKY NOTES STATE
+// ==========================================
 
+// Stores all notes displayed on the board
+const [notes, setNotes] = useState(sampleNotes);
+
+// Controls whether the note form is visible
+const [showNoteForm, setShowNoteForm] = useState(false);
+
+// Stores the message being written
+const [noteText, setNoteText] = useState("");
+
+// Stores the ID of the note being edited
+// null means we are creating a new note
+const [editingNoteId, setEditingNoteId] = useState(null);
   // Check or uncheck a bucket-list item
   const toggleWish = (id) => {
     setWishes((previousWishes) =>
@@ -72,6 +86,84 @@ function Home() {
       )
     );
   };
+
+    // ==========================================
+// ADD OR EDIT A STICKY NOTE
+// ==========================================
+
+const saveNote = (event) => {
+
+  // Prevent the page from refreshing
+  event.preventDefault();
+
+  // Remove unnecessary spaces
+  const text = noteText.trim();
+
+  // Do not allow empty notes
+  if (!text) return;
+
+  // If editing an existing note
+  if (editingNoteId !== null) {
+
+    setNotes((previousNotes) =>
+      previousNotes.map((note) =>
+        note.id === editingNoteId
+          ? { ...note, text }
+          : note
+      )
+    );
+
+  } else {
+
+    // Create a new note
+    const newNote = {
+      id: crypto.randomUUID(),
+      text: text,
+      author: "You",
+    };
+
+    // Add the new note to the board
+    setNotes((previousNotes) => [
+      ...previousNotes,
+      newNote
+    ]);
+  }
+
+  // Reset everything
+  setNoteText("");
+  setEditingNoteId(null);
+  setShowNoteForm(false);
+};
+
+
+// ==========================================
+// START EDITING A NOTE
+// ==========================================
+
+const editNote = (note) => {
+
+  // Remember which note we are editing
+  setEditingNoteId(note.id);
+
+  // Put the existing message into the form
+  setNoteText(note.text);
+
+  // Open the form
+  setShowNoteForm(true);
+};
+
+
+// ==========================================
+// DELETE A NOTE
+// ==========================================
+
+const deleteNote = (id) => {
+
+  setNotes((previousNotes) =>
+    previousNotes.filter((note) => note.id !== id)
+  );
+
+};
 
   return (
     <div className={`momento-home momento-home--${theme}`}>
@@ -118,11 +210,14 @@ function Home() {
 
           <h2>THE BOARD</h2>
 
-          <button
+           <button
             type="button"
             className="momento-board__add-button"
-            disabled
-            title="Adding notes will be implemented next"
+            onClick={() => {
+              setEditingNoteId(null);
+              setNoteText("");
+              setShowNoteForm(true);
+            }}
           >
             + Add a note
           </button>
@@ -133,8 +228,59 @@ function Home() {
         {/* ==================================
             BOARD CONTENT
         ================================== */}
+          {/* ==================================
+                  ADD / EDIT NOTE FORM
+              ================================== */}
 
-        <div className="momento-board__content">
+      {showNoteForm && (
+
+        <form
+          className="momento-note-form"
+          onSubmit={saveNote}
+        >
+
+          <h3>
+            {editingNoteId !== null
+              ? "Edit your note"
+              : "Leave a little note ♡"}
+          </h3>
+
+          <textarea
+            value={noteText}
+            onChange={(event) =>
+              setNoteText(event.target.value)
+            }
+            placeholder="Write something for your friends..."
+            maxLength={240}
+            required
+            autoFocus
+          />
+
+          <div className="momento-note-form__actions">
+
+            <button type="submit">
+              {editingNoteId !== null
+                ? "Save changes"
+                : "Post note"}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setShowNoteForm(false);
+                setNoteText("");
+                setEditingNoteId(null);
+              }}
+            >
+              Cancel
+            </button>
+
+          </div>
+
+        </form>
+
+      )}
+       <div className="momento-board__content">
 
           {/* ==================================
               STICKY NOTES
@@ -142,18 +288,38 @@ function Home() {
 
           <div className="momento-board__notes">
 
-            {sampleNotes.map((note, index) => (
+            {notes.map((note, index) => (
 
               <article
-                key={note.id}
-                className={`momento-sticky-note momento-sticky-note--${index}`}
-              >
+                  key={note.id}
+                  className={`momento-sticky-note momento-sticky-note--${index % 3}`}
+                >
 
                 {/* Note message */}
                 <p>{note.text}</p>
 
                 {/* Note author */}
                 <span>- {note.author}</span>
+
+                {/* Note actions */}
+
+              <div className="momento-sticky-note__actions">
+
+                <button
+                  type="button"
+                  onClick={() => editNote(note)}
+                >
+                  Edit
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => deleteNote(note.id)}
+                >
+                  Delete
+                </button>
+
+              </div>
 
               </article>
 

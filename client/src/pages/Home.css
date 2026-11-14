@@ -1050,3 +1050,96 @@
 .momento-calendar__navigation button:hover {
   color: #f5c77e;
 }
+
+
+/* ==========================================
+   STICKY NOTE FORM
+========================================== */
+
+.momento-note-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  padding: 20px;
+  margin-bottom: 20px;
+
+  background: #fff9ed;
+  border-radius: 12px;
+
+  color: #302b35;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+}
+
+.momento-note-form h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.momento-note-form textarea {
+  width: 100%;
+  min-height: 100px;
+
+  padding: 12px;
+
+  border: 1px solid #d7c8b8;
+  border-radius: 8px;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.momento-note-form__actions {
+  display: flex;
+  gap: 10px;
+}
+
+.momento-note-form__actions button {
+  padding: 8px 16px;
+
+  border: none;
+  border-radius: 8px;
+
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.momento-note-form__actions button:first-child {
+  background: #edb5a6;
+  color: #302b35;
+}
+
+.momento-note-form__actions button:last-child {
+  background: #e8e1dc;
+  color: #302b35;
+}
+
+
+/* ==========================================
+   STICKY NOTE ACTIONS
+========================================== */
+
+.momento-sticky-note__actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.momento-sticky-note__actions button {
+  background: transparent;
+  border: none;
+
+  font-family: inherit;
+  font-size: 12px;
+
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.momento-sticky-note__actions button:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
