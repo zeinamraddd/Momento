@@ -1,0 +1,148 @@
+/* Extra calendar interactions. Existing calendar styling stays in Home.css. */
+
+.momento-calendar__add:not(:disabled) {
+  cursor: pointer;
+}
+
+.momento-calendar__form {
+  display: grid;
+  gap: 14px;
+  margin: 0 0 20px;
+  padding: 16px;
+  background: #fff9ed;
+  border: 1px solid #dbcbb7;
+  border-radius: 10px;
+  color: #302b35;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.momento-calendar__form h3 {
+  margin: 0;
+  font-family: "Segoe Print", cursive;
+  font-size: 18px;
+}
+
+.momento-calendar__form-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.momento-calendar__form-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+  font-family: "Segoe Print", cursive;
+  font-size: 12px;
+}
+
+.momento-calendar__form-fields input,
+.momento-calendar__form-fields select {
+  width: 100%;
+  min-width: 0;
+  padding: 9px;
+  border: 1px solid #cbbda8;
+  border-radius: 6px;
+  background: #fffdf8;
+  color: #292521;
+  font: 14px system-ui, sans-serif;
+  box-sizing: border-box;
+}
+
+.momento-calendar__form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.momento-calendar__form-actions button {
+  padding: 8px 13px;
+  border: 0;
+  border-radius: 6px;
+  font-family: "Segoe Print", cursive;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.momento-calendar__form-actions button:first-child {
+  background: #edb5a6;
+  color: #302b35;
+}
+
+.momento-calendar__form-actions button:nth-child(2) {
+  background: #e8e1dc;
+  color: #302b35;
+}
+
+.momento-calendar__form-actions button:last-child:not(:nth-child(2)) {
+  background: #f7d4d4;
+  color: #8a2634;
+}
+
+/* Events are buttons so a click can open the edit form. */
+.momento-calendar button.momento-calendar__event {
+  width: 100%;
+  border: 0;
+  border-radius: 3px;
+  text-align: left;
+  font-family: inherit;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+
+.momento-calendar button.momento-calendar__event:focus-visible {
+  outline: 2px solid #203773;
+  outline-offset: 2px;
+}
+
+.momento-calendar button.momento-calendar__event--pink {
+  background: #f1b8ca;
+  color: #292521;
+}
+
+.momento-calendar button.momento-calendar__event--blue {
+  background: #c9d9f4;
+  color: #203773;
+}
+
+.momento-calendar button.momento-calendar__event--orange {
+  background: #f7ce91;
+  color: #553a17;
+}
+
+.momento-calendar__event-time {
+  display: inline-block;
+  margin-right: 4px;
+  font-weight: 700;
+}
+
+.momento-app[data-theme="blue"] .momento-calendar__form {
+  background: #f5f8ff;
+  border-color: #9ab6df;
+}
+
+.momento-app[data-theme="blue"] .momento-calendar__form-actions button:first-child {
+  background: #c9d9f4;
+  color: #203773;
+}
+
+.momento-app[data-theme="green"] .momento-calendar__form {
+  background: #f7fff3;
+  border-color: #a5c5aa;
+}
+
+.momento-app[data-theme="green"] .momento-calendar__form-actions button:first-child {
+  background: #cfe7d3;
+  color: #255a44;
+}
+
+@media (max-width: 620px) {
+  .momento-calendar__form-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .momento-calendar__form {
+    padding: 12px;
+  }
+}
