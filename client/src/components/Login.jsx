@@ -46,8 +46,8 @@ function Login() {
         return;
       }
 
-      // Redirect to Dashboard after successful login
-      navigate("/dashboard", { replace: true });
+     // Redirect to Shared Spaces after successful login
+      navigate("/spaces", { replace: true });
 
     } catch (error) {
       console.error("Login error:", error);
