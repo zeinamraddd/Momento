@@ -434,6 +434,115 @@
   cursor: not-allowed;
 }
 
+/* Keep the checkbox and wish actions on the same line. */
+.momento-bucket-list__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.momento-bucket-list__row .momento-bucket-list__item {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.momento-bucket-list__row .momento-bucket-list__item input {
+  flex-shrink: 0;
+}
+
+.momento-bucket-list__actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 5px;
+}
+
+.momento-bucket-list__actions button {
+  width: 27px;
+  height: 27px;
+  padding: 0;
+  border: 1px solid #cbbda8;
+  border-radius: 6px;
+  background: rgba(255, 250, 240, 0.85);
+  color: #41372e;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.momento-bucket-list__actions button:hover,
+.momento-bucket-list__actions button:focus-visible {
+  background: #f4b4c7;
+}
+
+/* Small paper-style form, shared by all three themes. */
+.momento-bucket-list__form {
+  display: grid;
+  gap: 9px;
+  margin-top: 20px;
+  padding: 13px;
+  background: rgba(255, 250, 240, 0.94);
+  border: 1px solid #ddcbb3;
+  border-radius: 8px;
+}
+
+.momento-bucket-list__form label {
+  font-family: "Segoe Print", cursive;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.momento-bucket-list__form input {
+  width: 100%;
+  min-width: 0;
+  padding: 9px;
+  border: 1px solid #cbbda8;
+  border-radius: 6px;
+  background: #fffdf8;
+  color: #292521;
+  font-family: inherit;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.momento-bucket-list__form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.momento-bucket-list__form-actions button {
+  padding: 7px 11px;
+  border: 0;
+  border-radius: 5px;
+  font-family: "Segoe Print", cursive;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.momento-bucket-list__form-actions button:first-child {
+  background: #f4b4c7;
+  color: #292521;
+}
+
+.momento-bucket-list__form-actions button:last-child {
+  background: #e9dfce;
+  color: #292521;
+}
+
+.momento-app[data-theme="blue"]
+.momento-bucket-list__form-actions button:first-child {
+  background: #c9d9f4;
+  color: #203773;
+}
+
+.momento-app[data-theme="green"]
+.momento-bucket-list__form-actions button:first-child {
+  background: #cfe7d3;
+  color: #255a44;
+}
+
 
 /* ==========================================
    RESPONSIVE DESIGN

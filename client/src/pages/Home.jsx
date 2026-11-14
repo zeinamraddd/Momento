@@ -60,6 +60,11 @@ function Home() {
 
   // Store bucket-list items
   const [wishes, setWishes] = useState(sampleWishes);
+
+  // State for creating and editing bucket-list wishes
+  const [showWishForm, setShowWishForm] = useState(false);
+  const [wishText, setWishText] = useState("");
+  const [editingWishId, setEditingWishId] = useState(null);
 // ==========================================
 // STICKY NOTES STATE
 // ==========================================
@@ -85,6 +90,55 @@ const [editingNoteId, setEditingNoteId] = useState(null);
           : wish
       )
     );
+  };
+
+  // Reset the wish form after saving or cancelling
+  const closeWishForm = () => {
+    setWishText("");
+    setEditingWishId(null);
+    setShowWishForm(false);
+  };
+
+  const startAddingWish = () => {
+    setWishText("");
+    setEditingWishId(null);
+    setShowWishForm(true);
+  };
+
+  const startEditingWish = (wish) => {
+    setWishText(wish.text);
+    setEditingWishId(wish.id);
+    setShowWishForm(true);
+  };
+
+  const saveWish = (event) => {
+    event.preventDefault();
+
+    const text = wishText.trim();
+    if (!text) return;
+
+    if (editingWishId !== null) {
+      setWishes((previousWishes) =>
+        previousWishes.map((wish) =>
+          wish.id === editingWishId ? { ...wish, text } : wish
+        )
+      );
+    } else {
+      setWishes((previousWishes) => [
+        ...previousWishes,
+        { id: crypto.randomUUID(), text, completed: false },
+      ]);
+    }
+
+    closeWishForm();
+  };
+
+  const deleteWish = (id) => {
+    setWishes((previousWishes) =>
+      previousWishes.filter((wish) => wish.id !== id)
+    );
+
+    if (editingWishId === id) closeWishForm();
   };
 
     // ==========================================
@@ -340,41 +394,75 @@ const deleteNote = (id) => {
             <div className="momento-bucket-list__items">
 
               {wishes.map((wish) => (
+                <div className="momento-bucket-list__row" key={wish.id}>
+                  <label className="momento-bucket-list__item">
+                    <input
+                      type="checkbox"
+                      checked={wish.completed}
+                      onChange={() => toggleWish(wish.id)}
+                    />
+                    <span className={wish.completed ? "completed" : ""}>
+                      {wish.text}
+                    </span>
+                  </label>
 
-                <label
-                  key={wish.id}
-                  className="momento-bucket-list__item"
-                >
-
-                  <input
-                    type="checkbox"
-                    checked={wish.completed}
-                    onChange={() => toggleWish(wish.id)}
-                  />
-
-                  <span
-                    className={
-                      wish.completed ? "completed" : ""
-                    }
-                  >
-                    {wish.text}
-                  </span>
-
-                </label>
-
+                  <div className="momento-bucket-list__actions">
+                    <button
+                      type="button"
+                      onClick={() => startEditingWish(wish)}
+                      aria-label={`Edit ${wish.text}`}
+                      title="Edit wish"
+                    >
+                      ✎
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => deleteWish(wish.id)}
+                      aria-label={`Delete ${wish.text}`}
+                      title="Delete wish"
+                    >
+                      ×
+                    </button>
+                  </div>
+                </div>
               ))}
 
             </div>
 
-            {/* Add wish button */}
-            <button
-              type="button"
-              className="momento-bucket-list__add"
-              disabled
-              title="Adding wishes will be implemented next"
-            >
-              + Add a wish
-            </button>
+            {/* Add/edit form or the Add Wish button */}
+            {showWishForm ? (
+              <form className="momento-bucket-list__form" onSubmit={saveWish}>
+                <label htmlFor="momento-wish-text">
+                  {editingWishId === null ? "Add a new wish" : "Edit your wish"}
+                </label>
+                <input
+                  id="momento-wish-text"
+                  type="text"
+                  value={wishText}
+                  onChange={(event) => setWishText(event.target.value)}
+                  placeholder="What should we do together?"
+                  maxLength={120}
+                  required
+                  autoFocus
+                />
+                <div className="momento-bucket-list__form-actions">
+                  <button type="submit">
+                    {editingWishId === null ? "Add wish" : "Save changes"}
+                  </button>
+                  <button type="button" onClick={closeWishForm}>
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            ) : (
+              <button
+                type="button"
+                className="momento-bucket-list__add"
+                onClick={startAddingWish}
+              >
+                + Add a wish
+              </button>
+            )}
 
           </div>
 
