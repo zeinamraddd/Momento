@@ -111,6 +111,52 @@
   color: #553a17;
 }
 
+/* ==========================================
+   ADDITIONAL MEMBER COLORS
+   ========================================== */
+
+/* Pastel green */
+.momento-calendar button.momento-calendar__event--green {
+  background: #cbe9c5;
+  color: #26512e;
+}
+
+/* Light purple */
+.momento-calendar button.momento-calendar__event--purple {
+  background: #e4cff4;
+  color: #4f3565;
+}
+
+/* Butter yellow */
+.momento-calendar button.momento-calendar__event--yellow {
+  background: #fff1b5;
+  color: #694e15;
+}
+
+/* Soft turquoise */
+.momento-calendar button.momento-calendar__event--teal {
+  background: #b9e8e3;
+  color: #175459;
+}
+
+/* Warm coral */
+.momento-calendar button.momento-calendar__event--coral {
+  background: #f5c1b4;
+  color: #693425;
+}
+
+/* Periwinkle indigo */
+.momento-calendar button.momento-calendar__event--indigo {
+  background: #c9c9f3;
+  color: #333b73;
+}
+
+/* Muted sage green */
+.momento-calendar button.momento-calendar__event--sage {
+  background: #dbe6ca;
+  color: #43523b;
+}
+
 .momento-calendar__event-time {
   display: inline-block;
   margin-right: 4px;

@@ -964,7 +964,7 @@ const editNote = (note) => {
       <div className="momento-home__bottom">
 
         {/* Calendar preview */}
-        <CalendarPreview />
+        <CalendarPreview space={space} />
 
         {/* Shared albums preview */}
         <AlbumPreview />
