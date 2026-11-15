@@ -11,6 +11,8 @@ import spaceRoutes from "./routes/spaceRoutes.js";
 import noteRoutes from "./routes/noteRoutes.js";
 import bucketRoutes from "./routes/bucketRoutes.js";
 import eventRoutes from "./routes/eventRoutes.js";
+import albumRoutes from "./routes/albumRoutes.js";
+
 // Import database connection
 import connectDB from "./config/db.js";
 
@@ -88,10 +90,14 @@ app.use("/api/spaces", noteRoutes);
 // Shared Spaces routes
 app.use("/api/spaces", spaceRoutes);
 
-//bucket list routes
+// Bucket List routes
 app.use("/api/spaces", bucketRoutes);
 
+// Calendar events routes
 app.use("/api/spaces", eventRoutes);
+
+// Shared Albums and Photos routes
+app.use("/api/spaces", albumRoutes);
 
 // ==========================================
 // HEALTH CHECK

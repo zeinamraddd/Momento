@@ -1252,3 +1252,244 @@
   opacity: 1;
   text-decoration: underline;
 }
+
+/* Shared Albums preview link */
+
+.momento-albums-preview__button {
+  display: block;
+  box-sizing: border-box;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* ==========================================
+   SHARED ALBUMS - FINAL THEME DESIGN
+========================================== */
+
+.momento-albums {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8px 10px 35px;
+  box-sizing: border-box;
+}
+
+/* Group title */
+
+.momento-albums__top h1 {
+  font-family: "Segoe Print", cursive;
+  font-weight: bold;
+  border: none;
+  box-shadow: none;
+  padding: 15px 30px;
+}
+
+/* Album heading */
+
+.momento-albums__heading {
+  border-radius: 5px;
+  padding: 15px 22px;
+}
+
+.momento-albums__heading h2 {
+  font-family: "Segoe Print", cursive;
+  font-weight: bold;
+}
+
+.momento-albums__heading button {
+  min-width: 120px;
+  font-family: "Segoe Print", cursive;
+  box-shadow: 2px 3px 5px rgba(0,0,0,.2);
+}
+
+/* Polaroid album cards */
+
+.momento-albums__grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  max-width: 950px;
+}
+
+.momento-albums__card {
+  position: relative;
+  padding: 12px 12px 22px;
+  border-radius: 3px;
+  background: #fffaf0;
+  text-align: center;
+  font-family: "Segoe Print", cursive;
+}
+
+.momento-albums__art {
+  position: relative;
+  aspect-ratio: 1.25;
+  background: #e8dfd2;
+}
+
+.momento-albums__card strong {
+  margin-top: 6px;
+  font-size: 17px;
+}
+
+.momento-albums__card small {
+  font-size: 12px;
+}
+
+.momento-albums__create {
+  min-height: 250px;
+}
+
+/* Decorative tape */
+
+.momento-albums__card:not(.momento-albums__create)::before {
+  content: "";
+  position: absolute;
+  width: 75px;
+  height: 24px;
+  top: 3px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-7deg);
+  background-image: url("../assets/momento/shared/washi-tape-pink.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* BLUE NOTEBOOK */
+
+.momento-app[data-theme="blue"] .momento-albums__top h1 {
+  background: #c9d9f4;
+  color: #203773;
+  transform: rotate(-2deg);
+}
+
+.momento-app[data-theme="blue"] .momento-albums__heading {
+  background: #fffaf0;
+  border: 2px solid #c7d5e9;
+}
+
+.momento-app[data-theme="blue"] .momento-albums__heading h2,
+.momento-app[data-theme="blue"] .momento-albums__card strong {
+  color: #203773;
+}
+
+.momento-app[data-theme="blue"] .momento-albums__card {
+  border: 2px solid #d3d9df;
+  box-shadow: 4px 6px 9px #0003;
+}
+
+.momento-app[data-theme="blue"] .momento-albums__heading button:not(.momento-albums__secondary):not(.momento-albums__danger) {
+  background: #3266b0;
+  color: white;
+}
+
+.momento-app[data-theme="blue"] .momento-albums__create > span {
+  background: #c9d9f4;
+  color: #203773;
+}
+
+/* GREEN GINGHAM */
+
+.momento-app[data-theme="green"] .momento-albums__top h1 {
+  background: #eaf2df;
+  color: #255a44;
+  transform: rotate(-1deg);
+}
+
+.momento-app[data-theme="green"] .momento-albums__heading {
+  background: #fffbee;
+  border: 2px solid #a5c5aa;
+}
+
+.momento-app[data-theme="green"] .momento-albums__heading h2,
+.momento-app[data-theme="green"] .momento-albums__card strong {
+  color: #255a44;
+}
+
+.momento-app[data-theme="green"] .momento-albums__card {
+  background: #fffbee;
+  border: 2px solid #d0ddc8;
+  box-shadow: 4px 6px 9px #0003;
+}
+
+.momento-app[data-theme="green"] .momento-albums__heading button:not(.momento-albums__secondary):not(.momento-albums__danger) {
+  background: #23664d;
+  color: #fffbee;
+}
+
+.momento-app[data-theme="green"] .momento-albums__create > span {
+  background: #f1b8ca;
+  color: #255a44;
+}
+
+/* ORIGINAL BLACK & CREAM */
+
+.momento-app[data-theme="original"] .momento-albums__top h1 {
+  background: #f7eed9;
+  color: #211d18;
+  transform: rotate(-2deg);
+}
+
+.momento-app[data-theme="original"] .momento-albums__heading {
+  background: #f7eed9;
+  border: none;
+  border-radius: 0;
+  clip-path: polygon(
+    0 5%, 4% 0, 10% 4%, 18% 0,
+    30% 3%, 43% 0, 55% 4%, 70% 0,
+    82% 4%, 95% 0, 100% 5%,
+    100% 95%, 94% 100%, 80% 96%,
+    65% 100%, 50% 96%, 35% 100%,
+    20% 96%, 8% 100%, 0 95%
+  );
+}
+
+.momento-app[data-theme="original"] .momento-albums__heading h2,
+.momento-app[data-theme="original"] .momento-albums__card strong {
+  color: #211d18;
+}
+
+.momento-app[data-theme="original"] .momento-albums__card {
+  background: #f7eed9;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  clip-path: polygon(
+    0 2%, 8% 0, 17% 2%, 29% 0,
+    43% 2%, 57% 0, 72% 2%, 87% 0,
+    100% 2%, 100% 98%, 88% 100%,
+    74% 98%, 58% 100%, 42% 98%,
+    25% 100%, 12% 98%, 0 100%
+  );
+}
+
+.momento-app[data-theme="original"] .momento-albums__heading button:not(.momento-albums__secondary):not(.momento-albums__danger) {
+  background: #ef6538;
+  color: white;
+}
+
+.momento-app[data-theme="original"] .momento-albums__create > span {
+  background: #f1b8ca;
+  color: #211d18;
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+  .momento-albums__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .momento-albums__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .momento-albums__top,
+  .momento-albums__heading {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

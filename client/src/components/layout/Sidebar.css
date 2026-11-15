@@ -380,3 +380,17 @@
     padding: 20px 15px;
   }
 }
+
+/* ==========================================
+   ACTIVE NAVIGATION ITEM
+========================================== */
+
+.momento-sidebar__item--active {
+  font-weight: 900;
+  outline: 2px solid var(--m-nav-active);
+  outline-offset: 3px;
+}
+
+.momento-sidebar__item--active:hover {
+  transform: none;
+}

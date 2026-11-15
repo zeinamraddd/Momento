@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import Sidebar from "./layout/Sidebar";
 import Home from "../pages/Home";
+import Albums from "../pages/Albums";
 import { useTheme } from "../themes/ThemeContext";
 
 function ProtectedPage() {
@@ -27,6 +28,9 @@ function ProtectedPage() {
 
   // Get the selected space ID from the URL
   const spaceId = new URLSearchParams(location.search).get("space");
+
+  // Check which page should be displayed
+  const isAlbumsPage = location.pathname === "/albums";
 
   // ==========================================
   // VERIFY AUTHENTICATION AND SPACE
@@ -169,7 +173,7 @@ function ProtectedPage() {
   }
 
   // ==========================================
-  // MAIN DASHBOARD
+  // MAIN APPLICATION
   // ==========================================
 
   return (
@@ -184,10 +188,14 @@ function ProtectedPage() {
 
         {/* Main content */}
         <main className="momento-main">
-          <Home
-            user={user}
-            space={space}
-          />
+          {isAlbumsPage ? (
+            <Albums space={space} />
+          ) : (
+            <Home
+              user={user}
+              space={space}
+            />
+          )}
         </main>
 
       </div>
