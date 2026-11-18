@@ -12,6 +12,8 @@ import noteRoutes from "./routes/noteRoutes.js";
 import bucketRoutes from "./routes/bucketRoutes.js";
 import eventRoutes from "./routes/eventRoutes.js";
 import loreRoutes from "./routes/loreRoutes.js";
+import albumRoutes from "./routes/albumRoutes.js";
+import scrapbookRoutes from "./routes/scrapbookRoutes.js";
 // Import database connection
 import connectDB from "./config/db.js";
 
@@ -89,12 +91,16 @@ app.use("/api/spaces", noteRoutes);
 // Shared Spaces routes
 app.use("/api/spaces", spaceRoutes);
 
-//bucket list routes
+// Bucket List routes
 app.use("/api/spaces", bucketRoutes);
 
+// Calendar events routes
 app.use("/api/spaces", eventRoutes);
 
 app.use("/api/spaces", loreRoutes);
+// Shared Albums and Photos routes
+app.use("/api/spaces", albumRoutes);
+app.use("/api/spaces", scrapbookRoutes);
 // ==========================================
 // HEALTH CHECK
 // ==========================================

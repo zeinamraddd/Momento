@@ -4,6 +4,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "./layout/Sidebar";
 import Home from "../pages/Home";
 import Lore from "../pages/Lore";
+import Albums from "../pages/Albums";
+import ScrapbookEditor from "../pages/ScrapbookEditor";
 import { useTheme } from "../themes/ThemeContext";
 
 function ProtectedPage() {
@@ -28,6 +30,9 @@ function ProtectedPage() {
 
   // Get the selected space ID from the URL
   const spaceId = new URLSearchParams(location.search).get("space");
+
+  // Check which page should be displayed
+  const isAlbumsPage = location.pathname === "/albums";
 
   // ==========================================
   // VERIFY AUTHENTICATION AND SPACE
@@ -170,7 +175,7 @@ function ProtectedPage() {
   }
 
   // ==========================================
-  // MAIN DASHBOARD
+  // MAIN APPLICATION
   // ==========================================
 
   return (
@@ -184,13 +189,20 @@ function ProtectedPage() {
         />
 
         {/* Main content */}
-       <main className="momento-main">
-        {location.pathname === "/lore" ? (
-         <Lore user={user} space={space} />
-       ) : (
-         <Home user={user} space={space} />
-       )}
-       </main>
+        <main className="momento-main">
+          {location.pathname.startsWith("/albums/") ? (
+            <ScrapbookEditor space={space} />
+          ) : isAlbumsPage ? (
+            <Albums space={space} />
+          ) : location.pathname === "/lore" ? (
+            <Lore user={user} space={space} />
+          ) : (
+            <Home
+              user={user}
+              space={space}
+            />
+          )}
+        </main>
       </div>
     </div>
   );

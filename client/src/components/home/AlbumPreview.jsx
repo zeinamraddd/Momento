@@ -1,8 +1,14 @@
-import beachImage from "../../assets/momento/shared/illustration-beach.png";
+import { Link } from "react-router-dom";
 
+import beachImage from "../../assets/momento/shared/illustration-beach.png";
 import palmImage from "../../assets/momento/shared/illustration-palm.png";
 
-function AlbumPreview() {
+function AlbumPreview({ space }) {
+
+  // Keep the selected space when opening Shared Albums
+  const albumsPath = space?.id
+    ? `/albums?space=${encodeURIComponent(space.id)}`
+    : "/spaces";
 
   return (
     <section className="momento-albums-preview">
@@ -33,14 +39,13 @@ function AlbumPreview() {
 
       </div>
 
-      <button
-        type="button"
+      {/* Open Shared Albums */}
+      <Link
+        to={albumsPath}
         className="momento-albums-preview__button"
-        disabled
-        title="Shared Albums page coming soon"
       >
         Open our albums →
-      </button>
+      </Link>
 
     </section>
   );

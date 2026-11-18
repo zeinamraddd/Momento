@@ -967,7 +967,7 @@ const editNote = (note) => {
         <CalendarPreview space={space} />
 
         {/* Shared albums preview */}
-        <AlbumPreview />
+        <AlbumPreview space={space} />
 
       </div>
 

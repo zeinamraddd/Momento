@@ -1,0 +1,534 @@
+[
+  {
+    "category": "letters",
+    "name": "A",
+    "path": "letters/A.png",
+    "width": 246,
+    "height": 264
+  },
+  {
+    "category": "letters",
+    "name": "B",
+    "path": "letters/B.png",
+    "width": 210,
+    "height": 258
+  },
+  {
+    "category": "letters",
+    "name": "C",
+    "path": "letters/C.png",
+    "width": 220,
+    "height": 245
+  },
+  {
+    "category": "letters",
+    "name": "D",
+    "path": "letters/D.png",
+    "width": 218,
+    "height": 249
+  },
+  {
+    "category": "letters",
+    "name": "E",
+    "path": "letters/E.png",
+    "width": 230,
+    "height": 272
+  },
+  {
+    "category": "letters",
+    "name": "F",
+    "path": "letters/F.png",
+    "width": 230,
+    "height": 272
+  },
+  {
+    "category": "letters",
+    "name": "G",
+    "path": "letters/G.png",
+    "width": 228,
+    "height": 272
+  },
+  {
+    "category": "letters",
+    "name": "H",
+    "path": "letters/H.png",
+    "width": 221,
+    "height": 272
+  },
+  {
+    "category": "letters",
+    "name": "I",
+    "path": "letters/I.png",
+    "width": 210,
+    "height": 272
+  },
+  {
+    "category": "letters",
+    "name": "J",
+    "path": "letters/J.png",
+    "width": 214,
+    "height": 272
+  },
+  {
+    "category": "letters",
+    "name": "K",
+    "path": "letters/K.png",
+    "width": 230,
+    "height": 272
+  },
+  {
+    "category": "letters",
+    "name": "L",
+    "path": "letters/L.png",
+    "width": 227,
+    "height": 272
+  },
+  {
+    "category": "letters",
+    "name": "M",
+    "path": "letters/M.png",
+    "width": 241,
+    "height": 272
+  },
+  {
+    "category": "letters",
+    "name": "N",
+    "path": "letters/N.png",
+    "width": 248,
+    "height": 272
+  },
+  {
+    "category": "letters",
+    "name": "O",
+    "path": "letters/O.png",
+    "width": 226,
+    "height": 272
+  },
+  {
+    "category": "letters",
+    "name": "P",
+    "path": "letters/P.png",
+    "width": 230,
+    "height": 272
+  },
+  {
+    "category": "letters",
+    "name": "Q",
+    "path": "letters/Q.png",
+    "width": 241,
+    "height": 272
+  },
+  {
+    "category": "letters",
+    "name": "R",
+    "path": "letters/R.png",
+    "width": 229,
+    "height": 272
+  },
+  {
+    "category": "letters",
+    "name": "S",
+    "path": "letters/S.png",
+    "width": 220,
+    "height": 272
+  },
+  {
+    "category": "letters",
+    "name": "T",
+    "path": "letters/T.png",
+    "width": 225,
+    "height": 272
+  },
+  {
+    "category": "letters",
+    "name": "U",
+    "path": "letters/U.png",
+    "width": 226,
+    "height": 267
+  },
+  {
+    "category": "letters",
+    "name": "V",
+    "path": "letters/V.png",
+    "width": 220,
+    "height": 268
+  },
+  {
+    "category": "letters",
+    "name": "W",
+    "path": "letters/W.png",
+    "width": 253,
+    "height": 266
+  },
+  {
+    "category": "letters",
+    "name": "X",
+    "path": "letters/X.png",
+    "width": 219,
+    "height": 268
+  },
+  {
+    "category": "letters",
+    "name": "Y",
+    "path": "letters/Y.png",
+    "width": 543,
+    "height": 706
+  },
+  {
+    "category": "letters",
+    "name": "Z",
+    "path": "letters/Z.png",
+    "width": 570,
+    "height": 701
+  },
+  {
+    "category": "numbers",
+    "name": "0",
+    "path": "numbers/0.png",
+    "width": 316,
+    "height": 405
+  },
+  {
+    "category": "numbers",
+    "name": "1",
+    "path": "numbers/1.png",
+    "width": 289,
+    "height": 410
+  },
+  {
+    "category": "numbers",
+    "name": "2",
+    "path": "numbers/2.png",
+    "width": 339,
+    "height": 398
+  },
+  {
+    "category": "numbers",
+    "name": "3",
+    "path": "numbers/3.png",
+    "width": 331,
+    "height": 400
+  },
+  {
+    "category": "numbers",
+    "name": "4",
+    "path": "numbers/4.png",
+    "width": 299,
+    "height": 411
+  },
+  {
+    "category": "numbers",
+    "name": "5",
+    "path": "numbers/5.png",
+    "width": 317,
+    "height": 389
+  },
+  {
+    "category": "numbers",
+    "name": "6",
+    "path": "numbers/6.png",
+    "width": 309,
+    "height": 377
+  },
+  {
+    "category": "numbers",
+    "name": "7",
+    "path": "numbers/7.png",
+    "width": 303,
+    "height": 379
+  },
+  {
+    "category": "numbers",
+    "name": "8",
+    "path": "numbers/8.png",
+    "width": 318,
+    "height": 380
+  },
+  {
+    "category": "numbers",
+    "name": "9",
+    "path": "numbers/9.png",
+    "width": 317,
+    "height": 377
+  },
+  {
+    "category": "stamps",
+    "name": "citrus",
+    "path": "stamps/citrus.png",
+    "width": 261,
+    "height": 271
+  },
+  {
+    "category": "stamps",
+    "name": "amalfi",
+    "path": "stamps/amalfi.png",
+    "width": 270,
+    "height": 271
+  },
+  {
+    "category": "stamps",
+    "name": "scooter",
+    "path": "stamps/scooter.png",
+    "width": 270,
+    "height": 271
+  },
+  {
+    "category": "stamps",
+    "name": "alpine_lake",
+    "path": "stamps/alpine_lake.png",
+    "width": 263,
+    "height": 271
+  },
+  {
+    "category": "stamps",
+    "name": "olives",
+    "path": "stamps/olives.png",
+    "width": 262,
+    "height": 282
+  },
+  {
+    "category": "stamps",
+    "name": "lobster",
+    "path": "stamps/lobster.png",
+    "width": 264,
+    "height": 284
+  },
+  {
+    "category": "stamps",
+    "name": "seashell",
+    "path": "stamps/seashell.png",
+    "width": 268,
+    "height": 284
+  },
+  {
+    "category": "stamps",
+    "name": "lighthouse",
+    "path": "stamps/lighthouse.png",
+    "width": 265,
+    "height": 284
+  },
+  {
+    "category": "stamps",
+    "name": "paris",
+    "path": "stamps/paris.png",
+    "width": 265,
+    "height": 282
+  },
+  {
+    "category": "stamps",
+    "name": "balcony",
+    "path": "stamps/balcony.png",
+    "width": 265,
+    "height": 282
+  },
+  {
+    "category": "stamps",
+    "name": "beach",
+    "path": "stamps/beach.png",
+    "width": 266,
+    "height": 282
+  },
+  {
+    "category": "stamps",
+    "name": "train",
+    "path": "stamps/train.png",
+    "width": 266,
+    "height": 282
+  },
+  {
+    "category": "stamps",
+    "name": "espresso",
+    "path": "stamps/espresso.png",
+    "width": 269,
+    "height": 278
+  },
+  {
+    "category": "stamps",
+    "name": "sun",
+    "path": "stamps/sun.png",
+    "width": 258,
+    "height": 277
+  },
+  {
+    "category": "stamps",
+    "name": "airmail",
+    "path": "stamps/airmail.png",
+    "width": 275,
+    "height": 278
+  },
+  {
+    "category": "stamps",
+    "name": "tuscany",
+    "path": "stamps/tuscany.png",
+    "width": 271,
+    "height": 277
+  },
+  {
+    "category": "stamps",
+    "name": "flowers",
+    "path": "stamps/flowers.png",
+    "width": 269,
+    "height": 267
+  },
+  {
+    "category": "stamps",
+    "name": "temple",
+    "path": "stamps/temple.png",
+    "width": 261,
+    "height": 268
+  },
+  {
+    "category": "stamps",
+    "name": "tile",
+    "path": "stamps/tile.png",
+    "width": 263,
+    "height": 267
+  },
+  {
+    "category": "stamps",
+    "name": "harbor",
+    "path": "stamps/harbor.png",
+    "width": 268,
+    "height": 267
+  },
+  {
+    "category": "pixel_art",
+    "name": "fox",
+    "path": "pixel_art/fox.png",
+    "width": 253,
+    "height": 265
+  },
+  {
+    "category": "pixel_art",
+    "name": "frog",
+    "path": "pixel_art/frog.png",
+    "width": 227,
+    "height": 204
+  },
+  {
+    "category": "pixel_art",
+    "name": "cake",
+    "path": "pixel_art/cake.png",
+    "width": 243,
+    "height": 251
+  },
+  {
+    "category": "pixel_art",
+    "name": "gem",
+    "path": "pixel_art/gem.png",
+    "width": 230,
+    "height": 205
+  },
+  {
+    "category": "pixel_art",
+    "name": "flower",
+    "path": "pixel_art/flower.png",
+    "width": 198,
+    "height": 297
+  },
+  {
+    "category": "pixel_art",
+    "name": "grass_block",
+    "path": "pixel_art/grass_block.png",
+    "width": 224,
+    "height": 244
+  },
+  {
+    "category": "pixel_art",
+    "name": "apple",
+    "path": "pixel_art/apple.png",
+    "width": 213,
+    "height": 234
+  },
+  {
+    "category": "pixel_art",
+    "name": "treasure_chest",
+    "path": "pixel_art/treasure_chest.png",
+    "width": 245,
+    "height": 222
+  },
+  {
+    "category": "pixel_art",
+    "name": "bee",
+    "path": "pixel_art/bee.png",
+    "width": 242,
+    "height": 296
+  },
+  {
+    "category": "pixel_art",
+    "name": "carrot",
+    "path": "pixel_art/carrot.png",
+    "width": 228,
+    "height": 242
+  },
+  {
+    "category": "pixel_art",
+    "name": "potion",
+    "path": "pixel_art/potion.png",
+    "width": 201,
+    "height": 249
+  },
+  {
+    "category": "pixel_art",
+    "name": "pig",
+    "path": "pixel_art/pig.png",
+    "width": 273,
+    "height": 232
+  },
+  {
+    "category": "pixel_art",
+    "name": "fish",
+    "path": "pixel_art/fish.png",
+    "width": 261,
+    "height": 187
+  },
+  {
+    "category": "pixel_art",
+    "name": "sword",
+    "path": "pixel_art/sword.png",
+    "width": 224,
+    "height": 231
+  },
+  {
+    "category": "pixel_art",
+    "name": "lantern",
+    "path": "pixel_art/lantern.png",
+    "width": 184,
+    "height": 255
+  },
+  {
+    "category": "pixel_art",
+    "name": "mushroom",
+    "path": "pixel_art/mushroom.png",
+    "width": 247,
+    "height": 225
+  },
+  {
+    "category": "pixel_art",
+    "name": "heart",
+    "path": "pixel_art/heart.png",
+    "width": 240,
+    "height": 217
+  },
+  {
+    "category": "pixel_art",
+    "name": "ghost",
+    "path": "pixel_art/ghost.png",
+    "width": 230,
+    "height": 223
+  },
+  {
+    "category": "pixel_art",
+    "name": "log",
+    "path": "pixel_art/log.png",
+    "width": 233,
+    "height": 243
+  },
+  {
+    "category": "pixel_art",
+    "name": "star",
+    "path": "pixel_art/star.png",
+    "width": 248,
+    "height": 226
+  }
+]

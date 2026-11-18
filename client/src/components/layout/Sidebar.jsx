@@ -42,9 +42,15 @@ const sidebarAssets = {
 function NavIcon({ type }) {
   if (type === "home") {
     return (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-        strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-        aria-hidden="true">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
         <path d="M3 10 12 3l9 7" />
         <path d="M5 9v12h14V9" />
         <path d="M9 21v-7h6v7" />
@@ -54,9 +60,15 @@ function NavIcon({ type }) {
 
   if (type === "albums") {
     return (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-        strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-        aria-hidden="true">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
         <rect x="6" y="7" width="15" height="14" rx="2" />
         <path d="M3 17V5a2 2 0 0 1 2-2h12" />
       </svg>
@@ -64,21 +76,38 @@ function NavIcon({ type }) {
   }
 
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-      aria-hidden="true">
-      <path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5H4l2-4
-        A8.5 8.5 0 1 1 21 11.5Z" />
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path
+        d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5H4l2-4
+          A8.5 8.5 0 1 1 21 11.5Z"
+      />
     </svg>
   );
 }
 
-function Sidebar({ onLogout , spaceId }) {
+function Sidebar({ onLogout, spaceId }) {
   // Access the selected theme
   const { theme, changeTheme } = useTheme();
 
   // Get assets for the selected theme
   const assets = sidebarAssets[theme] || sidebarAssets.original;
+
+  // Keep the selected space when navigating
+  const homePath = spaceId
+    ? `/dashboard?space=${encodeURIComponent(spaceId)}`
+    : "/spaces";
+
+  const albumsPath = spaceId
+    ? `/albums?space=${encodeURIComponent(spaceId)}`
+    : "/spaces";
 
   return (
     <aside
@@ -93,37 +122,55 @@ function Sidebar({ onLogout , spaceId }) {
       </div>
 
       {/* Navigation */}
-      <nav className="momento-sidebar__nav" aria-label="Main navigation">
-
+      <nav
+        className="momento-sidebar__nav"
+        aria-label="Main navigation"
+      >
+        {/* HOME */}
         <NavLink
-            to={spaceId
-              ? `/dashboard?space=${encodeURIComponent(spaceId)}`
-              : "/spaces"
-            }
-            className="momento-sidebar__item momento-sidebar__item--home"
-          >
+          to={homePath}
+          className={({ isActive }) =>
+            `momento-sidebar__item momento-sidebar__item--home ${
+              isActive ? "momento-sidebar__item--active" : ""
+            }`
+          }
+        >
           <NavIcon type="home" />
           <span>HOME</span>
         </NavLink>
 
+        {/* SHARED ALBUMS */}
         <NavLink
-  to={spaceId
-    ? `/lore?space=${encodeURIComponent(spaceId)}`
-    : "/spaces"
-  }
-  className="momento-sidebar__item momento-sidebar__item--lore"
->
-  <NavIcon type="lore" />
-  <span>LORE</span>
-</NavLink>
+          to={albumsPath}
+          className={({ isActive }) =>
+            `momento-sidebar__item momento-sidebar__item--albums ${
+              isActive ? "momento-sidebar__item--active" : ""
+            }`
+          }
+        >
+          <NavIcon type="albums" />
+          <span>ALBUMS</span>
+        </NavLink>
 
-        
-
+        {/* LORE */}
+        <NavLink
+          to={spaceId ? `/lore?space=${encodeURIComponent(spaceId)}` : "/spaces"}
+          className={({ isActive }) =>
+            `momento-sidebar__item momento-sidebar__item--lore ${
+              isActive ? "momento-sidebar__item--active" : ""
+            }`
+          }
+        >
+          <NavIcon type="lore" />
+          <span>LORE</span>
+        </NavLink>
       </nav>
 
       {/* Theme-specific decorations */}
-      <div className="momento-sidebar__decorations" aria-hidden="true">
-
+      <div
+        className="momento-sidebar__decorations"
+        aria-hidden="true"
+      >
         {theme === "original" && (
           <img
             className="momento-decoration momento-decoration--gold"
@@ -163,12 +210,10 @@ function Sidebar({ onLogout , spaceId }) {
             />
           </>
         )}
-
       </div>
 
       {/* Bottom controls */}
       <div className="momento-sidebar__bottom">
-
         <label htmlFor="momento-theme-select">
           CHOOSE YOUR THEME
         </label>
@@ -190,7 +235,6 @@ function Sidebar({ onLogout , spaceId }) {
         >
           Log Out
         </button>
-
       </div>
     </aside>
   );
