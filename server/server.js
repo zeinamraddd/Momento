@@ -6,6 +6,7 @@ import MongoStore from "connect-mongo";
 
 // Import routes
 import authRoutes from "./routes/authRoutes.js";
+import accountRoutes from "./routes/accountRoutes.js";
 import protectedRoutes from "./routes/protectedRoutes.js";
 import spaceRoutes from "./routes/spaceRoutes.js";
 import noteRoutes from "./routes/noteRoutes.js";
@@ -80,6 +81,7 @@ app.use(
 // Authentication routes
 // Registration, login, logout, current user
 app.use("/api/auth", authRoutes);
+app.use("/api/account", accountRoutes);
 
 // Protected routes
 // Accessible only to authenticated users

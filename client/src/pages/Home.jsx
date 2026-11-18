@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useTheme } from "../themes/ThemeContext";
 import CalendarPreview from "../components/home/CalendarPreview";
 import AlbumPreview from "../components/home/AlbumPreview";
+import MemberAvatar from "../components/MemberAvatar";
 
 import "./Home.css";
 
@@ -14,10 +15,73 @@ const API_URL =
 // HOME COMPONENT
 // ==========================================
 
-function Home({space}) {
+function Home({space, onSpaceChange}) {
 
   // Get the currently selected theme
   const { theme } = useTheme();
+
+  // Members use the SAME backend color assignment as calendar events.
+  const [memberResult, setMemberResult] = useState({ spaceId: null, members: [], error: "" });
+  const [membersOpenFor, setMembersOpenFor] = useState(null);
+  const members = memberResult.spaceId === space?.id ? memberResult.members : [];
+  const membersError = memberResult.spaceId === space?.id ? memberResult.error : "";
+  const membersOpen = membersOpenFor === space?.id;
+  const [editingGroupName, setEditingGroupName] = useState(false);
+  const [groupName, setGroupName] = useState(space?.name || "");
+  const [groupSaving, setGroupSaving] = useState(false);
+  const [groupMessage, setGroupMessage] = useState("");
+
+  useEffect(() => {
+    if (!space?.id) return;
+    const controller = new AbortController();
+    fetch(`${API_URL}/api/spaces/${encodeURIComponent(space.id)}/members`, {
+      credentials: "include",
+      signal: controller.signal,
+    })
+      .then(async (response) => {
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || "Could not load members");
+        return data;
+      })
+      .then((data) => {
+        if (!controller.signal.aborted) setMemberResult({ spaceId: space.id, members: data.members || [], error: "" });
+      })
+      .catch((error) => {
+        if (error.name !== "AbortError" && !controller.signal.aborted) {
+          setMemberResult({ spaceId: space.id, members: [], error: error.message });
+        }
+      });
+    return () => controller.abort();
+  }, [space?.id]);
+
+  async function renameGroup(event) {
+    event.preventDefault();
+    const name = groupName.trim();
+    setGroupMessage("");
+    if (name.length < 2 || name.length > 60) {
+      setGroupMessage("Group name must be 2–60 characters.");
+      return;
+    }
+    setGroupSaving(true);
+    try {
+      const response = await fetch(`${API_URL}/api/spaces/${encodeURIComponent(space.id)}`, {
+        method: "PATCH",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.message || "Could not rename the group");
+      onSpaceChange(data.space);
+      setGroupName(data.space.name);
+      setEditingGroupName(false);
+      setGroupMessage("Group name saved!");
+    } catch (error) {
+      setGroupMessage(error.message);
+    } finally {
+      setGroupSaving(false);
+    }
+  }
 
   // ==========================================
 // BUCKET LIST STATE
@@ -669,24 +733,59 @@ const editNote = (note) => {
 
         {/* Group name */}
         <div className="momento-home__title">
-          <h1>{space?.name || "Our scrapbook"}</h1>
+          <div className="momento-home__title-row">
+            <h1>{space?.name || "Our scrapbook"}</h1>
+            <button
+              type="button"
+              className="momento-home__rename-button"
+              aria-label="Edit group name"
+              title="Edit group name"
+              onClick={() => { if (!editingGroupName) setGroupName(space?.name || ""); setEditingGroupName((value) => !value); setGroupMessage(""); }}
+            >✎</button>
+          </div>
+          {editingGroupName && (
+            <form className="momento-home__rename-form" onSubmit={renameGroup}>
+              <label htmlFor="momento-group-name">New group name</label>
+              <input id="momento-group-name" maxLength={60} minLength={2} value={groupName} onChange={(event) => setGroupName(event.target.value)} required autoFocus />
+              <button disabled={groupSaving} type="submit">{groupSaving ? "Saving…" : "Save"}</button>
+              <button disabled={groupSaving} type="button" onClick={() => { setEditingGroupName(false); setGroupName(space.name); setGroupMessage(""); }}>Cancel</button>
+            </form>
+          )}
+          {groupMessage && <small className="momento-home__group-message" role="status">{groupMessage}</small>}
         </div>
 
         {/* Group member avatars */}
         <div className="momento-home__avatars">
-
-          <div className="momento-avatar momento-avatar--pink">
-            M
-          </div>
-
-          <div className="momento-avatar momento-avatar--blue">
-            A
-          </div>
-
-          <div className="momento-avatar momento-avatar--orange">
-            J
-          </div>
-
+          {members.length > 0 && (
+            <button
+              type="button"
+              className="momento-home__avatar-trigger"
+              onClick={() => setMembersOpenFor((previous) => previous === space?.id ? null : space?.id)}
+              aria-label={`View ${members.length} group members`}
+              aria-expanded={membersOpen}
+            >
+              {members.map((member) => (
+                <MemberAvatar
+                  key={member.id}
+                  username={member.username}
+                  profilePictureUrl={member.profilePictureUrl}
+                  color={member.color}
+                />
+              ))}
+            </button>
+          )}
+          {membersOpen && members.length > 0 && (
+            <div className="momento-home__members-popup">
+              <h2>Our people ♡</h2>
+              {members.map((member) => (
+                <div key={member.id} className="momento-home__member-row">
+                  <MemberAvatar username={member.username} profilePictureUrl={member.profilePictureUrl} color={member.color} size="small" />
+                  <span>{member.username}{member.isOwner ? " · Creator" : ""}</span>
+                </div>
+              ))}
+            </div>
+          )}
+          {membersError && <small className="momento-home__members-error" role="alert">{membersError}</small>}
         </div>
 
       </header>

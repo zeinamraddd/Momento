@@ -44,6 +44,40 @@
   font-weight: bold;
 }
 
+.momento-home__title-row { display: flex; align-items: center; gap: 12px; }
+.momento-home__title-row h1 { min-width: 0; overflow-wrap: anywhere; }
+.momento-home__rename-button {
+  flex-shrink: 0;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  color: inherit;
+  width: 33px;
+  height: 33px;
+  font-size: 20px;
+  cursor: pointer;
+}
+.momento-home__rename-form { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.momento-home__rename-form label { width: 100%; font: 700 12px system-ui, sans-serif; }
+.momento-home__rename-form input {
+  flex: 1 1 170px;
+  min-width: 0;
+  border: 1px solid #998b72;
+  border-radius: 5px;
+  padding: 8px;
+  color: #292521;
+  background: #fffefa;
+  font: 14px system-ui, sans-serif;
+}
+.momento-home__rename-form button {
+  border: 0; border-radius: 5px; padding: 8px 11px;
+  background: #fff5dd; color: #292521;
+  font: 700 12px system-ui, sans-serif;
+  cursor: pointer;
+}
+.momento-home__rename-form button[type="submit"] { background: var(--m-button); color: var(--m-button-text); }
+.momento-home__group-message { display: block; margin-top: 8px; font: 600 12px system-ui, sans-serif; }
+
 
 /* Original header */
 
@@ -80,10 +114,47 @@
 ========================================== */
 
 .momento-home__avatars {
+  position: relative;
   display: flex;
   align-items: center;
 
   gap: 10px;
+}
+
+.momento-home__avatar-trigger {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.momento-home__avatar-trigger:focus-visible { outline: 3px solid var(--m-accent); outline-offset: 5px; }
+.momento-home__members-popup {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 5;
+  min-width: 225px;
+  max-width: min(360px, 90vw);
+  max-height: 350px;
+  overflow-y: auto;
+  padding: 16px;
+  color: #292521;
+  background: #fff9ec;
+  border: 2px solid #c8b598;
+  box-shadow: 4px 5px 12px rgba(0, 0, 0, 0.23);
+}
+.momento-home__members-popup h2 { margin: 0 0 13px; font-size: 19px; font-family: "Segoe Print", cursive; }
+.momento-home__member-row { display: flex; align-items: center; gap: 11px; margin: 9px 0; font: 700 13px system-ui, sans-serif; }
+.momento-home__members-error { font: 12px system-ui, sans-serif; max-width: 170px; }
+
+@media (max-width: 800px) {
+  .momento-home__header { flex-wrap: wrap; }
+  .momento-home__title { max-width: none; }
+  .momento-home__avatars { margin-left: auto; }
 }
 
 .momento-avatar {

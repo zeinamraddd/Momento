@@ -18,6 +18,11 @@ const userSchema = new mongoose.Schema(
     passwordHash: {
       type: String,
       required: true
+    },
+    // The actual image bytes live in MongoDB GridFS, just like album photos.
+    avatarFileId: {
+      type: mongoose.Schema.Types.ObjectId,
+      default: null
     }
   },
   { timestamps: true }

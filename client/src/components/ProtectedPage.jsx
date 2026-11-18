@@ -6,6 +6,7 @@ import Home from "../pages/Home";
 import Lore from "../pages/Lore";
 import Albums from "../pages/Albums";
 import ScrapbookEditor from "../pages/ScrapbookEditor";
+import Account from "../pages/Account";
 import { useTheme } from "../themes/ThemeContext";
 
 function ProtectedPage() {
@@ -33,6 +34,7 @@ function ProtectedPage() {
 
   // Check which page should be displayed
   const isAlbumsPage = location.pathname === "/albums";
+  const isAccountPage = location.pathname === "/account";
 
   // ==========================================
   // VERIFY AUTHENTICATION AND SPACE
@@ -68,6 +70,12 @@ function ProtectedPage() {
         }
 
         const authData = await authResponse.json();
+
+        // Account details are available even if a user has no selected space.
+        if (isAccountPage && !spaceId) {
+          if (!controller.signal.aborted) setUser(authData.user);
+          return;
+        }
 
         // STEP 2: Make sure a space was selected
         if (!spaceId) {
@@ -123,7 +131,7 @@ function ProtectedPage() {
 
     return () => controller.abort();
 
-  }, [API_URL, spaceId, navigate]);
+  }, [API_URL, spaceId, isAccountPage, navigate]);
 
   // ==========================================
   // LOGOUT
@@ -170,7 +178,7 @@ function ProtectedPage() {
 
   // Never display private content without
   // an authenticated user and authorized space
-  if (!user || !space) {
+  if (!user || (!space && !isAccountPage)) {
     return null;
   }
 
@@ -185,12 +193,14 @@ function ProtectedPage() {
         {/* Sidebar */}
         <Sidebar
           onLogout={handleLogout}
-          spaceId={space.id}
+          spaceId={space?.id}
         />
 
         {/* Main content */}
         <main className="momento-main">
-          {location.pathname.startsWith("/albums/") ? (
+          {isAccountPage ? (
+            <Account user={user} onUserChange={setUser} spaceId={space?.id} />
+          ) : location.pathname.startsWith("/albums/") ? (
             <ScrapbookEditor space={space} />
           ) : isAlbumsPage ? (
             <Albums space={space} />
@@ -200,6 +210,7 @@ function ProtectedPage() {
             <Home
               user={user}
               space={space}
+              onSpaceChange={setSpace}
             />
           )}
         </main>

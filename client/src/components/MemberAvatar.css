@@ -1,0 +1,38 @@
+.momento-member-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 55px;
+  height: 55px;
+  overflow: hidden;
+  box-sizing: border-box;
+  border: 4px solid #fff8e9;
+  border-radius: 50%;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
+  font: 800 19px "Segoe Print", cursive;
+  letter-spacing: -1px;
+  color: var(--member-avatar-text, #292521);
+  background: var(--member-avatar-bg, #f1b8ca);
+}
+
+.momento-member-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.momento-member-avatar--large { width: 120px; height: 120px; font-size: 40px; border-width: 6px; }
+.momento-member-avatar--small { width: 38px; height: 38px; font-size: 13px; border-width: 2px; }
+
+.momento-member-avatar--pink { --member-avatar-bg: #f1b8ca; --member-avatar-text: #292521; }
+.momento-member-avatar--blue { --member-avatar-bg: #c9d9f4; --member-avatar-text: #203773; }
+.momento-member-avatar--orange { --member-avatar-bg: #f7ce91; --member-avatar-text: #553a17; }
+.momento-member-avatar--green { --member-avatar-bg: #cbe9c5; --member-avatar-text: #26512e; }
+.momento-member-avatar--purple { --member-avatar-bg: #e4cff4; --member-avatar-text: #4f3565; }
+.momento-member-avatar--yellow { --member-avatar-bg: #fff1b5; --member-avatar-text: #694e15; }
+.momento-member-avatar--teal { --member-avatar-bg: #b9e8e3; --member-avatar-text: #175459; }
+.momento-member-avatar--coral { --member-avatar-bg: #f5c1b4; --member-avatar-text: #693425; }
+.momento-member-avatar--indigo { --member-avatar-bg: #c9c9f3; --member-avatar-text: #333b73; }
+.momento-member-avatar--sage { --member-avatar-bg: #dbe6ca; --member-avatar-text: #43523b; }
