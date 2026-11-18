@@ -1,0 +1,635 @@
+.scrapbook-editor {
+  --scrap-ink: #30251d;
+  --scrap-muted: #777068;
+  --scrap-paper: #f8efd9;
+  --scrap-canvas: #fff9ee;
+  --scrap-stroke: #e3cdaa;
+  --scrap-rule: #ead8be;
+  --scrap-accent: #f26935;
+  --scrap-shadow: rgba(0, 0, 0, 0.22);
+  max-width: 1470px;
+  margin: 0 auto;
+  padding: 2px 0 30px;
+  min-width: 0;
+  color: var(--scrap-ink);
+  font-family: "Segoe Print", "Comic Sans MS", cursive;
+}
+
+.momento-app[data-theme="blue"] .scrapbook-editor {
+  --scrap-ink: #263f78;
+  --scrap-muted: #7387ac;
+  --scrap-paper: #fff9ec;
+  --scrap-canvas: #fff9ed;
+  --scrap-stroke: #abc0e5;
+  --scrap-rule: #c1d1eb;
+  --scrap-accent: #355fa9;
+  --scrap-shadow: rgba(27, 49, 104, 0.2);
+}
+
+.momento-app[data-theme="green"] .scrapbook-editor {
+  --scrap-ink: #265f49;
+  --scrap-muted: #72897b;
+  --scrap-paper: #fff9e9;
+  --scrap-canvas: #fff9ed;
+  --scrap-stroke: #a2c3ad;
+  --scrap-rule: #cdddc8;
+  --scrap-accent: #23664d;
+  --scrap-shadow: rgba(35, 74, 51, 0.2);
+}
+
+.scrapbook-editor *,
+.scrapbook-editor *::before,
+.scrapbook-editor *::after {
+  box-sizing: border-box;
+}
+
+.scrapbook-editor button,
+.scrapbook-editor input,
+.scrapbook-editor select,
+.scrapbook-editor textarea {
+  font: inherit;
+}
+
+.scrapbook-editor button { cursor: pointer; }
+.scrapbook-editor button:disabled { cursor: not-allowed; opacity: 0.5; }
+.scrapbook-editor button:focus-visible,
+.scrapbook-editor input:focus-visible,
+.scrapbook-editor textarea:focus-visible,
+.scrapbook-editor select:focus-visible {
+  outline: 3px solid var(--scrap-accent);
+  outline-offset: 2px;
+}
+
+.scrapbook-editor__group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 30px;
+  min-height: 90px;
+}
+
+.scrapbook-editor__group-title {
+  display: grid;
+  align-items: center;
+  width: min(70%, 630px);
+  min-height: 90px;
+  padding: 14px 36px;
+  background: url("../assets/momento/black-cream/header-paper.png") center / 100% 100% no-repeat;
+}
+
+.momento-app[data-theme="blue"] .scrapbook-editor__group-title {
+  background-image: url("../assets/momento/blue-notebook/header-paper.png");
+}
+
+.scrapbook-editor__group-title h1 {
+  margin: 0;
+  font-family: "Segoe Print", cursive;
+  font-size: clamp(26px, 3.4vw, 49px);
+  font-style: italic;
+  letter-spacing: -0.045em;
+  font-weight: 800;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+  color: var(--scrap-ink);
+}
+
+.momento-app[data-theme="green"] .scrapbook-editor__group-title {
+  background: none;
+  width: min(78%, 780px);
+  padding: 6px 0;
+}
+
+.scrapbook-editor__cutout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  font-family: Georgia, serif !important;
+  font-style: normal !important;
+  font-size: clamp(22px, 2.7vw, 37px) !important;
+  letter-spacing: 0 !important;
+}
+
+.scrapbook-editor__cutout span:not(.scrapbook-editor__gap) {
+  display: inline-grid;
+  place-items: center;
+  min-width: 0.75em;
+  padding: 4px 3px;
+  transform: rotate(-4deg);
+  background: #fff8e7;
+  box-shadow: 1px 2px 4px #20523933;
+}
+.scrapbook-editor__cutout span:nth-child(4n+2) {
+  background: #23664d;
+  color: #fff8e7;
+  transform: rotate(4deg);
+}
+.scrapbook-editor__cutout span:nth-child(5n+3) { background: #f4be38; }
+.scrapbook-editor__cutout span:nth-child(7n+5) { background: #e95437; color: white; }
+.scrapbook-editor__gap { width: 0.35em; }
+
+.scrapbook-editor__avatars {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.scrapbook-editor__avatars span {
+  display: grid;
+  place-items: center;
+  width: clamp(43px, 5vw, 64px);
+  height: clamp(43px, 5vw, 64px);
+  background: #efb4c7;
+  color: #243e76;
+  border: 4px solid #fff9ed;
+  border-radius: 50%;
+  box-shadow: 2px 4px 8px var(--scrap-shadow);
+  font: italic 700 clamp(20px, 2.5vw, 30px) "Segoe Print", cursive;
+}
+.scrapbook-editor__avatars span:nth-child(2) { background: #c1d2ee; }
+.scrapbook-editor__avatars span:nth-child(3) { background: #f5d480; }
+.momento-app[data-theme="green"] .scrapbook-editor__avatars span:nth-child(2) { background: #24664d; color: white; }
+.momento-app[data-theme="green"] .scrapbook-editor__avatars span:nth-child(3) { background: #f4bf37; }
+.momento-app[data-theme="original"] .scrapbook-editor__avatars span:nth-child(3) { background: #e75c38; }
+
+.scrapbook-editor__heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 28px;
+  margin-bottom: 25px;
+  background: var(--scrap-paper);
+  border: 2px solid var(--scrap-stroke);
+  border-radius: 10px;
+  box-shadow: 3px 6px 12px var(--scrap-shadow);
+}
+.momento-app[data-theme="original"] .scrapbook-editor__heading {
+  border: 0;
+  border-radius: 0;
+  clip-path: polygon(0 3%,3% 0,6% 4%,9% 0,12% 3%,16% 0,20% 3%,25% 0,29% 3%,33% 0,38% 3%,43% 0,49% 3%,54% 0,60% 3%,66% 0,72% 3%,78% 0,85% 3%,90% 0,95% 3%,100% 0,100% 97%,95% 100%,90% 97%,85% 100%,78% 97%,72% 100%,66% 97%,60% 100%,54% 97%,49% 100%,43% 97%,38% 100%,33% 97%,29% 100%,25% 97%,20% 100%,16% 97%,12% 100%,9% 97%,6% 100%,3% 97%,0 100%);
+}
+.scrapbook-editor__heading h2 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(25px, 3vw, 42px);
+  font-weight: 800;
+  color: var(--scrap-ink);
+}
+.scrapbook-editor__heading p {
+  margin: 2px 0 0;
+  color: var(--scrap-muted);
+  font-size: 14px;
+}
+.scrapbook-editor__heading p span { padding: 0 7px; }
+.scrapbook-editor__back {
+  display: block;
+  border: 0;
+  background: transparent;
+  color: var(--scrap-muted);
+  padding: 0;
+  margin-bottom: 5px;
+  font: 700 12px Arial, sans-serif !important;
+}
+.scrapbook-editor__save {
+  min-width: 154px;
+  padding: 13px 24px;
+  background: var(--scrap-accent);
+  border: 0;
+  border-radius: 10px;
+  color: white;
+  font-weight: 800 !important;
+}
+.momento-app[data-theme="original"] .scrapbook-editor__save { background: #f26935; }
+
+.scrapbook-editor__feedback {
+  margin: -5px 0 17px;
+  padding: 12px 16px;
+  border-radius: 7px;
+  background: #edf6e9;
+  color: #205740;
+  font: 14px Arial, sans-serif;
+}
+.scrapbook-editor__feedback--error {
+  background: #fff0ed;
+  color: #a22f2f;
+}
+
+.scrapbook-editor__workarea {
+  display: grid;
+  grid-template-columns: minmax(132px, 165px) minmax(0, 1fr);
+  align-items: stretch;
+  gap: 24px;
+}
+
+.scrap-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+  padding: 18px 15px 22px;
+  background: var(--scrap-paper);
+  border: 2px solid var(--scrap-stroke);
+  border-radius: 10px;
+  box-shadow: 3px 5px 11px var(--scrap-shadow);
+}
+.momento-app[data-theme="original"] .scrap-tools { border-radius: 0; }
+.scrap-tools h3 {
+  margin: 0 0 1px;
+  color: var(--scrap-ink);
+  text-align: center;
+  font-family: Arial, sans-serif;
+  font-size: 19px;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+}
+.scrap-tools button {
+  display: flex;
+  flex: 1;
+  min-height: 64px;
+  max-height: 88px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 6px;
+  background: #fffaf0;
+  border: 2px solid var(--scrap-stroke);
+  border-radius: 9px;
+  color: var(--scrap-ink);
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+}
+.scrap-tools button span {
+  color: var(--scrap-accent);
+  font: 800 28px Arial, sans-serif;
+  line-height: 1;
+}
+.scrap-tools button.scrap-tools__active {
+  background: #f5dfc1;
+  outline: 2px solid var(--scrap-accent);
+}
+.momento-app[data-theme="blue"] .scrap-tools button.scrap-tools__active { background: #dfe9fa; }
+.momento-app[data-theme="green"] .scrap-tools button.scrap-tools__active { background: #e1efdc; }
+
+.scrap-book-wrap {
+  position: relative;
+  min-width: 0;
+  background: var(--scrap-paper);
+  border: 2px solid var(--scrap-stroke);
+  border-radius: 12px;
+  padding: 23px 18px 26px;
+  box-shadow: 3px 5px 12px var(--scrap-shadow);
+}
+.momento-app[data-theme="original"] .scrap-book-wrap {
+  border: 0;
+  border-radius: 0;
+}
+.scrap-book {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  min-width: 0;
+  position: relative;
+}
+.scrap-page {
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+  aspect-ratio: 0.78;
+  min-height: 390px;
+  background-color: var(--scrap-canvas);
+  border: 1px solid #d5c3ab;
+  border-radius: 11px;
+  box-shadow: 3px 5px 12px #0003;
+  overflow: hidden;
+  cursor: crosshair;
+  touch-action: none;
+}
+.scrap-page--active { outline: 2px solid var(--scrap-stroke); outline-offset: -3px; }
+.scrap-page--lined {
+  background-image: repeating-linear-gradient(0deg, transparent 0, transparent 37px, var(--scrap-rule) 38px, transparent 39px);
+  background-size: 100% 39px;
+}
+.scrap-page--dots {
+  background-image: radial-gradient(var(--scrap-rule) 1.2px, transparent 1.5px);
+  background-size: 28px 28px;
+}
+.scrap-page--grid {
+  background-image: linear-gradient(var(--scrap-rule) 1px, transparent 1px),
+    linear-gradient(90deg, var(--scrap-rule) 1px, transparent 1px);
+  background-size: 27px 27px;
+}
+.scrap-page--plain { background-image: none; }
+.scrap-book--minimal .scrap-page { border-radius: 0; box-shadow: none; }
+.scrap-book--collage .scrap-page { background-color: #fff7e5; }
+.momento-app[data-theme="green"] .scrap-page--dots { background-size: 23px 23px; }
+.momento-app[data-theme="blue"] .scrap-page--lined { background-size: 100% 37px; }
+
+.scrap-book__spine {
+  position: absolute;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  pointer-events: none;
+  top: 8%;
+  bottom: 8%;
+  left: 50%;
+  width: 35px;
+  transform: translateX(-50%);
+}
+.scrap-book__spine span {
+  display: block;
+  width: 26px;
+  height: 26px;
+  border: 5px solid #a7a79a;
+  border-radius: 50%;
+  background: rgba(255, 250, 234, 0.4);
+  box-shadow: inset 1px 1px 2px #817e70, 0 1px 2px #0004;
+}
+
+/* Each photo/sticker/text block is positionable and resizable by touch or mouse. */
+.scrap-item {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 0;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  overflow: visible;
+  z-index: 1;
+}
+.scrap-item:active { cursor: grabbing; }
+.scrap-item--selected { outline: 2px dashed var(--scrap-accent); outline-offset: 4px; z-index: 3; }
+.scrap-item--photo {
+  padding: 8px 8px 28px;
+  background: #fff8e8;
+  border: 1px solid #d1bb98;
+  box-shadow: 2px 5px 10px #0004;
+  flex-direction: column;
+}
+.scrap-item--photo img {
+  width: 100%;
+  height: calc(100% - 16px);
+  object-fit: cover;
+  pointer-events: none;
+}
+.scrap-item__caption {
+  display: block;
+  width: 100%;
+  flex-shrink: 0;
+  font: 12px "Segoe Print", cursive;
+  text-align: center;
+  color: #332d29;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.scrap-item__loading { font: 13px Arial, sans-serif; color: #777; }
+.scrap-item--sticker img, .scrap-item--decoration img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+.scrap-item--text {
+  padding: 4px;
+  text-align: center;
+  align-items: flex-start;
+}
+.scrap-item__text {
+  display: block;
+  white-space: pre-wrap;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+  max-width: 100%;
+  pointer-events: none;
+}
+.scrap-item__resize {
+  position: absolute;
+  right: -11px;
+  bottom: -11px;
+  width: 20px;
+  height: 20px;
+  border: 3px solid #fff;
+  background: var(--scrap-accent);
+  box-shadow: 1px 2px 3px #0006;
+  border-radius: 50%;
+  cursor: nwse-resize;
+  touch-action: none;
+}
+
+.scrap-palette {
+  position: absolute;
+  z-index: 7;
+  top: 34px;
+  right: 27px;
+  width: min(310px, calc(100% - 54px));
+  max-height: min(520px, 80%);
+  padding: 14px;
+  background: #fffaf0;
+  border: 2px solid var(--scrap-stroke);
+  border-radius: 12px;
+  box-shadow: 4px 8px 22px #0004;
+  overflow: auto;
+  color: var(--scrap-ink);
+}
+.scrap-palette__heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.scrap-palette__heading h3 {
+  margin: 0;
+  color: var(--scrap-ink);
+  font-size: 18px;
+}
+.scrap-palette__heading button {
+  border: 0;
+  background: transparent;
+  color: var(--scrap-ink);
+  font-size: 21px;
+}
+.scrap-palette p {
+  margin: 3px 0 12px;
+  color: var(--scrap-muted);
+  font: 13px Arial, sans-serif;
+}
+.scrap-palette input {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 9px;
+  border: 1px solid var(--scrap-stroke);
+  border-radius: 6px;
+  background: white;
+  color: #292521;
+}
+.scrap-palette__tabs, .scrap-palette__choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.scrap-palette__tabs button, .scrap-palette__choices button {
+  padding: 6px 8px;
+  border: 1px solid var(--scrap-stroke);
+  background: #fff8e6;
+  color: var(--scrap-ink);
+  border-radius: 5px;
+  text-transform: capitalize;
+  font: 12px Arial, sans-serif;
+}
+.scrap-palette [aria-pressed="true"] {
+  background: var(--scrap-accent);
+  color: white;
+}
+.scrap-palette__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+  margin-top: 10px;
+}
+.scrap-palette__grid button {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border: 1px solid var(--scrap-stroke);
+  border-radius: 5px;
+  background: #fffdf7;
+  padding: 5px;
+  cursor: grab;
+}
+.scrap-palette__grid img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.scrap-inspector {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 13px 19px;
+  padding: 17px;
+  margin: 17px 0 0;
+  background: var(--scrap-paper);
+  border: 2px solid var(--scrap-stroke);
+  border-radius: 10px;
+  box-shadow: 3px 5px 10px var(--scrap-shadow);
+}
+.scrap-inspector__title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.scrap-inspector__title h3 {
+  color: var(--scrap-ink);
+  margin: 0;
+  font-size: 19px;
+}
+.scrap-inspector__title button {
+  background: transparent;
+  border: 0;
+  color: var(--scrap-muted);
+}
+.scrap-inspector label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 110px;
+  color: var(--scrap-ink);
+  font: bold 12px Arial, sans-serif;
+}
+.scrap-inspector input:not([type="color"]),
+.scrap-inspector select, .scrap-inspector textarea {
+  min-width: 0;
+  width: 100%;
+  padding: 8px;
+  background: white;
+  border: 1px solid var(--scrap-stroke);
+  border-radius: 5px;
+  color: #30251d;
+}
+.scrap-inspector input[type="color"] { height: 36px; width: 54px; border: 0; background: none; }
+.scrap-inspector__wide { width: min(100%, 320px); }
+.scrap-inspector__delete {
+  padding: 10px 14px;
+  background: #9b3e36;
+  color: white;
+  border: none;
+  border-radius: 7px;
+}
+.scrapbook-editor__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 25px;
+  padding-top: 24px;
+  color: var(--m-text);
+  font-size: 15px;
+}
+.scrapbook-editor__pagination button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-weight: bold;
+}
+.scrap-status {
+  padding: 30px;
+  background: var(--m-surface);
+  color: var(--m-card-text);
+}
+.scrap-status button {
+  padding: 10px;
+  background: var(--m-button);
+  border: 0;
+  color: var(--m-button-text);
+}
+
+@media (max-width: 1000px) {
+  .scrapbook-editor__workarea { grid-template-columns: 120px minmax(0,1fr); gap: 12px; }
+  .scrap-book-wrap { padding: 15px 12px 20px; }
+  .scrap-book { gap: 9px; }
+  .scrap-page { min-height: 320px; }
+  .scrap-tools { padding: 12px 8px; gap: 9px; }
+}
+
+@media (max-width: 740px) {
+  .scrapbook-editor__group { flex-wrap: wrap; }
+  .scrapbook-editor__group-title { width: 100%; }
+  .scrapbook-editor__avatars { margin-left: auto; }
+  .scrapbook-editor__workarea { display: block; }
+  .scrap-tools {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    margin-bottom: 15px;
+  }
+  .scrap-tools h3 { grid-column: 1 / -1; }
+  .scrap-tools button { min-height: 64px; }
+  .scrap-book-wrap { padding: 12px 9px 20px; }
+  .scrap-page { min-height: 230px; }
+  .scrap-book__spine { width: 23px; }
+  .scrap-book__spine span { width: 17px; height: 17px; border-width: 3px; }
+  .scrap-item--photo { padding: 4px 4px 21px; }
+  .scrap-item__caption { font-size: 9px; }
+  .scrapbook-editor__heading { align-items: flex-start; flex-direction: column; }
+  .scrapbook-editor__save { width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .scrapbook-editor__group-title { padding: 12px 19px; }
+  .scrap-page { min-height: 190px; }
+  .scrap-page--lined { background-size: 100% 25px; }
+  .scrap-item__text { font-size: 12px !important; }
+  .scrap-book__spine span { width: 14px; height: 14px; }
+  .scrap-palette { top: 8px; right: 8px; width: calc(100% - 16px); }
+}
