@@ -1,3 +1,4 @@
+
 import {
   BrowserRouter,
   Routes,
@@ -12,7 +13,7 @@ import Register from "./components/Register";
 // Shared Spaces page
 import SpaceSetup from "./components/SpaceSetup";
 
-// Main dashboard
+// Main dashboard and Shared Albums
 import ProtectedPage from "./components/ProtectedPage";
 
 function App() {
@@ -65,6 +66,19 @@ function App() {
            element={<ProtectedPage />}
         />
         {/* ==================================
+            SHARED ALBUMS
+        ================================== */}
+
+        <Route
+          path="/albums"
+          element={<ProtectedPage />}
+        />
+        <Route
+          path="/albums/:albumId/photos/:photoId/edit"
+          element={<ProtectedPage />}
+        />
+
+        {/* ==================================
             UNKNOWN ROUTES
         ================================== */}
 
@@ -79,4 +93,3 @@ function App() {
 }
 
 export default App;
-
