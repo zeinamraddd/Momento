@@ -2,7 +2,9 @@ import { randomBytes } from "node:crypto";
 import express from "express";
 import mongoose from "mongoose";
 import Space from "../models/space.js";
+import User from "../models/user.js";
 import requireAuth from "../middleware/requireAuth.js";
+import { getMemberColor } from "../utils/memberColors.js";
 
 const router = express.Router();
 
@@ -99,6 +101,63 @@ router.get("/:spaceId", async (req, res) => {
   } catch (error) {
     console.error("Get space error:", error);
     return res.status(500).json({ message: "Could not load space" });
+  }
+});
+
+// Display names, pictures, and EXACTLY the colors used by this space's calendar.
+// Only members can see this list; passwords and email addresses are never returned.
+router.get("/:spaceId/members", async (req, res) => {
+  if (!mongoose.isValidObjectId(req.params.spaceId)) {
+    return res.status(404).json({ message: "Space not found" });
+  }
+
+  try {
+    const space = await Space.findOne({ _id: req.params.spaceId, members: req.user._id });
+    if (!space) return res.status(404).json({ message: "Space not found" });
+
+    const users = await User.find({ _id: { $in: space.members } })
+      .select("_id username avatarFileId");
+    const byId = new Map(users.map((user) => [String(user._id), user]));
+    const members = space.members.flatMap((id) => {
+      const user = byId.get(String(id));
+      if (!user) return [];
+      return [{
+        id: String(user._id),
+        username: user.username,
+        color: getMemberColor(space, user._id),
+        profilePictureUrl: user.avatarFileId ? `/api/account/avatar/${user._id}` : null,
+        isOwner: String(space.owner) === String(user._id),
+      }];
+    });
+
+    return res.json({ members });
+  } catch (error) {
+    console.error("List space members error:", error);
+    return res.status(500).json({ message: "Could not load members" });
+  }
+});
+
+// Every member (not only the owner) can rename their shared space.
+router.patch("/:spaceId", async (req, res) => {
+  if (!mongoose.isValidObjectId(req.params.spaceId)) {
+    return res.status(404).json({ message: "Space not found" });
+  }
+  const name = typeof req.body?.name === "string" ? req.body.name.trim() : "";
+  if (name.length < 2 || name.length > 60) {
+    return res.status(400).json({ message: "Space name must be 2–60 characters" });
+  }
+
+  try {
+    const space = await Space.findOneAndUpdate(
+      { _id: req.params.spaceId, members: req.user._id },
+      { $set: { name } },
+      { new: true, runValidators: true }
+    );
+    if (!space) return res.status(404).json({ message: "Space not found" });
+    return res.json({ message: "Space renamed", space: spaceView(space) });
+  } catch (error) {
+    console.error("Rename space error:", error);
+    return res.status(500).json({ message: "Could not rename space" });
   }
 });
 

@@ -2,6 +2,7 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import User from "../models/user.js";
+import { userView } from "../utils/userView.js";
 
 const router = express.Router();
 
@@ -54,11 +55,7 @@ router.post("/register", async (req, res) => {
 
     return res.status(201).json({
       message: "Account created successfully",
-      user: {
-        id: user._id,
-        username: user.username,
-        email: user.email,
-      },
+      user: userView(user),
     });
   } catch (error) {
     console.error("Registration error:", error);
@@ -140,11 +137,7 @@ router.post("/login", async (req, res) => {
 
         return res.status(200).json({
           message: "Login successful",
-          user: {
-            id: user._id,
-            username: user.username,
-            email: user.email,
-          },
+          user: userView(user),
         });
       });
     });
@@ -179,11 +172,7 @@ router.get("/me", async (req, res) => {
     }
 
     return res.status(200).json({
-      user: {
-        id: user._id,
-        username: user.username,
-        email: user.email,
-      },
+      user: userView(user),
     });
   } catch (error) {
     console.error("Current user error:", error);

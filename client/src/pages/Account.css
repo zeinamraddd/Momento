@@ -1,0 +1,105 @@
+.momento-account {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-bottom: 36px;
+  font-family: "Segoe Print", cursive;
+}
+
+.momento-account__heading {
+  max-width: 720px;
+  padding: 22px 32px;
+  margin-bottom: 25px;
+  color: #29231e;
+  background: #fff3dd;
+  border: 1px solid #ddc8a6;
+  transform: rotate(-0.35deg);
+  box-shadow: 5px 6px 0 rgba(0, 0, 0, 0.1);
+}
+
+.momento-account__eyebrow { font: 800 11px system-ui, sans-serif; letter-spacing: 2px; color: #bd653f; }
+.momento-account__heading h1 { margin: 8px 0 2px; font-size: clamp(30px, 4vw, 48px); line-height: 1.2; }
+.momento-account__heading p { margin: 10px 0 0; font-size: 15px; }
+.momento-account__layout { display: grid; grid-template-columns: minmax(290px, 0.95fr) minmax(350px, 1.05fr); align-items: start; gap: 24px; }
+
+.momento-account__card {
+  min-width: 0;
+  padding: 26px;
+  color: var(--m-card-text);
+  background: var(--m-surface);
+  border: 2px solid var(--m-border);
+  box-shadow: 5px 7px 0 var(--m-shadow);
+}
+
+.momento-account__card h2 { margin: 0 0 19px; font-size: clamp(22px, 3vw, 30px); }
+.momento-account__card p { font-size: 14px; }
+.momento-account__photo { display: flex; align-items: center; flex-wrap: wrap; gap: 22px; margin-bottom: 26px; }
+.momento-account__photo-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 7px; }
+.momento-account__photo-actions small { font: 12px system-ui, sans-serif; opacity: 0.65; }
+.momento-account__file { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
+.momento-account__file:focus-visible + label { outline: 3px solid var(--m-accent); outline-offset: 3px; }
+
+.momento-account__button,
+.momento-account__invite button {
+  display: inline-block;
+  padding: 11px 18px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--m-button);
+  color: var(--m-button-text);
+  font: 800 13px "Segoe Print", cursive;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.momento-account__button:disabled,
+.momento-account__button--disabled { opacity: 0.55; cursor: wait; }
+.momento-account__link-button { padding: 0; border: none; background: none; color: #a54148; text-decoration: underline; font: 700 12px "Segoe Print", cursive; cursor: pointer; }
+.momento-account__link-button:disabled { opacity: 0.5; cursor: wait; }
+.momento-account__form { display: flex; flex-direction: column; align-items: stretch; gap: 8px; }
+.momento-account__form label,
+.momento-account__space label { font-size: 12px; font-weight: 800; }
+.momento-account__form input,
+.momento-account__invite input {
+  width: 100%; min-width: 0; box-sizing: border-box;
+  padding: 11px; border: 1px solid #c7b7a1; border-radius: 5px;
+  background: #fffefa; color: #292521; font: 14px system-ui, sans-serif;
+}
+.momento-account__form input[readonly] { background: #efece5; color: #625d52; }
+.momento-account__form > label:not(:first-child) { margin-top: 9px; }
+.momento-account__form > button { align-self: flex-start; margin-top: 14px; }
+.momento-account__member-since { margin: 8px 0 0; font-size: 12px !important; opacity: 0.7; }
+
+.momento-account__spaces > p { margin: -9px 0 22px; }
+.momento-account__space-list { display: grid; gap: 14px; }
+.momento-account__space { min-width: 0; padding: 15px; border: 1px dashed #b9a993; background: rgba(255, 250, 232, 0.75); color: #292521; }
+.momento-account__space-heading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px; }
+.momento-account__space-heading h3 { margin: 0 0 12px; font-size: 19px; overflow-wrap: anywhere; }
+.momento-account__space-heading span { font: 12px system-ui, sans-serif; opacity: 0.7; }
+.momento-account__space label { display: block; margin-bottom: 5px; }
+.momento-account__invite { display: flex; align-items: stretch; gap: 8px; }
+.momento-account__invite input { letter-spacing: 1.4px; font-weight: 700; }
+.momento-account__invite button { padding: 7px 14px; }
+.momento-account__space-link,
+.momento-account__all-spaces { display: inline-block; margin-top: 13px; color: #255a65; font-size: 12px; font-weight: 800; text-decoration: underline; }
+.momento-account__all-spaces { font-size: 14px; margin-top: 20px; }
+.momento-account__back { display: inline-block; margin-top: 30px; color: var(--m-text); font-weight: 800; text-decoration: underline; }
+.momento-account__copy-status { margin-top: 14px !important; color: #27633f; }
+.momento-account__feedback { padding: 11px 16px; margin: 0 0 18px; background: #e4f2da; color: #255a44; border-left: 5px solid #255a44; }
+.momento-account__feedback--error { background: #ffe1da; color: #a33b2e; border-color: #a33b2e; }
+
+.momento-app[data-theme="blue"] .momento-account__heading { background: #e5edff; border-color: #a5bce0; color: #203773; }
+.momento-app[data-theme="blue"] .momento-account__eyebrow { color: #355fa9; }
+.momento-app[data-theme="blue"] .momento-account__space { background: #f0f4ff; border-color: #b6cbe7; }
+.momento-app[data-theme="green"] .momento-account__heading { background: #fff9df; border-color: #a5c5aa; color: #255a44; }
+.momento-app[data-theme="green"] .momento-account__eyebrow { color: #ad6939; }
+.momento-app[data-theme="green"] .momento-account__space { background: #f4fbed; border-color: #b9d4b7; }
+.momento-app[data-theme="original"] .momento-account__card { background: #f7eed9; }
+
+@media (max-width: 900px) { .momento-account__layout { grid-template-columns: 1fr; } }
+@media (max-width: 450px) {
+  .momento-account__heading { padding: 20px; }
+  .momento-account__card { padding: 19px; }
+  .momento-account__invite { flex-wrap: wrap; }
+  .momento-account__invite input { flex: 1 1 180px; }
+}

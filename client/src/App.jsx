@@ -62,6 +62,10 @@ function App() {
           element={<ProtectedPage />}
         />
         <Route
+          path="/account"
+          element={<ProtectedPage />}
+        />
+        <Route
            path="/lore"
            element={<ProtectedPage />}
         />
