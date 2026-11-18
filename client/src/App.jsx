@@ -60,7 +60,10 @@ function App() {
           path="/dashboard"
           element={<ProtectedPage />}
         />
-
+        <Route
+           path="/lore"
+           element={<ProtectedPage />}
+        />
         {/* ==================================
             UNKNOWN ROUTES
         ================================== */}

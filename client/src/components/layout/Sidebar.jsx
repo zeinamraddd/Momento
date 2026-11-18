@@ -106,25 +106,18 @@ function Sidebar({ onLogout , spaceId }) {
           <span>HOME</span>
         </NavLink>
 
-        <button
-          type="button"
-          className="momento-sidebar__item momento-sidebar__item--albums"
-          disabled
-          title="Albums page coming soon"
-        >
-          <NavIcon type="albums" />
-          <span>ALBUMS</span>
-        </button>
+        <NavLink
+  to={spaceId
+    ? `/lore?space=${encodeURIComponent(spaceId)}`
+    : "/spaces"
+  }
+  className="momento-sidebar__item momento-sidebar__item--lore"
+>
+  <NavIcon type="lore" />
+  <span>LORE</span>
+</NavLink>
 
-        <button
-          type="button"
-          className="momento-sidebar__item momento-sidebar__item--lore"
-          disabled
-          title="Lore page coming soon"
-        >
-          <NavIcon type="lore" />
-          <span>LORE </span>
-        </button>
+        
 
       </nav>
 

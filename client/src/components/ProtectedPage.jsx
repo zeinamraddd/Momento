@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import Sidebar from "./layout/Sidebar";
 import Home from "../pages/Home";
+import Lore from "../pages/Lore";
 import { useTheme } from "../themes/ThemeContext";
 
 function ProtectedPage() {
@@ -183,13 +184,13 @@ function ProtectedPage() {
         />
 
         {/* Main content */}
-        <main className="momento-main">
-          <Home
-            user={user}
-            space={space}
-          />
-        </main>
-
+       <main className="momento-main">
+        {location.pathname === "/lore" ? (
+         <Lore user={user} space={space} />
+       ) : (
+         <Home user={user} space={space} />
+       )}
+       </main>
       </div>
     </div>
   );

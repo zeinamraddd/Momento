@@ -11,6 +11,7 @@ import spaceRoutes from "./routes/spaceRoutes.js";
 import noteRoutes from "./routes/noteRoutes.js";
 import bucketRoutes from "./routes/bucketRoutes.js";
 import eventRoutes from "./routes/eventRoutes.js";
+import loreRoutes from "./routes/loreRoutes.js";
 // Import database connection
 import connectDB from "./config/db.js";
 
@@ -93,6 +94,7 @@ app.use("/api/spaces", bucketRoutes);
 
 app.use("/api/spaces", eventRoutes);
 
+app.use("/api/spaces", loreRoutes);
 // ==========================================
 // HEALTH CHECK
 // ==========================================
