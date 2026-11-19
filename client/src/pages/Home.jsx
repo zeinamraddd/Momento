@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useTheme } from "../themes/ThemeContext";
+import { useTheme } from "../themes/themeState";
 import CalendarPreview from "../components/home/CalendarPreview";
 import AlbumPreview from "../components/home/AlbumPreview";
 import MemberAvatar from "../components/MemberAvatar";
@@ -116,8 +116,6 @@ function Home({space, onSpaceChange, members = [], membersError = ""}) {
 useEffect(() => {
   // If no space is selected, display no notes.
   if (!space?.id) {
-    setNotes([]);
-    setNotesLoading(false);
     return;
   }
 
@@ -176,8 +174,6 @@ useEffect(() => {
 
   // If no space is selected, display no wishes
   if (!space?.id) {
-    setWishes([]);
-    setWishesLoading(false);
     return;
   }
 

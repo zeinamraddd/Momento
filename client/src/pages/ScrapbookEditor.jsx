@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useTheme } from "../themes/ThemeContext";
+import { useTheme } from "../themes/themeState";
 import GroupAvatars from "../components/GroupAvatars";
 import { moveElement, pointerAngle, resizeElement, rotateElement } from "../utils/scrapbookGeometry";
 import pinkTape from "../assets/momento/shared/washi-tape-pink.webp";
@@ -96,15 +96,6 @@ export default function ScrapbookEditor({ space, members = [] }) {
 
   useEffect(() => {
     const controller = new AbortController();
-    setLoading(true);
-    setError("");
-    setNotice("");
-    setSelectedId(null);
-    setDoc(null);
-    setDirty(false);
-    editSerial.current = 0;
-    setTool(null);
-
     Promise.all([
       getJSON(albumApi, { signal: controller.signal }),
       getJSON(pageApi, { signal: controller.signal }),
@@ -126,7 +117,6 @@ export default function ScrapbookEditor({ space, members = [] }) {
     const controller = new AbortController();
     const created = [];
     let active = true;
-    setImageUrls({});
     Promise.all(photos.map(async (photo) => {
       try {
         const response = await fetch(API + photo.imageUrl, {

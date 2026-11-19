@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 
-import { useTheme } from "../../themes/ThemeContext";
+import { useTheme } from "../../themes/themeState";
 
 import "./Sidebar.css";
 

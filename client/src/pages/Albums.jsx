@@ -26,11 +26,21 @@ export default function Albums({ space, members = [] }) {
   const [file, setFile] = useState(null);
   const [caption, setCaption] = useState('');
   const [viewer, setViewer] = useState(-1);
-  const [imageCache, setImageCache] = useState({});
+  // Tag private object URLs with their space so a route switch never renders
+  // a revoked URL from a previous space while fresh images are loading.
+  const [imageCacheState, setImageCacheState] = useState({ spaceId: space.id, urls: {} });
   const cachedObjectUrls = useRef(new Map());
   const pendingImages = useRef(new Map());
 
   const base = urlFor(space.id);
+  const selectedId = selected?.id;
+  const imageCache = imageCacheState.spaceId === space.id ? imageCacheState.urls : {};
+
+  function selectAlbum(album) {
+    setError('');
+    setPhotos([]);
+    setSelected(album);
+  }
 
   function openPhotoEditor(photo) {
     navigate('/albums/' + encodeURIComponent(selected.id) + '/photos/' +
@@ -60,11 +70,6 @@ export default function Albums({ space, members = [] }) {
   useEffect(() => {
     let active = true;
 
-    setLoading(true);
-    setError('');
-    setSelected(null);
-    setPhotos([]);
-
     request(base)
       .then(data => {
         if (active) {
@@ -88,14 +93,11 @@ export default function Albums({ space, members = [] }) {
   }, [base, initialAlbumId]);
 
   useEffect(() => {
-    if (!selected) return;
+    if (!selectedId) return;
 
     let active = true;
 
-    setError('');
-    setPhotos([]);
-
-    request(urlFor(space.id, selected.id))
+    request(urlFor(space.id, selectedId))
       .then(data => {
         if (active) {
           setSelected(data.album);
@@ -109,26 +111,27 @@ export default function Albums({ space, members = [] }) {
     return () => {
       active = false;
     };
-  }, [space.id, selected?.id]);
+  }, [space.id, selectedId]);
 
   // Each object URL retains image bytes in memory until it is revoked.
   // Release private images when switching spaces or leaving Albums.
   useEffect(() => {
-    setImageCache({});
+    const pending = pendingImages.current;
+    const urls = cachedObjectUrls.current;
     return () => {
-      for (const controller of pendingImages.current.values()) controller.abort();
-      pendingImages.current.clear();
-      for (const objectUrl of cachedObjectUrls.current.values()) {
+      for (const controller of pending.values()) controller.abort();
+      pending.clear();
+      for (const objectUrl of urls.values()) {
         URL.revokeObjectURL(objectUrl);
       }
-      cachedObjectUrls.current.clear();
+      urls.clear();
     };
   }, [space.id]);
 
   // Load private images using the user's session cookie, without issuing a
   // second request for an image that is already loaded or in flight.
   useEffect(() => {
-    const sources = selected
+    const sources = selectedId
       ? photos
       : albums
           .filter(a => a.coverPhoto)
@@ -162,9 +165,12 @@ export default function Albums({ space, members = [] }) {
           if (controller.signal.aborted) return;
           const objectUrl = URL.createObjectURL(blob);
           cachedObjectUrls.current.set(item.imageUrl, objectUrl);
-          setImageCache(prev => ({
-            ...prev,
-            [item.imageUrl]: objectUrl
+          setImageCacheState(prev => ({
+            spaceId: space.id,
+            urls: {
+              ...(prev.spaceId === space.id ? prev.urls : {}),
+              [item.imageUrl]: objectUrl
+            }
           }));
         })
         .catch(() => {})
@@ -174,7 +180,7 @@ export default function Albums({ space, members = [] }) {
           }
         });
     });
-  }, [albums, photos, selected?.id, space.id]);
+  }, [albums, photos, selectedId, space.id]);
 
   async function perform(fn) {
     setBusy(true);
@@ -333,6 +339,7 @@ export default function Albums({ space, members = [] }) {
               className="momento-albums__secondary"
               onClick={() => {
                 setSelected(null);
+                setPhotos([]);
                 setViewer(-1);
                 navigate('/albums?space=' + encodeURIComponent(space.id));
               }}
@@ -379,7 +386,7 @@ export default function Albums({ space, members = [] }) {
               <button
                 key={album.id}
                 className="momento-albums__card"
-                onClick={() => setSelected(album)}
+                onClick={() => selectAlbum(album)}
               >
                 <div className="momento-albums__art">
                   {imageCache[coverUrl] ? (
