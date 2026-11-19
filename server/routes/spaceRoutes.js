@@ -5,6 +5,7 @@ import Space from "../models/space.js";
 import User from "../models/user.js";
 import requireAuth from "../middleware/requireAuth.js";
 import { getMemberColor } from "../utils/memberColors.js";
+import { joinSpaceInput, spaceInput, validate } from "../middleware/validate.js";
 
 const router = express.Router();
 
@@ -31,7 +32,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", validate(spaceInput), async (req, res) => {
   const name = typeof req.body?.name === "string" ? req.body.name.trim() : "";
   if (name.length < 2 || name.length > 60) {
     return res.status(400).json({ message: "Space name must be 2–60 characters" });
@@ -58,7 +59,7 @@ router.post("/", async (req, res) => {
 });
 
 // Registered users join using a code shared by an existing member.
-router.post("/join", async (req, res) => {
+router.post("/join", validate(joinSpaceInput), async (req, res) => {
   const inviteCode = typeof req.body?.inviteCode === "string"
     ? req.body.inviteCode.trim().replace(/\s+/g, "").toUpperCase()
     : "";
@@ -70,7 +71,7 @@ router.post("/join", async (req, res) => {
   try {
     // Atomic update avoids duplicate membership even with two simultaneous requests.
     const space = await Space.findOneAndUpdate(
-      { inviteCode, members: { $ne: req.user._id } },
+      { inviteCode, members: mongoose.trusted({ $ne: req.user._id }) },
       { $addToSet: { members: req.user._id } },
       { new: true }
     );
@@ -115,7 +116,7 @@ router.get("/:spaceId/members", async (req, res) => {
     const space = await Space.findOne({ _id: req.params.spaceId, members: req.user._id });
     if (!space) return res.status(404).json({ message: "Space not found" });
 
-    const users = await User.find({ _id: { $in: space.members } })
+    const users = await User.find({ _id: mongoose.trusted({ $in: space.members }) })
       .select("_id username avatarFileId");
     const byId = new Map(users.map((user) => [String(user._id), user]));
     const members = space.members.flatMap((id) => {
@@ -138,7 +139,7 @@ router.get("/:spaceId/members", async (req, res) => {
 });
 
 // Every member (not only the owner) can rename their shared space.
-router.patch("/:spaceId", async (req, res) => {
+router.patch("/:spaceId", validate(spaceInput), async (req, res) => {
   if (!mongoose.isValidObjectId(req.params.spaceId)) {
     return res.status(404).json({ message: "Space not found" });
   }

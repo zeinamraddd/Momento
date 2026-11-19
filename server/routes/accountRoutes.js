@@ -7,6 +7,7 @@ import requireAuth from "../middleware/requireAuth.js";
 import User from "../models/user.js";
 import Space from "../models/space.js";
 import { userView } from "../utils/userView.js";
+import { accountInput, validate } from "../middleware/validate.js";
 
 const router = express.Router();
 const MAX_AVATAR_BYTES = 5 * 1024 * 1024;
@@ -52,7 +53,7 @@ router.use(requireAuth);
 
 router.get("/", (req, res) => res.json({ user: userView(req.user) }));
 
-router.patch("/", async (req, res) => {
+router.patch("/", validate(accountInput), async (req, res) => {
   const username = typeof req.body?.username === "string" ? req.body.username.trim() : "";
   if (username.length < 2 || username.length > 60) {
     return res.status(400).json({ message: "Display name must be 2–60 characters" });
@@ -137,7 +138,7 @@ router.get("/avatar/:userId", async (req, res) => {
   try {
     if (String(req.user._id) !== req.params.userId) {
       const sharedSpace = await Space.exists({
-        members: { $all: [req.user._id, new mongoose.Types.ObjectId(req.params.userId)] },
+        members: mongoose.trusted({ $all: [req.user._id, new mongoose.Types.ObjectId(req.params.userId)] }),
       });
       if (!sharedSpace) return res.status(404).json({ message: "Profile picture not found" });
     }

@@ -1,13 +1,25 @@
 
 import express from "express";
 import bcrypt from "bcrypt";
+import { createHash, randomBytes } from "node:crypto";
+import mongoose from "mongoose";
 import User from "../models/user.js";
 import { userView } from "../utils/userView.js";
+import {
+  forgotPasswordInput,
+  loginInput,
+  registerInput,
+  resetPasswordInput,
+  validate,
+} from "../middleware/validate.js";
+import { resetEmailIsConfigured, sendPasswordResetEmail } from "../utils/passwordResetMail.js";
+import { sendNewDeviceEmail, sendWelcomeEmail } from "../utils/notificationMail.js";
+import { recognizeDevice } from "../utils/deviceRecognition.js";
 
 const router = express.Router();
 
 // REGISTER - Create a new account
-router.post("/register", async (req, res) => {
+router.post("/register", validate(registerInput), async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
@@ -53,6 +65,13 @@ router.post("/register", async (req, res) => {
       passwordHash,
     });
 
+    // Mail is optional: a temporary Gmail outage must not undo registration.
+    if (resetEmailIsConfigured()) {
+      void sendWelcomeEmail(user.email, user.username).catch((error) => {
+        console.error("Welcome email failed:", error.message);
+      });
+    }
+
     return res.status(201).json({
       message: "Account created successfully",
       user: userView(user),
@@ -73,7 +92,7 @@ router.post("/register", async (req, res) => {
 });
 
 // LOGIN - Authenticate user and create session
-router.post("/login", async (req, res) => {
+router.post("/login", validate(loginInput), async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -124,14 +143,30 @@ router.post("/login", async (req, res) => {
 
       // Store user ID
       req.session.userId = user._id.toString();
+      req.session.sessionVersion = user.sessionVersion ?? 0;
 
       // Save session
-      req.session.save((error) => {
+      req.session.save(async (error) => {
         if (error) {
           console.error("Session save error:", error);
 
           return res.status(500).json({
             message: "Could not save session",
+          });
+        }
+
+        // Only a successful login can register a browser or trigger an alert.
+        // A failure in device tracking must not lock the user out.
+        let isNewDevice = false;
+        try {
+          isNewDevice = await recognizeDevice(req, res, user);
+        } catch (deviceError) {
+          console.error("Device recognition error:", deviceError.message);
+        }
+
+        if (isNewDevice && resetEmailIsConfigured()) {
+          void sendNewDeviceEmail(user.email).catch((mailError) => {
+            console.error("New-device email failed:", mailError.message);
           });
         }
 
@@ -171,6 +206,10 @@ router.get("/me", async (req, res) => {
       });
     }
 
+    if ((req.session.sessionVersion ?? 0) !== (user.sessionVersion ?? 0)) {
+      return res.status(401).json({ message: "Not authenticated" });
+    }
+
     return res.status(200).json({
       user: userView(user),
     });
@@ -180,6 +219,64 @@ router.get("/me", async (req, res) => {
     return res.status(500).json({
       message: "Server error",
     });
+  }
+});
+
+// Request a single-use email link without revealing whether the account exists.
+router.post("/forgot-password", validate(forgotPasswordInput), async (req, res) => {
+  if (!resetEmailIsConfigured()) {
+    return res.status(503).json({ message: "Password reset email is not configured yet" });
+  }
+
+  const generic = { message: "If this email belongs to an account, a reset link will arrive shortly." };
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) return res.json(generic);
+
+    const token = randomBytes(32).toString("hex");
+    const passwordResetTokenHash = createHash("sha256").update(token).digest("hex");
+    await User.updateOne(
+      { _id: user._id },
+      { $set: { passwordResetTokenHash, passwordResetExpiresAt: new Date(Date.now() + 15 * 60_000) } }
+    );
+
+    try {
+      await sendPasswordResetEmail(user.email, token);
+    } catch (error) {
+      // Revoke the unsent link. Keep the response generic to avoid account enumeration.
+      await User.updateOne(
+        { _id: user._id, passwordResetTokenHash },
+        { $unset: { passwordResetTokenHash: 1, passwordResetExpiresAt: 1 } }
+      );
+      console.error("Password reset email delivery failed:", error.message);
+    }
+    return res.json(generic);
+  } catch (error) {
+    console.error("Request password reset error:", error);
+    return res.status(500).json({ message: "Could not process password reset" });
+  }
+});
+
+// Hash the new password, consume the reset token atomically, and revoke old sessions.
+router.post("/reset-password", validate(resetPasswordInput), async (req, res) => {
+  try {
+    const tokenHash = createHash("sha256").update(req.body.token).digest("hex");
+    const passwordHash = await bcrypt.hash(req.body.password, 10);
+    const user = await User.findOneAndUpdate(
+      { passwordResetTokenHash: tokenHash, passwordResetExpiresAt: mongoose.trusted({ $gt: new Date() }) },
+      {
+        // Forget remembered browsers after a password reset as well as old sessions.
+        $set: { passwordHash, trustedDeviceHashes: [] },
+        $unset: { passwordResetTokenHash: 1, passwordResetExpiresAt: 1 },
+        $inc: { sessionVersion: 1 },
+      },
+      { new: true }
+    );
+    if (!user) return res.status(400).json({ message: "Reset link is invalid or expired" });
+    return res.json({ message: "Password updated. You can log in now." });
+  } catch (error) {
+    console.error("Reset password error:", error);
+    return res.status(500).json({ message: "Could not reset password" });
   }
 });
 
@@ -197,8 +294,8 @@ router.post("/logout", (req, res) => {
     // Remove session cookie
     res.clearCookie("momento.sid", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production" || process.env.COOKIE_CROSS_SITE === "true",
+      sameSite: process.env.COOKIE_CROSS_SITE === "true" ? "none" : "lax",
       path: "/",
     });
 

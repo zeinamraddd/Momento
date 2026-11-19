@@ -73,6 +73,12 @@
   text-decoration: underline;
 }
 
+.register-container .login-forgot-password {
+  margin: 0;
+  text-align: right;
+  font-size: 13px;
+}
+
 /* Password visibility toggle */
 .password-wrapper {
   position: relative;
