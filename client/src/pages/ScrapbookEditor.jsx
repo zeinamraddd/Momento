@@ -3,12 +3,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useTheme } from "../themes/ThemeContext";
 import GroupAvatars from "../components/GroupAvatars";
 import { moveElement, pointerAngle, resizeElement, rotateElement } from "../utils/scrapbookGeometry";
-import pinkTape from "../assets/momento/shared/washi-tape-pink.png";
-import blueTape from "../assets/momento/shared/washi-tape-blue.png";
-import beigeTape from "../assets/momento/shared/washi-tape-beige.png";
-import yellowTape from "../assets/momento/shared/washi-tape-yellow.png";
-import sageTape from "../assets/momento/shared/washi-tape-sage.png";
-import redTape from "../assets/momento/shared/washi-tape-red-orange.png";
+import pinkTape from "../assets/momento/shared/washi-tape-pink.webp";
+import blueTape from "../assets/momento/shared/washi-tape-blue.webp";
+import beigeTape from "../assets/momento/shared/washi-tape-beige.webp";
+import yellowTape from "../assets/momento/shared/washi-tape-yellow.webp";
+import sageTape from "../assets/momento/shared/washi-tape-sage.webp";
+import redTape from "../assets/momento/shared/washi-tape-red-orange.webp";
 import "./ScrapbookEditor.css";
 
 const API = (import.meta.env.VITE_API_URL || "http://localhost:3000").replace(/\/$/, "");

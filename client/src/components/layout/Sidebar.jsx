@@ -5,20 +5,20 @@ import { useTheme } from "../../themes/ThemeContext";
 import "./Sidebar.css";
 
 // Theme-specific logos
-import originalLogo from "../../assets/momento/black-cream/momento-logo.png";
-import blueLogo from "../../assets/momento/blue-notebook/momento-logo.png";
-import greenLogo from "../../assets/momento/green-gingham/momento-logo.png";
+import originalLogo from "../../assets/momento/black-cream/momento-logo.webp";
+import blueLogo from "../../assets/momento/blue-notebook/momento-logo.webp";
+import greenLogo from "../../assets/momento/green-gingham/momento-logo.webp";
 
 // Theme-specific sidebar backgrounds
-import originalBackground from "../../assets/momento/black-cream/sidebar-background.png";
-import blueBackground from "../../assets/momento/blue-notebook/sidebar-background.png";
-import greenBackground from "../../assets/momento/green-gingham/sidebar-background.png";
+import originalBackground from "../../assets/momento/black-cream/sidebar-background.webp";
+import blueBackground from "../../assets/momento/blue-notebook/sidebar-background.webp";
+import greenBackground from "../../assets/momento/green-gingham/sidebar-background.webp";
 
 // Decorations
-import silverStar from "../../assets/momento/blue-notebook/decorative-star-silver.png";
-import orangeSlice from "../../assets/momento/green-gingham/citrus-slice.png";
-import leafSticker from "../../assets/momento/green-gingham/leaf-sticker.png";
-import goldStar from "../../assets/momento/shared/decorative-star-gold.png";
+import silverStar from "../../assets/momento/blue-notebook/decorative-star-silver.webp";
+import orangeSlice from "../../assets/momento/green-gingham/citrus-slice.webp";
+import leafSticker from "../../assets/momento/green-gingham/leaf-sticker.webp";
+import goldStar from "../../assets/momento/shared/decorative-star-gold.webp";
 
 // Assets for each theme
 const sidebarAssets = {

@@ -107,7 +107,7 @@
 .momento-sidebar--original
 .momento-sidebar__item--home {
   background-image:
-    url("../../assets/momento/shared/nav-paper-ivory.png");
+    url("../../assets/momento/shared/nav-paper-ivory.webp");
 
   color: #211d18;
 }
@@ -140,7 +140,7 @@
 .momento-sidebar--blue
 .momento-sidebar__item--home {
   background-image:
-    url("../../assets/momento/shared/nav-paper-ivory.png");
+    url("../../assets/momento/shared/nav-paper-ivory.webp");
 
   color: #203773;
 }
@@ -148,7 +148,7 @@
 .momento-sidebar--blue
 .momento-sidebar__item--albums {
   background-image:
-    url("../../assets/momento/blue-notebook/nav-paper-blue.png");
+    url("../../assets/momento/blue-notebook/nav-paper-blue.webp");
 
   color: #203773;
 }
@@ -159,7 +159,7 @@
 .momento-sidebar--blue
 .momento-sidebar__item--account {
   background-image:
-    url("../../assets/momento/shared/nav-paper-yellow.png");
+    url("../../assets/momento/shared/nav-paper-yellow.webp");
 
   color: #203773;
 }
@@ -172,7 +172,7 @@
 .momento-sidebar--green
 .momento-sidebar__item--home {
   background-image:
-    url("../../assets/momento/shared/nav-paper-ivory.png");
+    url("../../assets/momento/shared/nav-paper-ivory.webp");
 
   color: #255a44;
 }
@@ -180,7 +180,7 @@
 .momento-sidebar--green
 .momento-sidebar__item--albums {
   background-image:
-    url("../../assets/momento/green-gingham/nav-paper-pink.png");
+    url("../../assets/momento/green-gingham/nav-paper-pink.webp");
 
   color: #255a44;
 }
@@ -191,7 +191,7 @@
 .momento-sidebar--green
 .momento-sidebar__item--account {
   background-image:
-    url("../../assets/momento/shared/nav-paper-yellow.png");
+    url("../../assets/momento/shared/nav-paper-yellow.webp");
 
   color: #255a44;
 }

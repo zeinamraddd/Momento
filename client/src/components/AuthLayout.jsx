@@ -1,9 +1,9 @@
 import "./AuthLayout.css";
 
 // Transparent PNG images
-import logo from "../assets/momento-logo.png";
-import polaroids from "../assets/polaroids.png";
-import decorations from "../assets/decorations.png";
+import logo from "../assets/momento-logo.webp";
+import polaroids from "../assets/polaroids.webp";
+import decorations from "../assets/decorations.webp";
 
 function AuthLayout({ children }) {
   return (
