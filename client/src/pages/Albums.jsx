@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import GroupAvatars from '../components/GroupAvatars';
 import './Albums.css';
@@ -27,6 +27,8 @@ export default function Albums({ space, members = [] }) {
   const [caption, setCaption] = useState('');
   const [viewer, setViewer] = useState(-1);
   const [imageCache, setImageCache] = useState({});
+  const cachedObjectUrls = useRef(new Map());
+  const pendingImages = useRef(new Map());
 
   const base = urlFor(space.id);
 
@@ -109,7 +111,22 @@ export default function Albums({ space, members = [] }) {
     };
   }, [space.id, selected?.id]);
 
-  // Load private images using the user's session cookie.
+  // Each object URL retains image bytes in memory until it is revoked.
+  // Release private images when switching spaces or leaving Albums.
+  useEffect(() => {
+    setImageCache({});
+    return () => {
+      for (const controller of pendingImages.current.values()) controller.abort();
+      pendingImages.current.clear();
+      for (const objectUrl of cachedObjectUrls.current.values()) {
+        URL.revokeObjectURL(objectUrl);
+      }
+      cachedObjectUrls.current.clear();
+    };
+  }, [space.id]);
+
+  // Load private images using the user's session cookie, without issuing a
+  // second request for an image that is already loaded or in flight.
   useEffect(() => {
     const sources = selected
       ? photos
@@ -120,13 +137,12 @@ export default function Albums({ space, members = [] }) {
             imageUrl: `${urlFor(space.id, a.id)}/photos/cover`
           }));
 
-    const controllers = [];
-
     sources.forEach(item => {
-      if (!item.imageUrl || imageCache[item.imageUrl]) return;
+      if (!item.imageUrl || cachedObjectUrls.current.has(item.imageUrl) ||
+          pendingImages.current.has(item.imageUrl)) return;
 
       const controller = new AbortController();
-      controllers.push(controller);
+      pendingImages.current.set(item.imageUrl, controller);
 
       const imageUrl = item.imageUrl.startsWith('http')
         ? item.imageUrl
@@ -143,19 +159,21 @@ export default function Albums({ space, members = [] }) {
           return response.blob();
         })
         .then(blob => {
+          if (controller.signal.aborted) return;
           const objectUrl = URL.createObjectURL(blob);
-
+          cachedObjectUrls.current.set(item.imageUrl, objectUrl);
           setImageCache(prev => ({
             ...prev,
             [item.imageUrl]: objectUrl
           }));
         })
-        .catch(() => {});
+        .catch(() => {})
+        .finally(() => {
+          if (pendingImages.current.get(item.imageUrl) === controller) {
+            pendingImages.current.delete(item.imageUrl);
+          }
+        });
     });
-
-    return () => {
-      controllers.forEach(controller => controller.abort());
-    };
   }, [albums, photos, selected?.id, space.id]);
 
   async function perform(fn) {
@@ -368,6 +386,8 @@ export default function Albums({ space, members = [] }) {
                     <img
                       src={imageCache[coverUrl]}
                       alt=""
+                      loading="lazy"
+                      decoding="async"
                     />
                   ) : (
                     <span>📷</span>
@@ -442,6 +462,8 @@ export default function Albums({ space, members = [] }) {
                       <img
                         src={imageCache[photo.imageUrl]}
                         alt={photo.caption || 'Album photo'}
+                        loading="lazy"
+                        decoding="async"
                       />
                     ) : (
                       <span>📷</span>

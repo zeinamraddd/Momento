@@ -79,8 +79,14 @@ export default function ScrapbookEditor({ space, members = [] }) {
   const [search, setSearch] = useState("");
   const [stickers, setStickers] = useState([]);
   const interaction = useRef(null);
+  const pointerFrame = useRef(null);
+  const pendingPointer = useRef(null);
   const canvasRefs = useRef([null, null]);
   const editSerial = useRef(0);
+
+  useEffect(() => () => {
+    if (pointerFrame.current !== null) cancelAnimationFrame(pointerFrame.current);
+  }, []);
 
   const albumPath = "/albums?space=" + encodeURIComponent(space.id) +
     "&album=" + encodeURIComponent(albumId);
@@ -128,7 +134,9 @@ export default function ScrapbookEditor({ space, members = [] }) {
           signal: controller.signal,
         });
         if (!response.ok) return null;
-        const objectUrl = URL.createObjectURL(await response.blob());
+        const blob = await response.blob();
+        if (!active || controller.signal.aborted) return null;
+        const objectUrl = URL.createObjectURL(blob);
         created.push(objectUrl);
         return [photo.id, objectUrl];
       } catch {
@@ -204,6 +212,11 @@ export default function ScrapbookEditor({ space, members = [] }) {
     event.preventDefault();
     const rect = canvasRefs.current[item.page]?.getBoundingClientRect();
     if (!rect) return;
+    if (pointerFrame.current !== null) {
+      cancelAnimationFrame(pointerFrame.current);
+      pointerFrame.current = null;
+    }
+    pendingPointer.current = null;
     interaction.current = {
       id: item.id, pointerId: event.pointerId, mode, rect,
       x: event.clientX, y: event.clientY, item,
@@ -214,22 +227,59 @@ export default function ScrapbookEditor({ space, members = [] }) {
     setActivePage(item.page);
   };
 
-  const movePointer = (event) => {
-    const drag = interaction.current;
-    if (!drag || drag.pointerId !== event.pointerId) return;
-    const dx = event.clientX - drag.x;
-    const dy = event.clientY - drag.y;
+  // Pointer devices can emit far more move events than the screen can paint.
+  // Apply only the latest position once per animation frame, while keeping the
+  // final pointer-up position so fast drags never lose their last movement.
+  const applyPointerUpdate = () => {
+    const pending = pendingPointer.current;
+    pendingPointer.current = null;
+    if (!pending || interaction.current !== pending.drag) return;
+    const { drag, clientX, clientY, shiftKey } = pending;
+    const dx = clientX - drag.x;
+    const dy = clientY - drag.y;
     if (drag.mode === "resize") {
-      updateElement(drag.id, resizeElement(drag.item, dx, dy, drag.rect, event.shiftKey));
+      updateElement(drag.id, resizeElement(drag.item, dx, dy, drag.rect, shiftKey));
     } else if (drag.mode === "rotate") {
-      updateElement(drag.id, rotateElement(drag.item, drag.rect, drag.startAngle, event.clientX, event.clientY));
+      updateElement(drag.id, rotateElement(drag.item, drag.rect, drag.startAngle, clientX, clientY));
     } else {
       updateElement(drag.id, moveElement(drag.item, dx, dy, drag.rect));
     }
   };
 
+  const movePointer = (event) => {
+    const drag = interaction.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+    pendingPointer.current = {
+      drag,
+      clientX: event.clientX,
+      clientY: event.clientY,
+      shiftKey: event.shiftKey,
+    };
+    if (pointerFrame.current === null) {
+      pointerFrame.current = requestAnimationFrame(() => {
+        pointerFrame.current = null;
+        applyPointerUpdate();
+      });
+    }
+  };
+
   const stopPointer = (event) => {
-    if (interaction.current?.pointerId === event.pointerId) interaction.current = null;
+    const drag = interaction.current;
+    if (drag?.pointerId !== event.pointerId) return;
+    if (event.type === "pointerup") {
+      pendingPointer.current = {
+        drag,
+        clientX: event.clientX,
+        clientY: event.clientY,
+        shiftKey: event.shiftKey,
+      };
+    }
+    if (pointerFrame.current !== null) {
+      cancelAnimationFrame(pointerFrame.current);
+      pointerFrame.current = null;
+    }
+    applyPointerUpdate();
+    interaction.current = null;
   };
 
   const startPaletteDrag = (event, type, value) => {

@@ -5,97 +5,41 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import { lazy, Suspense } from "react";
 
-// Authentication pages
-import Login from "./components/Login";
-import Register from "./components/Register";
-import ForgotPassword from "./components/ForgotPassword";
-import ResetPassword from "./components/ResetPassword";
+// Load only the page the user visits, instead of downloading every page at login.
+const Login = lazy(() => import("./components/Login"));
+const Register = lazy(() => import("./components/Register"));
+const ForgotPassword = lazy(() => import("./components/ForgotPassword"));
+const ResetPassword = lazy(() => import("./components/ResetPassword"));
 
-// Shared Spaces page
-import SpaceSetup from "./components/SpaceSetup";
+const SpaceSetup = lazy(() => import("./components/SpaceSetup"));
 
-// Main dashboard and Shared Albums
-import ProtectedPage from "./components/ProtectedPage";
+const ProtectedPage = lazy(() => import("./components/ProtectedPage"));
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
+      <Suspense fallback={<p role="status">Opening MOMENTO...</p>}>
+        <Routes>
+          <Route path="/" element={<Navigate to="/login" replace />} />
 
-        {/* ==================================
-            DEFAULT ROUTE
-        ================================== */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
-        <Route
-          path="/"
-          element={<Navigate to="/login" replace />}
-        />
+          <Route path="/spaces" element={<SpaceSetup />} />
 
-        {/* ==================================
-            AUTHENTICATION
-        ================================== */}
+          <Route path="/dashboard" element={<ProtectedPage />} />
+          <Route path="/account" element={<ProtectedPage />} />
+          <Route path="/lore" element={<ProtectedPage />} />
+          <Route path="/albums" element={<ProtectedPage />} />
+          <Route path="/albums/:albumId/photos/:photoId/edit" element={<ProtectedPage />} />
 
-        <Route
-          path="/login"
-          element={<Login />}
-        />
-
-        <Route
-          path="/register"
-          element={<Register />}
-        />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-
-        {/* ==================================
-            SHARED SPACES
-        ================================== */}
-
-        <Route
-          path="/spaces"
-          element={<SpaceSetup />}
-        />
-
-        {/* ==================================
-            MAIN DASHBOARD
-        ================================== */}
-
-        <Route
-          path="/dashboard"
-          element={<ProtectedPage />}
-        />
-        <Route
-          path="/account"
-          element={<ProtectedPage />}
-        />
-        <Route
-           path="/lore"
-           element={<ProtectedPage />}
-        />
-        {/* ==================================
-            SHARED ALBUMS
-        ================================== */}
-
-        <Route
-          path="/albums"
-          element={<ProtectedPage />}
-        />
-        <Route
-          path="/albums/:albumId/photos/:photoId/edit"
-          element={<ProtectedPage />}
-        />
-
-        {/* ==================================
-            UNKNOWN ROUTES
-        ================================== */}
-
-        <Route
-          path="*"
-          element={<Navigate to="/login" replace />}
-        />
-
-      </Routes>
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 }
