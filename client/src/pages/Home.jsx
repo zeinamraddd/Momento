@@ -15,44 +15,17 @@ const API_URL =
 // HOME COMPONENT
 // ==========================================
 
-function Home({space, onSpaceChange}) {
+function Home({space, onSpaceChange, members = [], membersError = ""}) {
 
   // Get the currently selected theme
   const { theme } = useTheme();
 
-  // Members use the SAME backend color assignment as calendar events.
-  const [memberResult, setMemberResult] = useState({ spaceId: null, members: [], error: "" });
   const [membersOpenFor, setMembersOpenFor] = useState(null);
-  const members = memberResult.spaceId === space?.id ? memberResult.members : [];
-  const membersError = memberResult.spaceId === space?.id ? memberResult.error : "";
   const membersOpen = membersOpenFor === space?.id;
   const [editingGroupName, setEditingGroupName] = useState(false);
   const [groupName, setGroupName] = useState(space?.name || "");
   const [groupSaving, setGroupSaving] = useState(false);
   const [groupMessage, setGroupMessage] = useState("");
-
-  useEffect(() => {
-    if (!space?.id) return;
-    const controller = new AbortController();
-    fetch(`${API_URL}/api/spaces/${encodeURIComponent(space.id)}/members`, {
-      credentials: "include",
-      signal: controller.signal,
-    })
-      .then(async (response) => {
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.message || "Could not load members");
-        return data;
-      })
-      .then((data) => {
-        if (!controller.signal.aborted) setMemberResult({ spaceId: space.id, members: data.members || [], error: "" });
-      })
-      .catch((error) => {
-        if (error.name !== "AbortError" && !controller.signal.aborted) {
-          setMemberResult({ spaceId: space.id, members: [], error: error.message });
-        }
-      });
-    return () => controller.abort();
-  }, [space?.id]);
 
   async function renameGroup(event) {
     event.preventDefault();

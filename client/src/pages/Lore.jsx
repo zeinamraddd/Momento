@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { useTheme } from "../themes/ThemeContext";
+import GroupAvatars from "../components/GroupAvatars";
 import "./Lore.css";
 
 const dateLabel = (value) => {
@@ -8,7 +9,7 @@ const dateLabel = (value) => {
   return new Date(value).toLocaleDateString("en-US", { month: "short", day: "numeric" });
 };
 
-function Lore({ space, user }) {
+function Lore({ space, user, members = [] }) {
   const { theme } = useTheme();
   const API_URL =
     import.meta.env.VITE_API_URL || "http://localhost:3000";
@@ -326,12 +327,7 @@ function Lore({ space, user }) {
             </h1>
           ) : <h1>{space?.name || "Our scrapbook"}</h1>}
         </div>
-        {/* Decorative placeholders match the existing Home screen. */}
-        <div className="lore-space-header__avatars" aria-label="Scrapbook friends">
-          <span className="lore-avatar lore-avatar--pink">M</span>
-          <span className="lore-avatar lore-avatar--blue">A</span>
-          <span className="lore-avatar lore-avatar--yellow">J</span>
-        </div>
+        <GroupAvatars members={members} className="lore-space-header__avatars" />
       </header>
 
       <section className="lore-board" aria-labelledby="lore-heading">
@@ -383,7 +379,9 @@ function Lore({ space, user }) {
         ) : (
           <>
             <div className={"lore-featured" + (isFlipped ? " lore-featured--flipped" : "")}>
-              <article className="lore-face lore-face--front" aria-label="Front of lore card">
+              <div className="lore-featured__inner">
+              <article className="lore-face lore-face--front" aria-label="Front of lore card"
+                aria-hidden={isFlipped} inert={isFlipped}>
                 <span className="lore-face__tape" aria-hidden="true" />
                 <span className="lore-face__label">FRONT / STORY</span>
                 <div className="lore-face__content">
@@ -394,7 +392,8 @@ function Lore({ space, user }) {
                   <p className="lore-face__byline">Added by {card.creatorName} <span>·</span> {dateLabel(card.createdAt)}</p>
                 </div>
               </article>
-              <article className="lore-face lore-face--back" aria-label="Back of lore card">
+              <article className="lore-face lore-face--back" aria-label="Back of lore card"
+                aria-hidden={!isFlipped} inert={!isFlipped}>
                 <span className="lore-face__tape" aria-hidden="true" />
                 <span className="lore-face__label">BACK / REPLY</span>
                 <div className="lore-face__content">
@@ -419,6 +418,7 @@ function Lore({ space, user }) {
                   </>}
                 </div>
               </article>
+              </div>
             </div>
 
             <div className="lore-toolbar">

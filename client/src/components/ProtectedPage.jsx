@@ -21,6 +21,7 @@ function ProtectedPage() {
 
   const [user, setUser] = useState(null);
   const [space, setSpace] = useState(null);
+  const [memberResult, setMemberResult] = useState({ spaceId: null, members: [], error: "" });
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -35,6 +36,37 @@ function ProtectedPage() {
   // Check which page should be displayed
   const isAlbumsPage = location.pathname === "/albums";
   const isAccountPage = location.pathname === "/account";
+  const members = memberResult.spaceId === space?.id ? memberResult.members : [];
+  const membersError = memberResult.spaceId === space?.id ? memberResult.error : "";
+
+  // Fetch once per selected space so every page displays the same real members.
+  useEffect(() => {
+    if (!space?.id) return;
+    const controller = new AbortController();
+    setMemberResult({ spaceId: space.id, members: [], error: "" });
+
+    fetch(`${API_URL}/api/spaces/${encodeURIComponent(space.id)}/members`, {
+      credentials: "include",
+      signal: controller.signal,
+    })
+      .then(async (response) => {
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.message || "Could not load members");
+        return data;
+      })
+      .then((data) => {
+        if (!controller.signal.aborted) {
+          setMemberResult({ spaceId: space.id, members: data.members || [], error: "" });
+        }
+      })
+      .catch((err) => {
+        if (err.name !== "AbortError" && !controller.signal.aborted) {
+          setMemberResult({ spaceId: space.id, members: [], error: err.message });
+        }
+      });
+
+    return () => controller.abort();
+  }, [API_URL, space?.id]);
 
   // ==========================================
   // VERIFY AUTHENTICATION AND SPACE
@@ -201,15 +233,17 @@ function ProtectedPage() {
           {isAccountPage ? (
             <Account user={user} onUserChange={setUser} spaceId={space?.id} />
           ) : location.pathname.startsWith("/albums/") ? (
-            <ScrapbookEditor space={space} />
+            <ScrapbookEditor space={space} members={members} />
           ) : isAlbumsPage ? (
-            <Albums space={space} />
+            <Albums space={space} members={members} />
           ) : location.pathname === "/lore" ? (
-            <Lore user={user} space={space} />
+            <Lore user={user} space={space} members={members} />
           ) : (
             <Home
               user={user}
               space={space}
+              members={members}
+              membersError={membersError}
               onSpaceChange={setSpace}
             />
           )}

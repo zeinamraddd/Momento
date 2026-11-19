@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import GroupAvatars from '../components/GroupAvatars';
 import './Albums.css';
 
 const API = (import.meta.env.VITE_API_URL || 'http://localhost:3000').replace(/\/$/, '');
@@ -9,7 +10,7 @@ const urlFor = (spaceId, albumId = '') =>
     albumId ? `/${encodeURIComponent(albumId)}` : ''
   }`;
 
-export default function Albums({ space }) {
+export default function Albums({ space, members = [] }) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const initialAlbumId = searchParams.get('album');
@@ -291,11 +292,7 @@ export default function Albums({ space }) {
       <header className="momento-albums__top">
         <h1>{space.name}</h1>
 
-        <div className="momento-albums__avatars">
-          <span>M</span>
-          <span>A</span>
-          <span>J</span>
-        </div>
+        <GroupAvatars members={members} className="momento-albums__avatars" />
       </header>
 
       <section className="momento-albums__heading">

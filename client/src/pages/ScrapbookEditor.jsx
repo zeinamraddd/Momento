@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTheme } from "../themes/ThemeContext";
+import GroupAvatars from "../components/GroupAvatars";
+import { moveElement, pointerAngle, resizeElement, rotateElement } from "../utils/scrapbookGeometry";
 import pinkTape from "../assets/momento/shared/washi-tape-pink.png";
 import blueTape from "../assets/momento/shared/washi-tape-blue.png";
 import beigeTape from "../assets/momento/shared/washi-tape-beige.png";
@@ -57,7 +59,7 @@ async function getJSON(url, options = {}) {
   return data;
 }
 
-export default function ScrapbookEditor({ space }) {
+export default function ScrapbookEditor({ space, members = [] }) {
   const { theme } = useTheme();
   const navigate = useNavigate();
   const { albumId, photoId } = useParams();
@@ -205,6 +207,7 @@ export default function ScrapbookEditor({ space }) {
     interaction.current = {
       id: item.id, pointerId: event.pointerId, mode, rect,
       x: event.clientX, y: event.clientY, item,
+      startAngle: mode === "rotate" ? pointerAngle(item, rect, event.clientX, event.clientY) : null,
     };
     event.currentTarget.closest(".scrap-item").setPointerCapture(event.pointerId);
     setSelectedId(item.id);
@@ -214,21 +217,20 @@ export default function ScrapbookEditor({ space }) {
   const movePointer = (event) => {
     const drag = interaction.current;
     if (!drag || drag.pointerId !== event.pointerId) return;
-    const dx = (event.clientX - drag.x) / drag.rect.width * 100;
-    const dy = (event.clientY - drag.y) / drag.rect.height * 100;
+    const dx = event.clientX - drag.x;
+    const dy = event.clientY - drag.y;
     if (drag.mode === "resize") {
-      const w = clamp(drag.item.w + dx, 5, 100 - drag.item.x);
-      const h = clamp(drag.item.h + dy, 5, 100 - drag.item.y);
-      updateElement(drag.id, { w, h });
+      updateElement(drag.id, resizeElement(drag.item, dx, dy, drag.rect, event.shiftKey));
+    } else if (drag.mode === "rotate") {
+      updateElement(drag.id, rotateElement(drag.item, drag.rect, drag.startAngle, event.clientX, event.clientY));
     } else {
-      updateElement(drag.id, {
-        x: clamp(drag.item.x + dx, 0, 100 - drag.item.w),
-        y: clamp(drag.item.y + dy, 0, 100 - drag.item.h),
-      });
+      updateElement(drag.id, moveElement(drag.item, dx, dy, drag.rect));
     }
   };
 
-  const stopPointer = () => { interaction.current = null; };
+  const stopPointer = (event) => {
+    if (interaction.current?.pointerId === event.pointerId) interaction.current = null;
+  };
 
   const startPaletteDrag = (event, type, value) => {
     event.dataTransfer.setData("application/x-momento", JSON.stringify({ type, value }));
@@ -342,6 +344,7 @@ export default function ScrapbookEditor({ space }) {
         onPointerMove={movePointer}
         onPointerUp={stopPointer}
         onPointerCancel={stopPointer}
+        onLostPointerCapture={stopPointer}
         onDoubleClick={() => { setSelectedId(item.id); setTool(null); }}
         role="button" tabIndex={0}
         aria-label={"Move " + item.type}
@@ -355,6 +358,11 @@ export default function ScrapbookEditor({ space }) {
             setSelectedId(null);
           } else if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(event.key)) {
             event.preventDefault();
+            if (event.altKey) {
+              updateElement(item.id, { rotation: clamp(item.rotation +
+                (event.key === "ArrowRight" || event.key === "ArrowDown" ? 5 : -5), -180, 180) });
+              return;
+            }
             const step = event.shiftKey ? 5 : 1;
             const movement = {
               ArrowUp: { y: -step }, ArrowDown: { y: step },
@@ -370,8 +378,14 @@ export default function ScrapbookEditor({ space }) {
       >
         {content}
         {selectedId === item.id && (
-          <span className="scrap-item__resize" role="presentation"
-            onPointerDown={(event) => startPointer(event, item, "resize")} />
+          <>
+            <span className="scrap-item__resize" role="presentation"
+              title="Drag to resize · Hold Shift to keep proportions"
+              onPointerDown={(event) => startPointer(event, item, "resize")} />
+            <span className="scrap-item__rotate" role="presentation"
+              title="Drag to rotate"
+              onPointerDown={(event) => startPointer(event, item, "rotate")} />
+          </>
         )}
       </div>
     );
@@ -398,7 +412,7 @@ export default function ScrapbookEditor({ space }) {
             </h1>
           ) : <h1>{space.name}</h1>}
         </div>
-        <div className="scrapbook-editor__avatars" aria-hidden="true"><span>M</span><span>A</span><span>J</span></div>
+        <GroupAvatars members={members} className="scrapbook-editor__avatars" />
       </header>
 
       <div className="scrapbook-editor__heading">
@@ -406,6 +420,7 @@ export default function ScrapbookEditor({ space }) {
           <button className="scrapbook-editor__back" type="button" onClick={() => leaveEditor(albumPath)}>← Shared Albums</button>
           <h2>Scrapbook Editor</h2>
           <p>{album.title} <span> / </span> Page {currentPhotoIndex + 1} of {photos.length}</p>
+          <p className="scrapbook-editor__hint">Click an item, drag to move, use its corner to resize or the top handle to rotate.</p>
         </div>
         <button className="scrapbook-editor__save" type="button" onClick={savePage} disabled={!dirty || saving}>
           {saving ? "Saving..." : dirty ? "Save Page" : "✓ Saved"}
@@ -548,18 +563,10 @@ export default function ScrapbookEditor({ space }) {
               <input type="color" value={selected.color} onChange={(event) => updateElement(selected.id, { color: event.target.value })} />
             </label>
           </>}
-          <label>Width %
-            <input type="range" min="5" max={100 - selected.x} value={selected.w}
-              onChange={(event) => updateElement(selected.id, { w: Number(event.target.value) })} />
-          </label>
-          <label>Height %
-            <input type="range" min="5" max={100 - selected.y} value={selected.h}
-              onChange={(event) => updateElement(selected.id, { h: Number(event.target.value) })} />
-          </label>
-          <label>Rotate °
-            <input type="range" min="-180" max="180" value={selected.rotation}
-              onChange={(event) => updateElement(selected.id, { rotation: Number(event.target.value) })} />
-          </label>
+          <p className="scrap-inspector__tip">
+            Move by dragging · Resize with the corner handle · Rotate with the top handle.
+            Hold Shift while resizing to keep the original proportions.
+          </p>
           <button type="button" className="scrap-inspector__delete"
             onClick={() => {
               editDoc((previous) => ({ ...previous, elements: previous.elements.filter((item) => item.id !== selected.id) }));
