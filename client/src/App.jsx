@@ -9,6 +9,8 @@ import {
 // Authentication pages
 import Login from "./components/Login";
 import Register from "./components/Register";
+import ForgotPassword from "./components/ForgotPassword";
+import ResetPassword from "./components/ResetPassword";
 
 // Shared Spaces page
 import SpaceSetup from "./components/SpaceSetup";
@@ -43,6 +45,8 @@ function App() {
           path="/register"
           element={<Register />}
         />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         {/* ==================================
             SHARED SPACES

@@ -157,7 +157,7 @@ router.put("/:spaceId/albums/:albumId/photos/:photoId/scrapbook", async (req, re
     )];
     if (photoIds.length) {
       const count = await Photo.countDocuments({
-        _id: { $in: photoIds },
+        _id: mongoose.trusted({ $in: photoIds }),
         albumId: req.scrapbookAlbum._id,
       });
       if (count !== photoIds.length) {

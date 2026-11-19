@@ -103,6 +103,10 @@ function Login() {
           </div>
 
           {/* Error message */}
+          <p className="login-forgot-password">
+            <Link to="/forgot-password">Forgot password?</Link>
+          </p>
+
           {error && (
             <p role="alert" style={{ color: "#c0392b" }}>
               {error}

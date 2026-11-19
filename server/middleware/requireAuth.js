@@ -22,6 +22,10 @@ const requireAuth = async (req, res, next) => {
       });
     }
 
+    if ((req.session.sessionVersion ?? 0) !== (user.sessionVersion ?? 0)) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
+
     // Make user available to the next route
     req.user = user;
 

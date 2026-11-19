@@ -23,6 +23,18 @@ const userSchema = new mongoose.Schema(
     avatarFileId: {
       type: mongoose.Schema.Types.ObjectId,
       default: null
+    },
+    // Single-use email reset tokens are stored as SHA-256 hashes, not raw links.
+    passwordResetTokenHash: { type: String, select: false, default: null },
+    passwordResetExpiresAt: { type: Date, select: false, default: null },
+    // Incrementing this value after reset invalidates previously issued sessions.
+    sessionVersion: { type: Number, default: 0 },
+
+    // A remembered browser receives a random cookie. Only its hash is saved.
+    trustedDeviceHashes: {
+      type: [String],
+      default: [],
+      select: false
     }
   },
   { timestamps: true }
