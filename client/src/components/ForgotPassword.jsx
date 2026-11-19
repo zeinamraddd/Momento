@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import AuthLayout from "./AuthLayout";
+import { API_BASE_URL as API_URL } from "../utils/apiBaseUrl";
+import { EMAIL_RECOVERY_ENABLED } from "../utils/featureFlags";
 import "./Register.css";
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -28,6 +28,18 @@ export default function ForgotPassword() {
     } finally {
       setLoading(false);
     }
+  }
+
+  if (!EMAIL_RECOVERY_ENABLED) {
+    return (
+      <AuthLayout>
+        <div className="register-container">
+          <h1>Password recovery is temporarily unavailable</h1>
+          <p>This free hosted demo cannot send password reset emails yet.</p>
+          <p><Link to="/login">← Back to login</Link></p>
+        </div>
+      </AuthLayout>
+    );
   }
 
   return (

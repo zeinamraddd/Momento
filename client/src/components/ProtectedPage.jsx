@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import Sidebar from "./layout/Sidebar";
 import { useTheme } from "../themes/themeState";
+import { API_BASE_URL as API_URL } from "../utils/apiBaseUrl";
 
 // Keep the shared auth/sidebar shell light; fetch each page's code on demand.
 const Home = lazy(() => import("../pages/Home"));
@@ -27,10 +28,6 @@ function ProtectedPage() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
-  // Backend URL
-  const API_URL =
-    import.meta.env.VITE_API_URL || "http://localhost:3000";
 
   // Get the selected space ID from the URL
   const params = new URLSearchParams(location.search);
@@ -68,7 +65,7 @@ function ProtectedPage() {
       });
 
     return () => controller.abort();
-  }, [API_URL, space?.id]);
+  }, [ space?.id]);
 
   // ==========================================
   // VERIFY AUTHENTICATION AND SPACE
@@ -165,7 +162,7 @@ function ProtectedPage() {
 
     return () => controller.abort();
 
-  }, [API_URL, spaceId, isAccountPage, navigate]);
+  }, [ spaceId, isAccountPage, navigate]);
 
   // ==========================================
   // LOGOUT

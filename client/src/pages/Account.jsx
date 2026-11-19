@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import MemberAvatar from "../components/MemberAvatar";
+import { API_BASE_URL as API_URL } from "../utils/apiBaseUrl";
 import "./Account.css";
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 const MAX_AVATAR_BYTES = 5 * 1024 * 1024;
 
 async function apiRequest(path, options = {}) {

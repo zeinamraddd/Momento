@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTheme } from "../themes/themeState";
 import GroupAvatars from "../components/GroupAvatars";
+import { API_BASE_URL as API } from "../utils/apiBaseUrl";
 import { moveElement, pointerAngle, resizeElement, rotateElement } from "../utils/scrapbookGeometry";
 import pinkTape from "../assets/momento/shared/washi-tape-pink.webp";
 import blueTape from "../assets/momento/shared/washi-tape-blue.webp";
@@ -11,7 +12,6 @@ import sageTape from "../assets/momento/shared/washi-tape-sage.webp";
 import redTape from "../assets/momento/shared/washi-tape-red-orange.webp";
 import "./ScrapbookEditor.css";
 
-const API = (import.meta.env.VITE_API_URL || "http://localhost:3000").replace(/\/$/, "");
 const TAPES = { pink: pinkTape, blue: blueTape, beige: beigeTape, yellow: yellowTape, sage: sageTape, "red-orange": redTape };
 const TOOLS = [
   { id: "photos", symbol: "+", label: "Add Photo" },
