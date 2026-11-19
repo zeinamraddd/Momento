@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import Sidebar from "./layout/Sidebar";
-import Home from "../pages/Home";
-import Lore from "../pages/Lore";
-import Albums from "../pages/Albums";
-import ScrapbookEditor from "../pages/ScrapbookEditor";
-import Account from "../pages/Account";
 import { useTheme } from "../themes/ThemeContext";
+
+// Keep the shared auth/sidebar shell light; fetch each page's code on demand.
+const Home = lazy(() => import("../pages/Home"));
+const Lore = lazy(() => import("../pages/Lore"));
+const Albums = lazy(() => import("../pages/Albums"));
+const ScrapbookEditor = lazy(() => import("../pages/ScrapbookEditor"));
+const Account = lazy(() => import("../pages/Account"));
 
 function ProtectedPage() {
   const navigate = useNavigate();
@@ -230,23 +232,25 @@ function ProtectedPage() {
 
         {/* Main content */}
         <main className="momento-main">
-          {isAccountPage ? (
-            <Account user={user} onUserChange={setUser} spaceId={space?.id} />
-          ) : location.pathname.startsWith("/albums/") ? (
-            <ScrapbookEditor space={space} members={members} />
-          ) : isAlbumsPage ? (
-            <Albums space={space} members={members} />
-          ) : location.pathname === "/lore" ? (
-            <Lore user={user} space={space} members={members} />
-          ) : (
-            <Home
-              user={user}
-              space={space}
-              members={members}
-              membersError={membersError}
-              onSpaceChange={setSpace}
-            />
-          )}
+          <Suspense fallback={<p role="status">Loading page...</p>}>
+            {isAccountPage ? (
+              <Account user={user} onUserChange={setUser} spaceId={space?.id} />
+            ) : location.pathname.startsWith("/albums/") ? (
+              <ScrapbookEditor space={space} members={members} />
+            ) : isAlbumsPage ? (
+              <Albums space={space} members={members} />
+            ) : location.pathname === "/lore" ? (
+              <Lore user={user} space={space} members={members} />
+            ) : (
+              <Home
+                user={user}
+                space={space}
+                members={members}
+                membersError={membersError}
+                onSpaceChange={setSpace}
+              />
+            )}
+          </Suspense>
         </main>
       </div>
     </div>
