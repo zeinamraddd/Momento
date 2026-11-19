@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { useTheme } from "../themes/ThemeContext";
+import { useTheme } from "../themes/themeState";
 import GroupAvatars from "../components/GroupAvatars";
 import "./Lore.css";
 
@@ -41,8 +41,6 @@ function Lore({ space, user, members = [] }) {
   // Load Lore Cards
   useEffect(() => {
     if (!spaceId) {
-      setCards([]);
-      setLoading(false);
       return;
     }
 

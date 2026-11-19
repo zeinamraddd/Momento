@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import Sidebar from "./layout/Sidebar";
-import { useTheme } from "../themes/ThemeContext";
+import { useTheme } from "../themes/themeState";
 
 // Keep the shared auth/sidebar shell light; fetch each page's code on demand.
 const Home = lazy(() => import("../pages/Home"));
@@ -33,7 +33,9 @@ function ProtectedPage() {
     import.meta.env.VITE_API_URL || "http://localhost:3000";
 
   // Get the selected space ID from the URL
-  const spaceId = new URLSearchParams(location.search).get("space");
+  const params = new URLSearchParams(location.search);
+  const spaceId = params.get("space");
+  const initialAlbumId = params.get("album") || "";
 
   // Check which page should be displayed
   const isAlbumsPage = location.pathname === "/albums";
@@ -45,8 +47,6 @@ function ProtectedPage() {
   useEffect(() => {
     if (!space?.id) return;
     const controller = new AbortController();
-    setMemberResult({ spaceId: space.id, members: [], error: "" });
-
     fetch(`${API_URL}/api/spaces/${encodeURIComponent(space.id)}/members`, {
       credentials: "include",
       signal: controller.signal,
@@ -236,13 +236,14 @@ function ProtectedPage() {
             {isAccountPage ? (
               <Account user={user} onUserChange={setUser} spaceId={space?.id} />
             ) : location.pathname.startsWith("/albums/") ? (
-              <ScrapbookEditor space={space} members={members} />
+              <ScrapbookEditor key={`${space.id}:${location.pathname}`} space={space} members={members} />
             ) : isAlbumsPage ? (
-              <Albums space={space} members={members} />
+              <Albums key={`${space.id}:${initialAlbumId}`} space={space} members={members} />
             ) : location.pathname === "/lore" ? (
-              <Lore user={user} space={space} members={members} />
+              <Lore key={space.id} user={user} space={space} members={members} />
             ) : (
               <Home
+                key={space.id}
                 user={user}
                 space={space}
                 members={members}

@@ -1,12 +1,5 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-
-// Create the theme context
-const ThemeContext = createContext(null);
+import { useEffect, useState } from "react";
+import { ThemeContext } from "./themeState";
 
 // Available themes
 const availableThemes = ["original", "blue", "green"];
@@ -66,16 +59,3 @@ export function ThemeProvider({ children }) {
   );
 }
 
-// Custom hook to access the theme anywhere
-export function useTheme() {
-
-  const context = useContext(ThemeContext);
-
-  if (!context) {
-    throw new Error(
-      "useTheme must be used inside ThemeProvider"
-    );
-  }
-
-  return context;
-}

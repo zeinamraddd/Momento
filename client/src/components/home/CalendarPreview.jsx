@@ -17,6 +17,7 @@ function CalendarPreview({ space }) {
   const [currentMonth, setCurrentMonth] = useState(
     () => new Date(new Date().getFullYear(), new Date().getMonth(), 1)
   );
+  const [today] = useState(() => new Date());
 
   // Events are retrieved from MongoDB for the selected shared space.
   const [events, setEvents] = useState([]);
@@ -38,9 +39,6 @@ function CalendarPreview({ space }) {
   // Reload events when the selected scrapbook changes.
   useEffect(() => {
     if (!space?.id) {
-      setEvents([]);
-      setEventsError("");
-      setEventsLoading(false);
       return;
     }
     const controller = new AbortController();
@@ -229,8 +227,6 @@ function CalendarPreview({ space }) {
     month: "long",
     year: "numeric",
   });
-  const today = new Date();
-
   return (
     <section className="momento-calendar">
       <div className="momento-calendar__header">
