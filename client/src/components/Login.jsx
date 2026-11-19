@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "./AuthLayout";
+import { API_BASE_URL as API_URL } from "../utils/apiBaseUrl";
+import { EMAIL_RECOVERY_ENABLED } from "../utils/featureFlags";
 import "./Register.css";
 
 function Login() {
@@ -22,9 +24,6 @@ function Login() {
     setLoading(true);
 
     try {
-      const API_URL =
-        import.meta.env.VITE_API_URL || "http://localhost:3000";
-
       // Send login request with session cookies
       const response = await fetch(`${API_URL}/api/auth/login`, {
         method: "POST",
@@ -103,9 +102,11 @@ function Login() {
           </div>
 
           {/* Error message */}
-          <p className="login-forgot-password">
-            <Link to="/forgot-password">Forgot password?</Link>
-          </p>
+          {EMAIL_RECOVERY_ENABLED && (
+            <p className="login-forgot-password">
+              <Link to="/forgot-password">Forgot password?</Link>
+            </p>
+          )}
 
           {error && (
             <p role="alert" style={{ color: "#c0392b" }}>

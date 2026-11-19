@@ -150,6 +150,7 @@ app.use("/api/spaces", scrapbookRoutes);
 // Check whether the API is running
 app.get("/api/health", (req, res) => {
   res.json({
+    ok: true,
     message: "Momento API is running!",
   });
 });

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import AuthLayout from "./AuthLayout";
+import { API_BASE_URL as API_URL } from "../utils/apiBaseUrl";
 import "./Register.css";
 
 function Register() {
@@ -40,9 +41,6 @@ function Register() {
     setLoading(true);
 
     try {
-      const API_URL =
-        import.meta.env.VITE_API_URL || "http://localhost:3000";
-
       // Send registration data to the backend
       const response = await fetch(`${API_URL}/api/auth/register`, {
         method: "POST",

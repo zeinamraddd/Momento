@@ -3,12 +3,9 @@ import { useTheme } from "../themes/themeState";
 import CalendarPreview from "../components/home/CalendarPreview";
 import AlbumPreview from "../components/home/AlbumPreview";
 import MemberAvatar from "../components/MemberAvatar";
+import { API_BASE_URL as API_URL } from "../utils/apiBaseUrl";
 
 import "./Home.css";
-
-// Backend API
-const API_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 
 // ==========================================

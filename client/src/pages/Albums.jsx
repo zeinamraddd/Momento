@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import GroupAvatars from '../components/GroupAvatars';
+import { API_BASE_URL as API } from '../utils/apiBaseUrl';
 import './Albums.css';
-
-const API = (import.meta.env.VITE_API_URL || 'http://localhost:3000').replace(/\/$/, '');
 
 const urlFor = (spaceId, albumId = '') =>
   `${API}/api/spaces/${encodeURIComponent(spaceId)}/albums${

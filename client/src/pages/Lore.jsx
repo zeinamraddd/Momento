@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useTheme } from "../themes/themeState";
 import GroupAvatars from "../components/GroupAvatars";
+import { API_BASE_URL as API_URL } from "../utils/apiBaseUrl";
 import "./Lore.css";
 
 const dateLabel = (value) => {
@@ -11,8 +12,6 @@ const dateLabel = (value) => {
 
 function Lore({ space, user, members = [] }) {
   const { theme } = useTheme();
-  const API_URL =
-    import.meta.env.VITE_API_URL || "http://localhost:3000";
 
   const spaceId = space?.id || space?._id;
   const userId = user?.id || user?._id;
