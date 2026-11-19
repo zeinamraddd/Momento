@@ -7,8 +7,8 @@
   --lore-border: #dfc6a4;
   --lore-main: #f26935;
   --lore-main-text: #fffaf0;
-  --lore-tape-front: url("../assets/momento/shared/washi-tape-pink.png");
-  --lore-tape-back: url("../assets/momento/shared/washi-tape-beige.png");
+  --lore-tape-front: url("../assets/momento/shared/washi-tape-pink.webp");
+  --lore-tape-back: url("../assets/momento/shared/washi-tape-beige.webp");
   --lore-label-front: #eeb3c6;
   --lore-label-back: #e7cba7;
   --lore-funny: #eeb3c6;
@@ -31,7 +31,7 @@
   --lore-card: #fff9ed;
   --lore-border: #afc5eb;
   --lore-main: #355fa9;
-  --lore-tape-back: url("../assets/momento/shared/washi-tape-blue.png");
+  --lore-tape-back: url("../assets/momento/shared/washi-tape-blue.webp");
   --lore-label-back: #b1c5eb;
   --lore-version: #b1c5eb;
   --lore-shadow: rgba(28, 48, 94, 0.26);
@@ -101,11 +101,11 @@
 }
 
 .momento-app[data-theme="original"] .lore-space-header__paper {
-  background-image: url("../assets/momento/black-cream/header-paper.png");
+  background-image: url("../assets/momento/black-cream/header-paper.webp");
 }
 
 .momento-app[data-theme="blue"] .lore-space-header__paper {
-  background-image: url("../assets/momento/blue-notebook/header-paper.png");
+  background-image: url("../assets/momento/blue-notebook/header-paper.webp");
 }
 
 .lore-space-header__paper h1 {

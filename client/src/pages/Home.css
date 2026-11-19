@@ -84,7 +84,7 @@
 .momento-app[data-theme="original"]
 .momento-home__title {
   background-image:
-    url("../assets/momento/black-cream/header-paper.png");
+    url("../assets/momento/black-cream/header-paper.webp");
 
   color: #211d18;
 }
@@ -95,7 +95,7 @@
 .momento-app[data-theme="blue"]
 .momento-home__title {
   background-image:
-    url("../assets/momento/blue-notebook/header-paper.png");
+    url("../assets/momento/blue-notebook/header-paper.webp");
 
   color: #203773;
 }
@@ -376,7 +376,7 @@
 
 .momento-sticky-note--0 {
   background-image:
-    url("../assets/momento/shared/sticky-note-yellow.png");
+    url("../assets/momento/shared/sticky-note-yellow.webp");
 
   transform: rotate(-4deg);
 }
@@ -386,7 +386,7 @@
 
 .momento-sticky-note--1 {
   background-image:
-    url("../assets/momento/shared/sticky-note-blue.png");
+    url("../assets/momento/shared/sticky-note-blue.webp");
 
   transform: rotate(4deg);
 }
@@ -396,7 +396,7 @@
 
 .momento-sticky-note--2 {
   background-image:
-    url("../assets/momento/shared/sticky-note-yellow.png");
+    url("../assets/momento/shared/sticky-note-yellow.webp");
 
   transform: rotate(-3deg);
 
@@ -413,13 +413,13 @@
 .momento-app[data-theme="green"]
 .momento-sticky-note--1 {
   background-image:
-    url("../assets/momento/green-gingham/sticky-note-mint.png");
+    url("../assets/momento/green-gingham/sticky-note-mint.webp");
 }
 
 .momento-app[data-theme="green"]
 .momento-sticky-note--2 {
   background-image:
-    url("../assets/momento/green-gingham/sticky-note-pink.png");
+    url("../assets/momento/green-gingham/sticky-note-pink.webp");
 }
 
 
@@ -433,7 +433,7 @@
   padding: 25px 25px 25px 40px;
 
   background-image:
-    url("../assets/momento/shared/bucket-list-paper.png");
+    url("../assets/momento/shared/bucket-list-paper.webp");
 
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -1083,7 +1083,7 @@
   left: 45%;
 
   background-image:
-    url("../assets/momento/blue-notebook/decorative-star-silver.png");
+    url("../assets/momento/blue-notebook/decorative-star-silver.webp");
 
   background-size: contain;
   background-repeat: no-repeat;
@@ -1177,7 +1177,7 @@
   left: 25%;
 
   background-image:
-    url("../assets/momento/shared/washi-tape-pink.png");
+    url("../assets/momento/shared/washi-tape-pink.webp");
 
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -1203,7 +1203,7 @@
   left: 25%;
 
   background-image:
-    url("../assets/momento/shared/washi-tape-blue.png");
+    url("../assets/momento/shared/washi-tape-blue.webp");
 
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -1420,7 +1420,7 @@
   top: 3px;
   left: 50%;
   transform: translateX(-50%) rotate(-7deg);
-  background-image: url("../assets/momento/shared/washi-tape-pink.png");
+  background-image: url("../assets/momento/shared/washi-tape-pink.webp");
   background-size: 100% 100%;
   background-repeat: no-repeat;
   z-index: 2;

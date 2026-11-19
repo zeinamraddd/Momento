@@ -75,11 +75,11 @@
   width: min(70%, 630px);
   min-height: 90px;
   padding: 14px 36px;
-  background: url("../assets/momento/black-cream/header-paper.png") center / 100% 100% no-repeat;
+  background: url("../assets/momento/black-cream/header-paper.webp") center / 100% 100% no-repeat;
 }
 
 .momento-app[data-theme="blue"] .scrapbook-editor__group-title {
-  background-image: url("../assets/momento/blue-notebook/header-paper.png");
+  background-image: url("../assets/momento/blue-notebook/header-paper.webp");
 }
 
 .scrapbook-editor__group-title h1 {

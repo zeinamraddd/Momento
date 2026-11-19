@@ -38,7 +38,7 @@
   --m-bg: #151311;
 
   --m-background:
-    url("../assets/momento/black-cream/theme-background.png");
+    url("../assets/momento/black-cream/theme-background.webp");
 
   --m-background-size: 700px 700px;
 
@@ -93,7 +93,7 @@
   --m-bg: #faf5e8;
 
   --m-background:
-    url("../assets/momento/blue-notebook/theme-background.png");
+    url("../assets/momento/blue-notebook/theme-background.webp");
 
   --m-background-size: 480px 480px;
 
@@ -148,7 +148,7 @@
   --m-bg: #e5efdf;
 
   --m-background:
-    url("../assets/momento/green-gingham/theme-background.png");
+    url("../assets/momento/green-gingham/theme-background.webp");
 
   --m-background-size: 480px 480px;
 

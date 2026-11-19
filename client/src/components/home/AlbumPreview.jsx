@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
-import beachImage from "../../assets/momento/shared/illustration-beach.png";
-import palmImage from "../../assets/momento/shared/illustration-palm.png";
+import beachImage from "../../assets/momento/shared/illustration-beach.webp";
+import palmImage from "../../assets/momento/shared/illustration-palm.webp";
 
 function AlbumPreview({ space }) {
 
