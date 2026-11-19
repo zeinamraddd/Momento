@@ -1,115 +1,147 @@
-# Momento
+# MOMENTO
 
-## Project Description
+**Live Website:** https://momento-teal-theta.vercel.app  
+**Backend API:** https://momento-api-d00v.onrender.com
 
-Momento is a full-stack web application that allows friends to create shared digital spaces where they can organize plans, preserve memories, and document their shared experiences.
+MOMENTO is a collaborative digital scrapbook for friends to organize plans, capture memories, and keep their shared stories in one place. Each group has a private space where members can contribute to albums, scrapbook pages, notes, plans, and inside jokes.
 
-The platform combines digital scrapbooks, shared photo albums, sticky notes, bucket lists, inside jokes (Lore Cards), and a collaborative calendar.
+## Features
 
-Momento aims to turn shared plans into lasting memories.
+- **User accounts:** Register, log in, log out, update account details, and manage profile pictures.
+- **Shared spaces:** Create a space or join an existing one with an invitation code. View group members and their avatars, and rename the group from the home dashboard.
+- **Shared photo albums:** Create albums, upload and manage photos, and browse memories together.
+- **Scrapbook editor:** Decorate photos with stickers and washi tape. Drag, resize, and rotate decorations, then save the layout for other members to view.
+- **Lore Cards:** Record inside jokes and group stories on two-sided, flip-style cards. React with *Still Funny* and add alternative versions of events.
+- **Sticky notes:** Post and edit notes on the shared dashboard.
+- **Bucket list:** Add activities and track which ones the group has completed.
+- **Shared calendar:** Schedule, edit, and view group events with member-specific colors.
+- **Personalized themes:** Switch between the project's three scrapbook-inspired visual themes.
 
-## Technologies Used
+Shared content is saved in MongoDB and remains available after refreshes and subsequent logins.
 
-**Frontend**
-- React
-- Vite
-- JavaScript
-- CSS
+## Tech Stack
 
-**Backend**
-- Node.js
-- Express.js
+| Layer | Technologies |
+| --- | --- |
+| Frontend | React, React Router, Vite, JavaScript, CSS |
+| Backend | Node.js, Express.js, REST API |
+| Database | MongoDB Atlas, Mongoose |
+| Authentication | `express-session`, `connect-mongo`, bcrypt |
+| Security and validation | Helmet, CORS, rate limiting, Zod |
+| Deployment | Vercel (frontend), Render (backend), MongoDB Atlas (database) |
+| Testing | Node.js built-in test runner, Oxlint, Vite production build |
 
-**Planned Database**
-- MongoDB
+## Architecture Overview
 
-## Project Structure
+MOMENTO follows a client-server architecture:
+
+1. **React frontend:** Renders the interface, manages page navigation, and sends HTTP requests to the API.
+2. **Express backend:** Exposes REST endpoints for authentication, spaces, albums, scrapbook content, Lore Cards, notes, bucket lists, calendar events, and accounts. Protected routes check the user's session and permissions.
+3. **MongoDB Atlas:** Stores users, shared-space data, photos and scrapbook metadata, and MongoDB-backed sessions.
+
+In production, Vercel hosts the React application and forwards requests to `/api/*` to the Express API hosted on Render. This lets the browser use the same website origin for the frontend and API requests. The backend connects to MongoDB Atlas for persistent storage.
+
+### Repository Structure
 
 ```text
 Momento/
-├── client/       # React frontend
-├── server/       # Express backend
-├── docs/         # Wireframes and database schema
+├── client/                 # React/Vite application
+│   ├── src/                # Components, pages, themes, and utilities
+│   └── vercel.json         # Production routing and API rewrites
+├── server/                 # Express REST API
+│   ├── models/             # MongoDB/Mongoose data models
+│   ├── routes/             # API endpoints
+│   ├── middleware/         # Authentication, validation, and security
+│   └── tests/              # Backend automated tests
 └── README.md
 ```
 
-## Installation and Setup
+## Installation and Local Setup
+
+### Prerequisites
+
+- Node.js and npm (Node.js 24 is recommended for consistency with development).
+- Access to a MongoDB Atlas database and a valid connection string.
+- A MongoDB Atlas network access rule allowing your development IP address.
 
 ### 1. Clone the repository
 
 ```bash
-git clone YOUR_REPOSITORY_URL
+git clone https://github.com/zeinamraddd/Momento.git
 cd Momento
 ```
 
-### 2. Frontend Setup
+### 2. Configure and start the backend
 
-```bash
-cd client
-npm install
-```
-
-Create a `.env` file in `client/` using `.env.example` as a template.
-
-Start the frontend:
-
-```bash
-npm run dev
-```
-
-The frontend will normally run at `http://localhost:5173`.
-
-### 3. Backend Setup
-
-Open a second terminal.
+Install the server dependencies:
 
 ```bash
 cd server
 npm install
 ```
 
-Create a `.env` file in `server/` using `.env.example` as a template.
+Create a file named `.env` inside `server/` with these settings:
 
-Start the backend:
+```dotenv
+PORT=3000
+NODE_ENV=development
+MONGODB_URI=your_mongodb_atlas_connection_string
+SESSION_SECRET=replace_with_a_long_random_secret_of_at_least_32_characters
+CLIENT_ORIGIN=http://localhost:5173
+```
+
+Replace the placeholder values with your own MongoDB connection string and session secret. Do not commit `.env` files, passwords, or other credentials to Git.
+
+Start the server:
 
 ```bash
 npm run dev
 ```
 
-The backend runs at `http://localhost:3000`.
+The API runs at **http://localhost:3000**. To check that it is running, visit:
 
-The API health endpoint is:
+`http://localhost:3000/api/health`
 
-`GET http://localhost:3000/api/health`
+### 3. Configure and start the frontend
 
-## Planned Features
+Open a **second terminal** from the repository root, then run:
 
-- **Shared Spaces:** Invite friends to collaborate in a shared digital space.
-- **Shared Albums:** Upload photos and decorate them with stickers in a scrapbook-style interface.
-- **Sticky Notes:** Leave messages on a collaborative dashboard.
-- **Bucket List:** Create and track activities to complete together.
-- **Lore Cards:** Preserve inside jokes, alternate versions of events, and reactions.
-- **Shared Calendar:** Schedule plans using personalized colors.
-- **Themes:** Choose from three visual themes.
+```bash
+cd client
+npm install
+npm run dev
+```
 
-## Milestone 1
+Open **http://localhost:5173** in your browser.
 
-The first milestone focuses on establishing the foundation of the application, including:
+The frontend uses `http://localhost:3000` as its API address during local development. A `client/.env` file is not required for the default setup. If your local API runs elsewhere, set `VITE_API_URL` in `client/.env` to that API's base URL.
 
-- React and Express project scaffolding
-- Environment configuration
-- Project setup documentation
-- User interface wireframes and navigation flow
-- Database schema design
+### 4. Run checks
 
-The application's complete functionality will be implemented in future milestones.
+Backend automated tests (from `server/`):
 
+```bash
+npm test
+```
 
-## Project Design
+Frontend lint and production build (from `client/`):
 
-The interface and navigation of Momento are documented in the following files:
+```bash
+npm run lint
+npm run build
+```
 
-- [UI Wireframes](docs/wireframes.pdf) — Designs for the login, registration, shared-space setup, dashboard, albums, and scrapbook editor across three themes.
-- [Navigation Flow](docs/navigation-flow.png) — Diagram showing how users navigate through the application, including authentication, shared spaces, and the main features.
+These checks help verify the API routes, security behavior, client code, and production build before deployment.
 
-These documents serve as references for the development of the React frontend.
+## Deployment Notes
+
+- **Frontend:** Deployed on Vercel from the `client/` directory.
+- **Backend:** Deployed on Render from the `server/` directory.
+- **Database:** MongoDB Atlas is used by the deployed API.
+- **Configuration:** Hosting credentials and secrets are stored as environment variables on the hosting platforms, not in the repository.
+- **Allowed frontend origin:** The backend's production `CLIENT_ORIGIN` is set to `https://momento-teal-theta.vercel.app`.
+- **Email functionality:** Email notifications and password-reset emails require SMTP settings. They are not enabled in the hosted free-tier demo; the rest of the application works without SMTP.
+
+To confirm the deployed API is reachable through the website, visit:
+
+https://momento-teal-theta.vercel.app/api/health
